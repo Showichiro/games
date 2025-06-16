@@ -9,10 +9,12 @@ import GameBoard from "./components/GameBoard";
 import GameHeader from "./components/GameHeader";
 import GameControls from "./components/GameControls";
 import GameCompleteModal from "./components/GameCompleteModal";
+import MiniBoard from "./components/MiniBoard";
 import type {
   GameBoard as GameBoardType,
   Difficulty,
   TutorialStep,
+  MoveRecord,
 } from "./types";
 
 const GRID_SIZE = 5;
@@ -132,6 +134,18 @@ const TUTORIAL_STEPS: TutorialStep[] = [
       "初級・中級・上級から難易度を選択できます。最初は初級から始めることをおすすめします。",
     highlight: "difficulty",
   },
+  {
+    title: "ヒント機能",
+    content:
+      "💡ヒントボタンで次の最適手をパルスエフェクトで表示します。使用回数が記録されるので、なるべく使わずにクリアを目指しましょう。",
+    highlight: null,
+  },
+  {
+    title: "操作履歴",
+    content:
+      "全ての操作が記録され、任意の手まで戻ることができます。PCでは右サイドバー、モバイルではメニューから確認できます。",
+    highlight: null,
+  },
 ];
 
 export default function LightsOut() {
@@ -149,6 +163,7 @@ export default function LightsOut() {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hintCell, setHintCell] = useState<{ row: number; col: number } | null>(null);
   const [hintsUsed, setHintsUsed] = useState(0);
+  const [moveHistory, setMoveHistory] = useState<MoveRecord[]>([]);
 
   useEffect(() => {
     setIsClient(true);
@@ -200,6 +215,8 @@ export default function LightsOut() {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
+  const [lastMove, setLastMove] = useState<{ row: number; col: number } | null>(null);
+
   const handleCellClick = useCallback(
     (row: number, col: number) => {
       if (gameComplete) return;
@@ -210,9 +227,27 @@ export default function LightsOut() {
         return newBoard;
       });
       setMoves((prev) => prev + 1);
+      setLastMove({ row, col });
     },
     [gameComplete],
   );
+
+  // Record move history when board state changes
+  useEffect(() => {
+    if (lastMove && moves > 0) {
+      const moveRecord: MoveRecord = {
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${lastMove.row}-${lastMove.col}`,
+        row: lastMove.row,
+        col: lastMove.col,
+        timestamp: Date.now(),
+        moveNumber: moves,
+        boardState: board.map(row => [...row]), // Deep copy of current board state
+      };
+      
+      setMoveHistory(prev => [...prev, moveRecord]);
+      setLastMove(null);
+    }
+  }, [board, lastMove, moves]);
 
   const resetGame = useCallback(() => {
     setBoard(generateRandomBoard(difficulty));
@@ -222,6 +257,8 @@ export default function LightsOut() {
     setElapsedTime(0);
     setHintCell(null);
     setHintsUsed(0);
+    setMoveHistory([]);
+    setLastMove(null);
   }, [difficulty]);
 
   const newGame = useCallback(() => {
@@ -237,6 +274,8 @@ export default function LightsOut() {
     setElapsedTime(0);
     setHintCell(null);
     setHintsUsed(0);
+    setMoveHistory([]);
+    setLastMove(null);
   }, []);
 
   const closeTutorial = useCallback(() => {
@@ -294,6 +333,29 @@ export default function LightsOut() {
     }
   }, [board, gameComplete]);
 
+  const replayToMove = useCallback((moveIndex: number) => {
+    if (moveIndex < 0 || moveIndex >= moveHistory.length) return;
+    
+    // Replay to the specified move by restoring board state
+    const targetMove = moveHistory[moveIndex];
+    setBoard(targetMove.boardState.map(row => [...row])); // Deep copy
+    setMoves(targetMove.moveNumber);
+    
+    // Trim move history to the replay point
+    setMoveHistory(prev => prev.slice(0, moveIndex + 1));
+    
+    // Reset game completion state
+    setGameComplete(false);
+    setHintCell(null);
+    
+    // Close history modal
+    setShowHistoryModal(false);
+  }, [moveHistory]);
+
+  const clearHistory = useCallback(() => {
+    setMoveHistory([]);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       <HamburgerMenu
@@ -345,14 +407,63 @@ export default function LightsOut() {
         {/* Sidebar for History Panel */}
         <div className="w-80 bg-slate-800 border-l border-slate-700 p-6">
           <div className="text-white">
-            <h3 className="text-lg font-bold mb-4">操作履歴</h3>
-            <div className="text-gray-400 text-center py-8">
-              <p>まだ操作履歴がありません</p>
-              <p className="text-sm mt-2">
-                ゲームを開始すると、ここに履歴が表示されます
-              </p>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold">操作履歴 ({moveHistory.length})</h3>
+              {moveHistory.length > 0 && (
+                <button
+                  className="text-red-400 hover:text-red-300 text-sm font-medium"
+                  onClick={clearHistory}
+                >
+                  クリア
+                </button>
+              )}
             </div>
-            <div className="mt-6 space-y-2">
+            
+            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-slate-800 scrollbar-thumb-slate-600">
+              <div className="min-h-[12rem]">
+                {moveHistory.length === 0 ? (
+                  <div className="text-gray-400 text-center py-8">
+                    <p>まだ操作履歴がありません</p>
+                    <p className="text-sm mt-2">
+                      ゲームを開始すると、ここに履歴が表示されます
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2 pr-2">
+                    {moveHistory.map((record, index) => (
+                      <motion.div
+                        key={record.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.03 }}
+                        className="flex items-center justify-between p-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors text-sm min-w-0"
+                      >
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          <div className="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+                            {record.moveNumber}
+                          </div>
+                          <div className="flex-shrink-0">
+                            <MiniBoard 
+                              board={record.boardState} 
+                              size="xs"
+                              showMove={{ row: record.row, col: record.col }}
+                            />
+                          </div>
+                        </div>
+                        <button
+                          className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors flex-shrink-0 ml-2"
+                          onClick={() => replayToMove(index)}
+                        >
+                          再生
+                        </button>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
               <button
                 className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors relative"
                 onClick={showHint}
@@ -412,6 +523,9 @@ export default function LightsOut() {
       <HistoryModal
         showHistoryModal={showHistoryModal}
         onClose={closeHistoryModal}
+        moveHistory={moveHistory}
+        onReplayToMove={replayToMove}
+        onClearHistory={clearHistory}
       />
 
       <TutorialModal

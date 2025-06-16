@@ -13,3 +13,12 @@ export interface TutorialStep {
   content: string;
   highlight: string | null;
 }
+
+export interface MoveRecord {
+  id: string;
+  row: number;
+  col: number;
+  timestamp: number;
+  moveNumber: number;
+  boardState: GameBoard;
+}
