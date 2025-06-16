@@ -192,6 +192,7 @@ export default function LightsOut() {
   const [hintsUsed, setHintsUsed] = useState(0);
   const [moveHistory, setMoveHistory] = useState<MoveRecord[]>([]);
   const [affectedCells, setAffectedCells] = useState<Set<string>>(new Set());
+  const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -270,6 +271,14 @@ export default function LightsOut() {
       // Check for game completion
       if (isGameComplete(newBoard)) {
         setGameComplete(true);
+        // Start completion animation
+        setTimeout(() => {
+          setShowCompletionAnimation(true);
+        }, 100);
+        // Stop completion animation after sequence
+        setTimeout(() => {
+          setShowCompletionAnimation(false);
+        }, 2500);
       }
     },
     [gameComplete, board, moves],
@@ -285,6 +294,7 @@ export default function LightsOut() {
     setHintsUsed(0);
     setMoveHistory([]);
     setAffectedCells(new Set());
+    setShowCompletionAnimation(false);
   }, [difficulty]);
 
   const newGame = useCallback(() => {
@@ -302,6 +312,7 @@ export default function LightsOut() {
     setHintsUsed(0);
     setMoveHistory([]);
     setAffectedCells(new Set());
+    setShowCompletionAnimation(false);
   }, []);
 
   const closeTutorial = useCallback(() => {
@@ -419,6 +430,7 @@ export default function LightsOut() {
               onCellClick={handleCellClick}
               hintCell={hintCell}
               affectedCells={affectedCells}
+              showCompletionAnimation={showCompletionAnimation}
             />
 
             <GameControls
@@ -536,6 +548,7 @@ export default function LightsOut() {
             onCellClick={handleCellClick}
             hintCell={hintCell}
             affectedCells={affectedCells}
+            showCompletionAnimation={showCompletionAnimation}
           />
 
           <GameControls
