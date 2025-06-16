@@ -5,23 +5,34 @@ import { motion, AnimatePresence } from "motion/react";
 
 type Cell = boolean;
 type GameBoard = Cell[][];
+type Difficulty = "easy" | "medium" | "hard";
 
 const GRID_SIZE = 5;
-
-const createInitialBoard = (): GameBoard => {
-  return Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(false));
+const DIFFICULTY_CONFIG = {
+  easy: { minMoves: 5, maxMoves: 8, label: "初級" },
+  medium: { minMoves: 8, maxMoves: 12, label: "中級" },
+  hard: { minMoves: 12, maxMoves: 18, label: "上級" },
 };
 
-const generateRandomBoard = (): GameBoard => {
+const createInitialBoard = (): GameBoard => {
+  return Array(GRID_SIZE)
+    .fill(null)
+    .map(() => Array(GRID_SIZE).fill(false));
+};
+
+const generateRandomBoard = (difficulty: Difficulty = "medium"): GameBoard => {
   const board = createInitialBoard();
-  const moves = Math.floor(Math.random() * 10) + 5;
-  
+  const config = DIFFICULTY_CONFIG[difficulty];
+  const moves =
+    Math.floor(Math.random() * (config.maxMoves - config.minMoves + 1)) +
+    config.minMoves;
+
   for (let i = 0; i < moves; i++) {
     const row = Math.floor(Math.random() * GRID_SIZE);
     const col = Math.floor(Math.random() * GRID_SIZE);
     toggleCell(board, row, col);
   }
-  
+
   return board;
 };
 
@@ -31,21 +42,26 @@ const toggleCell = (board: GameBoard, row: number, col: number): void => {
     [-1, 0],
     [1, 0],
     [0, -1],
-    [0, 1]
+    [0, 1],
   ];
-  
+
   directions.forEach(([dr, dc]) => {
     const newRow = row + dr;
     const newCol = col + dc;
-    
-    if (newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
+
+    if (
+      newRow >= 0 &&
+      newRow < GRID_SIZE &&
+      newCol >= 0 &&
+      newCol < GRID_SIZE
+    ) {
       board[newRow][newCol] = !board[newRow][newCol];
     }
   });
 };
 
 const isGameComplete = (board: GameBoard): boolean => {
-  return board.every(row => row.every(cell => !cell));
+  return board.every((row) => row.every((cell) => !cell));
 };
 
 export default function LightsOut() {
@@ -54,10 +70,11 @@ export default function LightsOut() {
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [gameComplete, setGameComplete] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [difficulty, setDifficulty] = useState<Difficulty>("medium");
 
   useEffect(() => {
-    setBoard(generateRandomBoard());
-  }, []);
+    setBoard(generateRandomBoard(difficulty));
+  }, [difficulty]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,28 +98,40 @@ export default function LightsOut() {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const handleCellClick = useCallback((row: number, col: number) => {
-    if (gameComplete) return;
+  const handleCellClick = useCallback(
+    (row: number, col: number) => {
+      if (gameComplete) return;
 
-    setBoard(prevBoard => {
-      const newBoard = prevBoard.map(row => [...row]);
-      toggleCell(newBoard, row, col);
-      return newBoard;
-    });
-    setMoves(prev => prev + 1);
-  }, [gameComplete]);
+      setBoard((prevBoard) => {
+        const newBoard = prevBoard.map((row) => [...row]);
+        toggleCell(newBoard, row, col);
+        return newBoard;
+      });
+      setMoves((prev) => prev + 1);
+    },
+    [gameComplete],
+  );
 
   const resetGame = useCallback(() => {
-    setBoard(generateRandomBoard());
+    setBoard(generateRandomBoard(difficulty));
+    setMoves(0);
+    setStartTime(Date.now());
+    setGameComplete(false);
+    setElapsedTime(0);
+  }, [difficulty]);
+
+  const newGame = useCallback(() => {
+    resetGame();
+  }, [resetGame]);
+
+  const handleDifficultyChange = useCallback((newDifficulty: Difficulty) => {
+    setDifficulty(newDifficulty);
+    setBoard(generateRandomBoard(newDifficulty));
     setMoves(0);
     setStartTime(Date.now());
     setGameComplete(false);
     setElapsedTime(0);
   }, []);
-
-  const newGame = useCallback(() => {
-    resetGame();
-  }, [resetGame]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center p-4">
@@ -114,9 +143,27 @@ export default function LightsOut() {
         {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-white mb-4">ライツアウト</h1>
-          <div className="flex justify-center gap-6 text-gray-300">
+          <div className="flex justify-center gap-6 text-gray-300 mb-4">
             <div>手数: {moves}</div>
             <div>時間: {formatTime(elapsedTime)}</div>
+          </div>
+
+          {/* Difficulty Selector */}
+          <div className="flex justify-center gap-2">
+            {(Object.keys(DIFFICULTY_CONFIG) as Difficulty[]).map((diff) => (
+              <motion.button
+                key={diff}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                  difficulty === diff
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-600 text-gray-300 hover:bg-slate-500"
+                }`}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleDifficultyChange(diff)}
+              >
+                {DIFFICULTY_CONFIG[diff].label}
+              </motion.button>
+            ))}
           </div>
         </div>
 
@@ -136,17 +183,17 @@ export default function LightsOut() {
                   animate={{
                     backgroundColor: cell ? "#facc15" : "#475569",
                     rotate: cell ? 180 : 0,
-                    scale: cell ? 1.05 : 1
+                    scale: cell ? 1.05 : 1,
                   }}
                   transition={{
                     type: "spring",
                     stiffness: 300,
-                    damping: 20
+                    damping: 20,
                   }}
                   onClick={() => handleCellClick(rowIndex, colIndex)}
                   disabled={gameComplete}
                 />
-              ))
+              )),
             )}
           </div>
         </div>
@@ -187,7 +234,9 @@ export default function LightsOut() {
               className="bg-white rounded-2xl p-6 text-center max-w-sm w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">🎉 クリア!</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                🎉 クリア!
+              </h2>
               <p className="text-gray-600 mb-4">
                 {moves}手で {formatTime(elapsedTime)} でクリアしました!
               </p>

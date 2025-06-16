@@ -14,7 +14,8 @@
 		"indentStyle": "space",
 		"ignore": [
 			".next",
-			".claude"
+			".claude",
+			"node_modules"
 		]
 	},
 	"organizeImports": {

@@ -3,14 +3,13 @@ import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
 const notSans = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['400', '700'],
+  subsets: ["latin"],
+  weight: ["400", "700"],
   preload: false,
-  variable: '--font-noto-sans-jp',
-  display: 'swap',
-  fallback: ['Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'sans-serif'],
+  variable: "--font-noto-sans-jp",
+  display: "swap",
+  fallback: ["Hiragino Sans", "Hiragino Kaku Gothic ProN", "sans-serif"],
 });
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,11 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${notSans.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${notSans.variable} antialiased`}>{children}</body>
     </html>
   );
 }
