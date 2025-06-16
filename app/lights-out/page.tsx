@@ -74,6 +74,39 @@ const isGameComplete = (board: GameBoardType): boolean => {
   return board.every((row) => row.every((cell) => !cell));
 };
 
+// Simple hint algorithm - finds a random valid move that reduces the number of lit cells
+const findHintMove = (board: GameBoardType): { row: number; col: number } | null => {
+  const moves: { row: number; col: number }[] = [];
+  
+  for (let row = 0; row < GRID_SIZE; row++) {
+    for (let col = 0; col < GRID_SIZE; col++) {
+      // Simulate the move
+      const testBoard = board.map(r => [...r]);
+      toggleCell(testBoard, row, col);
+      
+      // Count lit cells before and after
+      const originalLit = board.flat().filter(Boolean).length;
+      const newLit = testBoard.flat().filter(Boolean).length;
+      
+      // If this move reduces lit cells, it's potentially helpful
+      if (newLit < originalLit) {
+        moves.push({ row, col });
+      }
+    }
+  }
+  
+  // Return a random good move, or any move if no good moves found
+  if (moves.length > 0) {
+    return moves[Math.floor(Math.random() * moves.length)];
+  }
+  
+  // Fallback: return any random move
+  return {
+    row: Math.floor(Math.random() * GRID_SIZE),
+    col: Math.floor(Math.random() * GRID_SIZE)
+  };
+};
+
 const TUTORIAL_STEPS: TutorialStep[] = [
   {
     title: "ライツアウトゲームへようこそ！",
@@ -114,6 +147,8 @@ export default function LightsOut() {
   const [isClient, setIsClient] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [hintCell, setHintCell] = useState<{ row: number; col: number } | null>(null);
+  const [hintsUsed, setHintsUsed] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
@@ -185,6 +220,8 @@ export default function LightsOut() {
     setStartTime(Date.now());
     setGameComplete(false);
     setElapsedTime(0);
+    setHintCell(null);
+    setHintsUsed(0);
   }, [difficulty]);
 
   const newGame = useCallback(() => {
@@ -198,6 +235,8 @@ export default function LightsOut() {
     setStartTime(Date.now());
     setGameComplete(false);
     setElapsedTime(0);
+    setHintCell(null);
+    setHintsUsed(0);
   }, []);
 
   const closeTutorial = useCallback(() => {
@@ -240,6 +279,21 @@ export default function LightsOut() {
     setShowHistoryModal(false);
   }, []);
 
+  const showHint = useCallback(() => {
+    if (gameComplete) return;
+    
+    const hint = findHintMove(board);
+    if (hint) {
+      setHintCell(hint);
+      setHintsUsed(prev => prev + 1);
+      
+      // Clear hint after 3 seconds
+      setTimeout(() => {
+        setHintCell(null);
+      }, 3000);
+    }
+  }, [board, gameComplete]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       <HamburgerMenu
@@ -275,12 +329,15 @@ export default function LightsOut() {
               board={board}
               gameComplete={gameComplete}
               onCellClick={handleCellClick}
+              hintCell={hintCell}
             />
 
             <GameControls
               onNewGame={newGame}
               onResetGame={resetGame}
               onShowTutorial={showTutorialAgain}
+              onHint={showHint}
+              hintsUsed={hintsUsed}
             />
           </motion.div>
         </div>
@@ -296,6 +353,18 @@ export default function LightsOut() {
               </p>
             </div>
             <div className="mt-6 space-y-2">
+              <button
+                className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors relative"
+                onClick={showHint}
+                disabled={gameComplete}
+              >
+                💡 ヒント
+                {hintsUsed > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {hintsUsed}
+                  </span>
+                )}
+              </button>
               <button
                 className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors"
                 onClick={showTutorialAgain}
@@ -327,12 +396,15 @@ export default function LightsOut() {
             board={board}
             gameComplete={gameComplete}
             onCellClick={handleCellClick}
+            hintCell={hintCell}
           />
 
           <GameControls
             onNewGame={newGame}
             onResetGame={resetGame}
             onShowTutorial={showTutorialAgain}
+            onHint={showHint}
+            hintsUsed={hintsUsed}
           />
         </motion.div>
       </div>

@@ -6,12 +6,16 @@ interface GameControlsProps {
   onNewGame: () => void;
   onResetGame: () => void;
   onShowTutorial: () => void;
+  onHint: () => void;
+  hintsUsed: number;
 }
 
 export default function GameControls({
   onNewGame,
   onResetGame,
   onShowTutorial,
+  onHint,
+  hintsUsed,
 }: GameControlsProps) {
   return (
     <div className="flex gap-3 lg:gap-4 justify-center flex-wrap">
@@ -29,8 +33,21 @@ export default function GameControls({
       >
         リセット
       </motion.button>
+      {/* Hide hint and tutorial buttons on desktop (lg+) since they're in the sidebar */}
       <motion.button
-        className="px-4 py-3 lg:px-6 lg:py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors text-sm lg:text-base"
+        className="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors text-sm relative lg:hidden"
+        whileTap={{ scale: 0.95 }}
+        onClick={onHint}
+      >
+        💡
+        {hintsUsed > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {hintsUsed}
+          </span>
+        )}
+      </motion.button>
+      <motion.button
+        className="px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors text-sm lg:hidden"
         whileTap={{ scale: 0.95 }}
         onClick={onShowTutorial}
       >
