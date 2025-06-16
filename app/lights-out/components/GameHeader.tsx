@@ -21,19 +21,21 @@ export default function GameHeader({
   formatTime,
 }: GameHeaderProps) {
   return (
-    <div className="text-center mb-6 relative">
-      <h1 className="text-3xl font-bold text-white mb-4">ライツアウト</h1>
-      <div className="flex justify-center gap-6 text-gray-300 mb-4">
+    <div className="text-center mb-6 lg:mb-8 relative">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 lg:mb-6">
+        ライツアウト
+      </h1>
+      <div className="flex justify-center gap-6 lg:gap-8 text-gray-300 mb-4 lg:mb-6 text-sm md:text-base lg:text-lg">
         <div>手数: {moves}</div>
         <div>時間: {formatTime(elapsedTime)}</div>
       </div>
 
       {/* Difficulty Selector */}
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-2 lg:gap-3">
         {(Object.keys(difficultyConfig) as Difficulty[]).map((diff) => (
           <motion.button
             key={diff}
-            className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-3 py-1 lg:px-4 lg:py-2 rounded-lg text-sm lg:text-base font-medium transition-colors ${
               difficulty === diff
                 ? "bg-blue-600 text-white"
                 : "bg-slate-600 text-gray-300 hover:bg-slate-500"

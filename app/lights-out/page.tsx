@@ -241,7 +241,7 @@ export default function LightsOut() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       <HamburgerMenu
         showMenu={showMenu}
         difficulty={difficulty}
@@ -253,32 +253,89 @@ export default function LightsOut() {
         onDifficultyChange={handleDifficultyChange}
       />
 
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
-      >
-        <GameHeader
-          moves={moves}
-          elapsedTime={elapsedTime}
-          difficulty={difficulty}
-          difficultyConfig={DIFFICULTY_CONFIG}
-          onDifficultyChange={handleDifficultyChange}
-          formatTime={formatTime}
-        />
+      {/* Desktop Layout */}
+      <div className="hidden lg:flex min-h-screen">
+        {/* Main Game Area */}
+        <div className="flex-1 flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-lg"
+          >
+            <GameHeader
+              moves={moves}
+              elapsedTime={elapsedTime}
+              difficulty={difficulty}
+              difficultyConfig={DIFFICULTY_CONFIG}
+              onDifficultyChange={handleDifficultyChange}
+              formatTime={formatTime}
+            />
 
-        <GameBoard
-          board={board}
-          gameComplete={gameComplete}
-          onCellClick={handleCellClick}
-        />
+            <GameBoard
+              board={board}
+              gameComplete={gameComplete}
+              onCellClick={handleCellClick}
+            />
 
-        <GameControls
-          onNewGame={newGame}
-          onResetGame={resetGame}
-          onShowTutorial={showTutorialAgain}
-        />
-      </motion.div>
+            <GameControls
+              onNewGame={newGame}
+              onResetGame={resetGame}
+              onShowTutorial={showTutorialAgain}
+            />
+          </motion.div>
+        </div>
+
+        {/* Sidebar for History Panel */}
+        <div className="w-80 bg-slate-800 border-l border-slate-700 p-6">
+          <div className="text-white">
+            <h3 className="text-lg font-bold mb-4">操作履歴</h3>
+            <div className="text-gray-400 text-center py-8">
+              <p>まだ操作履歴がありません</p>
+              <p className="text-sm mt-2">
+                ゲームを開始すると、ここに履歴が表示されます
+              </p>
+            </div>
+            <div className="mt-6 space-y-2">
+              <button
+                className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors"
+                onClick={showTutorialAgain}
+              >
+                ❓ ルール説明
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile/Tablet Layout */}
+      <div className="lg:hidden flex flex-col items-center justify-center min-h-screen p-4">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md"
+        >
+          <GameHeader
+            moves={moves}
+            elapsedTime={elapsedTime}
+            difficulty={difficulty}
+            difficultyConfig={DIFFICULTY_CONFIG}
+            onDifficultyChange={handleDifficultyChange}
+            formatTime={formatTime}
+          />
+
+          <GameBoard
+            board={board}
+            gameComplete={gameComplete}
+            onCellClick={handleCellClick}
+          />
+
+          <GameControls
+            onNewGame={newGame}
+            onResetGame={resetGame}
+            onShowTutorial={showTutorialAgain}
+          />
+        </motion.div>
+      </div>
 
       <HistoryModal
         showHistoryModal={showHistoryModal}

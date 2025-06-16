@@ -15,13 +15,13 @@ export default function GameBoard({
   onCellClick,
 }: GameBoardProps) {
   return (
-    <div className="bg-slate-700 p-4 rounded-2xl shadow-2xl mb-6">
-      <div className="grid grid-cols-5 gap-2">
+    <div className="bg-slate-700 p-4 md:p-6 lg:p-8 rounded-2xl shadow-2xl mb-6">
+      <div className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-4">
         {board.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <motion.button
               key={`${rowIndex}-${colIndex}`}
-              className={`aspect-square rounded-lg border-2 transition-colors ${
+              className={`aspect-square rounded-lg border-2 transition-colors min-h-[44px] md:min-h-[52px] lg:min-h-[60px] ${
                 cell
                   ? "bg-yellow-400 border-yellow-300 shadow-lg shadow-yellow-400/30"
                   : "bg-slate-600 border-slate-500"
