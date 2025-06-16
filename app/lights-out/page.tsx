@@ -48,6 +48,33 @@ const generateRandomBoard = (
   return board;
 };
 
+const getAffectedCells = (row: number, col: number): Set<string> => {
+  const directions = [
+    [0, 0],
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  const affected = new Set<string>();
+  directions.forEach(([dr, dc]) => {
+    const newRow = row + dr;
+    const newCol = col + dc;
+
+    if (
+      newRow >= 0 &&
+      newRow < GRID_SIZE &&
+      newCol >= 0 &&
+      newCol < GRID_SIZE
+    ) {
+      affected.add(`${newRow}-${newCol}`);
+    }
+  });
+
+  return affected;
+};
+
 const toggleCell = (board: GameBoardType, row: number, col: number): void => {
   const directions = [
     [0, 0],
@@ -164,6 +191,7 @@ export default function LightsOut() {
   const [hintCell, setHintCell] = useState<{ row: number; col: number } | null>(null);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [moveHistory, setMoveHistory] = useState<MoveRecord[]>([]);
+  const [affectedCells, setAffectedCells] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setIsClient(true);
@@ -211,6 +239,10 @@ export default function LightsOut() {
     (row: number, col: number) => {
       if (gameComplete) return;
 
+      // Get affected cells for animation
+      const affected = getAffectedCells(row, col);
+      setAffectedCells(affected);
+
       const newBoard = board.map((boardRow) => [...boardRow]);
       toggleCell(newBoard, row, col);
       const newMoveCount = moves + 1;
@@ -230,6 +262,11 @@ export default function LightsOut() {
       setMoves(newMoveCount);
       setMoveHistory(prev => [...prev, moveRecord]);
       
+      // Clear affected cells animation after delay
+      setTimeout(() => {
+        setAffectedCells(new Set());
+      }, 800);
+      
       // Check for game completion
       if (isGameComplete(newBoard)) {
         setGameComplete(true);
@@ -247,6 +284,7 @@ export default function LightsOut() {
     setHintCell(null);
     setHintsUsed(0);
     setMoveHistory([]);
+    setAffectedCells(new Set());
   }, [difficulty]);
 
   const newGame = useCallback(() => {
@@ -263,6 +301,7 @@ export default function LightsOut() {
     setHintCell(null);
     setHintsUsed(0);
     setMoveHistory([]);
+    setAffectedCells(new Set());
   }, []);
 
   const closeTutorial = useCallback(() => {
@@ -379,6 +418,7 @@ export default function LightsOut() {
               gameComplete={gameComplete}
               onCellClick={handleCellClick}
               hintCell={hintCell}
+              affectedCells={affectedCells}
             />
 
             <GameControls
@@ -495,6 +535,7 @@ export default function LightsOut() {
             gameComplete={gameComplete}
             onCellClick={handleCellClick}
             hintCell={hintCell}
+            affectedCells={affectedCells}
           />
 
           <GameControls

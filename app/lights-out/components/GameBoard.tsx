@@ -8,6 +8,7 @@ interface GameBoardProps {
   gameComplete: boolean;
   onCellClick: (row: number, col: number) => void;
   hintCell?: { row: number; col: number } | null;
+  affectedCells?: Set<string>;
 }
 
 export default function GameBoard({
@@ -15,17 +16,39 @@ export default function GameBoard({
   gameComplete,
   onCellClick,
   hintCell,
+  affectedCells,
 }: GameBoardProps) {
   return (
     <div className="bg-slate-700 p-4 md:p-6 lg:p-8 rounded-2xl shadow-2xl mb-6">
-      <div className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-4">
+      <motion.div 
+        className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-4"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.1,
+            },
+          },
+        }}
+        initial="hidden"
+        animate="visible"
+      >
         {board.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
+            const cellKey = `${rowIndex}-${colIndex}`;
             const isHintCell = hintCell && hintCell.row === rowIndex && hintCell.col === colIndex;
+            const isAffected = affectedCells?.has(cellKey);
+            
+            // Calculate stagger delay based on distance from center for affected cells
+            const getStaggerDelay = () => {
+              if (!isAffected) return 0;
+              const distance = Math.abs(rowIndex - 2) + Math.abs(colIndex - 2);
+              return distance * 0.05;
+            };
             
             return (
               <motion.button
-                key={`${rowIndex}-${colIndex}`}
+                key={cellKey}
                 className={`aspect-square rounded-lg border-2 transition-colors min-h-[44px] md:min-h-[52px] lg:min-h-[60px] relative ${
                   cell
                     ? "bg-yellow-400 border-yellow-300 shadow-lg shadow-yellow-400/30"
@@ -46,6 +69,19 @@ export default function GameBoard({
                   type: "spring",
                   stiffness: 300,
                   damping: 20,
+                  delay: isAffected ? getStaggerDelay() : 0,
+                }}
+                variants={{
+                  hidden: { scale: 0.8, opacity: 0 },
+                  visible: { 
+                    scale: 1, 
+                    opacity: 1,
+                    transition: {
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 25,
+                    }
+                  },
                 }}
                 onClick={() => onCellClick(rowIndex, colIndex)}
                 disabled={gameComplete}
@@ -64,11 +100,23 @@ export default function GameBoard({
                     }}
                   />
                 )}
+                {isAffected && (
+                  <motion.div
+                    className="absolute inset-0 rounded-lg bg-white opacity-20"
+                    initial={{ scale: 1.2, opacity: 0.4 }}
+                    animate={{ scale: 1, opacity: 0 }}
+                    transition={{ 
+                      duration: 0.6,
+                      delay: getStaggerDelay(),
+                      ease: "easeOut"
+                    }}
+                  />
+                )}
               </motion.button>
             );
           }),
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
