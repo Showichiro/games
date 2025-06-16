@@ -86,8 +86,8 @@ export default function HistoryModal({
                           {record.moveNumber}
                         </div>
                         <div className="flex items-center gap-3">
-                          <MiniBoard 
-                            board={record.boardState} 
+                          <MiniBoard
+                            board={record.boardState}
                             size="xs"
                             showMove={{ row: record.row, col: record.col }}
                           />

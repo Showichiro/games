@@ -22,7 +22,7 @@ export default function GameBoard({
 }: GameBoardProps) {
   return (
     <div className="bg-slate-700 p-4 md:p-6 lg:p-8 rounded-2xl shadow-2xl mb-6">
-      <motion.div 
+      <motion.div
         className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-4"
         variants={{
           hidden: {},
@@ -38,9 +38,12 @@ export default function GameBoard({
         {board.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
             const cellKey = `${rowIndex}-${colIndex}`;
-            const isHintCell = hintCell && hintCell.row === rowIndex && hintCell.col === colIndex;
+            const isHintCell =
+              hintCell &&
+              hintCell.row === rowIndex &&
+              hintCell.col === colIndex;
             const isAffected = affectedCells?.has(cellKey);
-            
+
             // Calculate stagger delay based on distance from center for affected cells
             const getStaggerDelay = () => {
               if (!isAffected) return 0;
@@ -56,11 +59,11 @@ export default function GameBoard({
               const centerCol = 2;
               const distance = Math.max(
                 Math.abs(rowIndex - centerRow),
-                Math.abs(colIndex - centerCol)
+                Math.abs(colIndex - centerCol),
               );
               return distance * 0.15;
             };
-            
+
             return (
               <motion.button
                 key={cellKey}
@@ -71,20 +74,18 @@ export default function GameBoard({
                 } ${isHintCell ? "ring-4 ring-blue-400 ring-opacity-70" : ""}`}
                 whileTap={{ scale: 0.9 }}
                 animate={{
-                  backgroundColor: showCompletionAnimation 
+                  backgroundColor: showCompletionAnimation
                     ? "#10b981" // Green color for completion
-                    : cell ? "#facc15" : "#475569",
-                  rotate: showCompletionAnimation 
-                    ? 360 
-                    : cell ? 180 : 0,
-                  scale: showCompletionAnimation 
-                    ? 0.8 
-                    : cell ? 1.05 : 1,
-                  boxShadow: showCompletionAnimation 
+                    : cell
+                      ? "#facc15"
+                      : "#475569",
+                  rotate: showCompletionAnimation ? 360 : cell ? 180 : 0,
+                  scale: showCompletionAnimation ? 0.8 : cell ? 1.05 : 1,
+                  boxShadow: showCompletionAnimation
                     ? "0 0 30px rgba(16, 185, 129, 0.8)"
-                    : isHintCell 
+                    : isHintCell
                       ? "0 0 20px rgba(59, 130, 246, 0.8)"
-                      : cell 
+                      : cell
                         ? "0 10px 25px rgba(250, 204, 21, 0.3)"
                         : "none",
                 }}
@@ -92,22 +93,24 @@ export default function GameBoard({
                   type: showCompletionAnimation ? "tween" : "spring",
                   stiffness: 300,
                   damping: 20,
-                  delay: showCompletionAnimation 
-                    ? getCompletionDelay() 
-                    : isAffected ? getStaggerDelay() : 0,
+                  delay: showCompletionAnimation
+                    ? getCompletionDelay()
+                    : isAffected
+                      ? getStaggerDelay()
+                      : 0,
                   duration: showCompletionAnimation ? 0.8 : undefined,
                   ease: showCompletionAnimation ? "easeInOut" : undefined,
                 }}
                 variants={{
                   hidden: { scale: 0.8, opacity: 0 },
-                  visible: { 
-                    scale: 1, 
+                  visible: {
+                    scale: 1,
                     opacity: 1,
                     transition: {
                       type: "spring",
                       stiffness: 300,
                       damping: 25,
-                    }
+                    },
                   },
                 }}
                 onClick={() => onCellClick(rowIndex, colIndex)}
@@ -134,10 +137,10 @@ export default function GameBoard({
                     className="absolute inset-0 rounded-lg bg-white opacity-20"
                     initial={{ scale: 1.2, opacity: 0.4 }}
                     animate={{ scale: 1, opacity: 0 }}
-                    transition={{ 
+                    transition={{
                       duration: 0.6,
                       delay: getStaggerDelay(),
-                      ease: "easeOut"
+                      ease: "easeOut",
                     }}
                   />
                 )}
@@ -145,15 +148,15 @@ export default function GameBoard({
                   <motion.div
                     className="absolute inset-0 rounded-lg bg-green-400"
                     initial={{ scale: 0, opacity: 0 }}
-                    animate={{ 
-                      scale: 1, 
-                      opacity: 0.6 
+                    animate={{
+                      scale: 1,
+                      opacity: 0.6,
                     }}
-                    transition={{ 
+                    transition={{
                       type: "tween",
                       duration: 1.2,
                       delay: getCompletionDelay(),
-                      ease: "easeOut"
+                      ease: "easeOut",
                     }}
                   />
                 )}
@@ -161,15 +164,15 @@ export default function GameBoard({
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center text-white font-bold"
                     initial={{ scale: 0, opacity: 0 }}
-                    animate={{ 
-                      scale: 1, 
-                      opacity: 0.8 
+                    animate={{
+                      scale: 1,
+                      opacity: 0.8,
                     }}
-                    transition={{ 
+                    transition={{
                       type: "tween",
                       duration: 1.0,
                       delay: getCompletionDelay() + 0.2,
-                      ease: "easeOut"
+                      ease: "easeOut",
                     }}
                   >
                     ✨

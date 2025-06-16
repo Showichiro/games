@@ -9,16 +9,21 @@ interface MiniBoardProps {
   showMove?: { row: number; col: number };
 }
 
-export default function MiniBoard({ board, size = "sm", showMove }: MiniBoardProps) {
+export default function MiniBoard({
+  board,
+  size = "sm",
+  showMove,
+}: MiniBoardProps) {
   const cellSize = size === "xs" ? "w-2 h-2" : "w-3 h-3";
   const gap = size === "xs" ? "gap-0.5" : "gap-1";
-  
+
   return (
     <div className={`grid grid-cols-5 ${gap}`}>
       {board.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
-          const isMove = showMove && showMove.row === rowIndex && showMove.col === colIndex;
-          
+          const isMove =
+            showMove && showMove.row === rowIndex && showMove.col === colIndex;
+
           return (
             <motion.div
               key={`${rowIndex}-${colIndex}`}
@@ -32,7 +37,7 @@ export default function MiniBoard({ board, size = "sm", showMove }: MiniBoardPro
               transition={{ delay: (rowIndex * 5 + colIndex) * 0.01 }}
             />
           );
-        })
+        }),
       )}
     </div>
   );

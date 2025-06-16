@@ -105,35 +105,37 @@ const isGameComplete = (board: GameBoardType): boolean => {
 };
 
 // Simple hint algorithm - finds a random valid move that reduces the number of lit cells
-const findHintMove = (board: GameBoardType): { row: number; col: number } | null => {
+const findHintMove = (
+  board: GameBoardType,
+): { row: number; col: number } | null => {
   const moves: { row: number; col: number }[] = [];
-  
+
   for (let row = 0; row < GRID_SIZE; row++) {
     for (let col = 0; col < GRID_SIZE; col++) {
       // Simulate the move
-      const testBoard = board.map(r => [...r]);
+      const testBoard = board.map((r) => [...r]);
       toggleCell(testBoard, row, col);
-      
+
       // Count lit cells before and after
       const originalLit = board.flat().filter(Boolean).length;
       const newLit = testBoard.flat().filter(Boolean).length;
-      
+
       // If this move reduces lit cells, it's potentially helpful
       if (newLit < originalLit) {
         moves.push({ row, col });
       }
     }
   }
-  
+
   // Return a random good move, or any move if no good moves found
   if (moves.length > 0) {
     return moves[Math.floor(Math.random() * moves.length)];
   }
-  
+
   // Fallback: return any random move
   return {
     row: Math.floor(Math.random() * GRID_SIZE),
-    col: Math.floor(Math.random() * GRID_SIZE)
+    col: Math.floor(Math.random() * GRID_SIZE),
   };
 };
 
@@ -189,7 +191,9 @@ export default function LightsOut() {
   const [isClient, setIsClient] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
-  const [hintCell, setHintCell] = useState<{ row: number; col: number } | null>(null);
+  const [hintCell, setHintCell] = useState<{ row: number; col: number } | null>(
+    null,
+  );
   const [hintsUsed, setHintsUsed] = useState(0);
   const [moveHistory, setMoveHistory] = useState<MoveRecord[]>([]);
   const [affectedCells, setAffectedCells] = useState<Set<string>>(new Set());
@@ -197,7 +201,7 @@ export default function LightsOut() {
 
   useEffect(() => {
     setIsClient(true);
-    
+
     // Check tutorial status
     const hasSeenTutorial = localStorage.getItem("lights-out-tutorial-seen");
     if (!hasSeenTutorial) {
@@ -230,7 +234,6 @@ export default function LightsOut() {
     return () => clearInterval(interval);
   }, [startTime, gameComplete, showTutorial]);
 
-
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -248,7 +251,7 @@ export default function LightsOut() {
       const newBoard = board.map((boardRow) => [...boardRow]);
       toggleCell(newBoard, row, col);
       const newMoveCount = moves + 1;
-      
+
       // Record move in history
       const moveRecord: MoveRecord = {
         id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${row}-${col}`,
@@ -256,19 +259,19 @@ export default function LightsOut() {
         col,
         timestamp: Date.now(),
         moveNumber: newMoveCount,
-        boardState: newBoard.map(boardRow => [...boardRow]), // Deep copy of new board state
+        boardState: newBoard.map((boardRow) => [...boardRow]), // Deep copy of new board state
       };
-      
+
       // Update all states
       setBoard(newBoard);
       setMoves(newMoveCount);
-      setMoveHistory(prev => [...prev, moveRecord]);
-      
+      setMoveHistory((prev) => [...prev, moveRecord]);
+
       // Clear affected cells animation after delay
       setTimeout(() => {
         setAffectedCells(new Set());
       }, 800);
-      
+
       // Check for game completion
       if (isGameComplete(newBoard)) {
         setGameComplete(true);
@@ -358,12 +361,12 @@ export default function LightsOut() {
 
   const showHint = useCallback(() => {
     if (gameComplete) return;
-    
+
     const hint = findHintMove(board);
     if (hint) {
       setHintCell(hint);
-      setHintsUsed(prev => prev + 1);
-      
+      setHintsUsed((prev) => prev + 1);
+
       // Clear hint after 3 seconds
       setTimeout(() => {
         setHintCell(null);
@@ -371,24 +374,27 @@ export default function LightsOut() {
     }
   }, [board, gameComplete]);
 
-  const replayToMove = useCallback((moveIndex: number) => {
-    if (moveIndex < 0 || moveIndex >= moveHistory.length) return;
-    
-    // Replay to the specified move by restoring board state
-    const targetMove = moveHistory[moveIndex];
-    setBoard(targetMove.boardState.map(row => [...row])); // Deep copy
-    setMoves(targetMove.moveNumber);
-    
-    // Trim move history to the replay point
-    setMoveHistory(prev => prev.slice(0, moveIndex + 1));
-    
-    // Reset game completion state
-    setGameComplete(false);
-    setHintCell(null);
-    
-    // Close history modal
-    setShowHistoryModal(false);
-  }, [moveHistory]);
+  const replayToMove = useCallback(
+    (moveIndex: number) => {
+      if (moveIndex < 0 || moveIndex >= moveHistory.length) return;
+
+      // Replay to the specified move by restoring board state
+      const targetMove = moveHistory[moveIndex];
+      setBoard(targetMove.boardState.map((row) => [...row])); // Deep copy
+      setMoves(targetMove.moveNumber);
+
+      // Trim move history to the replay point
+      setMoveHistory((prev) => prev.slice(0, moveIndex + 1));
+
+      // Reset game completion state
+      setGameComplete(false);
+      setHintCell(null);
+
+      // Close history modal
+      setShowHistoryModal(false);
+    },
+    [moveHistory],
+  );
 
   const clearHistory = useCallback(() => {
     setMoveHistory([]);
@@ -448,7 +454,9 @@ export default function LightsOut() {
         <div className="w-80 bg-slate-800 border-l border-slate-700 p-6">
           <div className="text-white">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold">操作履歴 ({moveHistory.length})</h3>
+              <h3 className="text-lg font-bold">
+                操作履歴 ({moveHistory.length})
+              </h3>
               {moveHistory.length > 0 && (
                 <button
                   className="text-red-400 hover:text-red-300 text-sm font-medium"
@@ -458,7 +466,7 @@ export default function LightsOut() {
                 </button>
               )}
             </div>
-            
+
             <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-slate-800 scrollbar-thumb-slate-600">
               <div className="min-h-[12rem]">
                 {moveHistory.length === 0 ? (
@@ -483,8 +491,8 @@ export default function LightsOut() {
                             {record.moveNumber}
                           </div>
                           <div className="flex-shrink-0">
-                            <MiniBoard 
-                              board={record.boardState} 
+                            <MiniBoard
+                              board={record.boardState}
                               size="xs"
                               showMove={{ row: record.row, col: record.col }}
                             />
@@ -502,7 +510,7 @@ export default function LightsOut() {
                 )}
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Link href="/" className="block">
                 <button className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors">
