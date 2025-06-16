@@ -102,6 +102,8 @@ export default function LightsOut() {
   const [tutorialStep, setTutorialStep] = useState(0);
   const [demoToggle, setDemoToggle] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -211,15 +213,67 @@ export default function LightsOut() {
     setTutorialStep(0);
   }, []);
 
+  const toggleMenu = useCallback(() => {
+    setShowMenu((prev) => !prev);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setShowMenu(false);
+  }, []);
+
+  const openHistoryModal = useCallback(() => {
+    setShowHistoryModal(true);
+    setShowMenu(false);
+  }, []);
+
+  const closeHistoryModal = useCallback(() => {
+    setShowHistoryModal(false);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center p-4">
+      {/* Hamburger Menu Button */}
+      <div className="fixed top-4 right-4 z-40 md:hidden">
+        <motion.button
+          className="w-10 h-10 bg-slate-700 rounded-lg flex items-center justify-center text-white hover:bg-slate-600 transition-colors"
+          whileTap={{ scale: 0.95 }}
+          onClick={toggleMenu}
+        >
+          <div className="w-5 h-5 flex flex-col justify-around">
+            <motion.div
+              className="w-full h-0.5 bg-white origin-center"
+              animate={{
+                rotate: showMenu ? 45 : 0,
+                y: showMenu ? 3 : 0,
+              }}
+              transition={{ duration: 0.2 }}
+            />
+            <motion.div
+              className="w-full h-0.5 bg-white"
+              animate={{
+                opacity: showMenu ? 0 : 1,
+              }}
+              transition={{ duration: 0.2 }}
+            />
+            <motion.div
+              className="w-full h-0.5 bg-white origin-center"
+              animate={{
+                rotate: showMenu ? -45 : 0,
+                y: showMenu ? -3 : 0,
+              }}
+              transition={{ duration: 0.2 }}
+            />
+          </div>
+        </motion.button>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
         {/* Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 relative">
           <h1 className="text-3xl font-bold text-white mb-4">ライツアウト</h1>
           <div className="flex justify-center gap-6 text-gray-300 mb-4">
             <div>手数: {moves}</div>
@@ -301,6 +355,106 @@ export default function LightsOut() {
           </motion.button>
         </div>
       </motion.div>
+
+      {/* Dropdown Menu */}
+      <AnimatePresence>
+        {showMenu && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/30 z-30 md:hidden"
+              onClick={closeMenu}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="fixed top-16 right-4 bg-white rounded-lg shadow-xl z-40 min-w-[200px] md:hidden"
+            >
+              <div className="py-2">
+                <button
+                  className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-gray-700 font-medium"
+                  onClick={openHistoryModal}
+                >
+                  📊 操作履歴を見る
+                </button>
+                <button
+                  className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-gray-700 font-medium"
+                  onClick={() => {
+                    showTutorialAgain();
+                    closeMenu();
+                  }}
+                >
+                  ❓ ルール説明
+                </button>
+                <hr className="my-2" />
+                <div className="px-4 py-2">
+                  <p className="text-sm text-gray-500 mb-2">難易度</p>
+                  <div className="flex gap-1">
+                    {(Object.keys(DIFFICULTY_CONFIG) as Difficulty[]).map(
+                      (diff) => (
+                        <button
+                          key={diff}
+                          className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                            difficulty === diff
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                          }`}
+                          onClick={() => {
+                            handleDifficultyChange(diff);
+                            closeMenu();
+                          }}
+                        >
+                          {DIFFICULTY_CONFIG[diff].label}
+                        </button>
+                      ),
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* History Modal */}
+      <AnimatePresence>
+        {showHistoryModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 flex items-end justify-center p-4 z-50 md:items-center"
+          >
+            <motion.div
+              initial={{ y: "100%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "100%", opacity: 0 }}
+              className="bg-white rounded-t-2xl md:rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden"
+            >
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 className="text-lg font-bold text-gray-800">操作履歴</h3>
+                <button
+                  className="text-gray-400 hover:text-gray-600 text-xl"
+                  onClick={closeHistoryModal}
+                >
+                  ×
+                </button>
+              </div>
+              <div className="p-4 overflow-y-auto">
+                <div className="text-center text-gray-500 py-8">
+                  <p>まだ操作履歴がありません</p>
+                  <p className="text-sm mt-2">
+                    ゲームを開始すると、ここに履歴が表示されます
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Tutorial Modal */}
       <AnimatePresence>
