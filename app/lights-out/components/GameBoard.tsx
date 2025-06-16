@@ -78,7 +78,7 @@ export default function GameBoard({
                     ? 360 
                     : cell ? 180 : 0,
                   scale: showCompletionAnimation 
-                    ? [1, 1.2, 0.8] 
+                    ? 0.8 
                     : cell ? 1.05 : 1,
                   boxShadow: showCompletionAnimation 
                     ? "0 0 30px rgba(16, 185, 129, 0.8)"
@@ -89,13 +89,14 @@ export default function GameBoard({
                         : "none",
                 }}
                 transition={{
-                  type: "spring",
+                  type: showCompletionAnimation ? "tween" : "spring",
                   stiffness: 300,
                   damping: 20,
                   delay: showCompletionAnimation 
                     ? getCompletionDelay() 
                     : isAffected ? getStaggerDelay() : 0,
                   duration: showCompletionAnimation ? 0.8 : undefined,
+                  ease: showCompletionAnimation ? "easeInOut" : undefined,
                 }}
                 variants={{
                   hidden: { scale: 0.8, opacity: 0 },
@@ -114,15 +115,17 @@ export default function GameBoard({
               >
                 {isHintCell && (
                   <motion.div
-                    className="absolute inset-0 rounded-lg bg-blue-400 opacity-30"
+                    className="absolute inset-0 rounded-lg bg-blue-400"
+                    initial={{ scale: 1, opacity: 0.3 }}
                     animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.3, 0.6, 0.3],
+                      scale: 1.2,
+                      opacity: 0.6,
                     }}
                     transition={{
-                      duration: 1.5,
+                      duration: 0.75,
                       repeat: Infinity,
-                      repeatType: "loop",
+                      repeatType: "reverse",
+                      ease: "easeInOut",
                     }}
                   />
                 )}
@@ -143,10 +146,11 @@ export default function GameBoard({
                     className="absolute inset-0 rounded-lg bg-green-400"
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ 
-                      scale: [0, 1.3, 1], 
-                      opacity: [0, 0.8, 0.6] 
+                      scale: 1, 
+                      opacity: 0.6 
                     }}
                     transition={{ 
+                      type: "tween",
                       duration: 1.2,
                       delay: getCompletionDelay(),
                       ease: "easeOut"
@@ -158,10 +162,11 @@ export default function GameBoard({
                     className="absolute inset-0 flex items-center justify-center text-white font-bold"
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ 
-                      scale: [0, 1.5, 1], 
-                      opacity: [0, 1, 0.8] 
+                      scale: 1, 
+                      opacity: 0.8 
                     }}
                     transition={{ 
+                      type: "tween",
                       duration: 1.0,
                       delay: getCompletionDelay() + 0.2,
                       ease: "easeOut"
