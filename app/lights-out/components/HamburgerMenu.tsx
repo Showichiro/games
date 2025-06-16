@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import type { Difficulty, DifficultyConfig } from "../types";
 
@@ -79,6 +80,11 @@ export default function HamburgerMenu({
               className="fixed top-16 right-4 bg-white rounded-lg shadow-xl z-40 min-w-[200px] md:hidden"
             >
               <div className="py-2">
+                <Link href="/" className="block">
+                  <div className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-gray-700 font-medium">
+                    🏠 ホームに戻る
+                  </div>
+                </Link>
                 <button
                   className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-gray-700 font-medium"
                   onClick={onOpenHistory}

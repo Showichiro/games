@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import TutorialModal from "./components/TutorialModal";
 import HamburgerMenu from "./components/HamburgerMenu";
 import HistoryModal from "./components/HistoryModal";
+import Link from "next/link";
 import GameBoard from "./components/GameBoard";
 import GameHeader from "./components/GameHeader";
 import GameControls from "./components/GameControls";
@@ -503,6 +504,11 @@ export default function LightsOut() {
             </div>
             
             <div className="space-y-2">
+              <Link href="/" className="block">
+                <button className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors">
+                  🏠 ホームに戻る
+                </button>
+              </Link>
               <button
                 className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors relative"
                 onClick={showHint}

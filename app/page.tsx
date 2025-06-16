@@ -1,103 +1,154 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { motion } from "motion/react";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-4xl mx-auto"
+        >
+          {/* Hero Section */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-7xl font-bold text-white mb-6"
+          >
+            パズルゲーム
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+              コレクション
+            </span>
+          </motion.h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            頭脳を刺激する様々なパズルゲームで
+            <br />
+            あなたの論理的思考力を鍛えよう
+          </motion.p>
+
+          {/* Game Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            {/* Lights Out Game */}
+            <motion.div
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className="group"
+            >
+              <Link href="/lights-out">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:border-white/40 transition-all duration-300 cursor-pointer">
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    💡
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">
+                    ライツアウト
+                  </h3>
+                  <p className="text-gray-300 mb-4 leading-relaxed">
+                    5×5のグリッドで全てのライトを消すパズルゲーム。十字パターンの連鎖反応を使って戦略的に攻略しよう。
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
+                      論理思考
+                    </span>
+                    <span className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm">
+                      パターン認識
+                    </span>
+                    <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">
+                      戦略
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-yellow-400 font-semibold">
+                      🎮 今すぐプレイ
+                    </span>
+                    <motion.div
+                      className="text-white group-hover:translate-x-1 transition-transform duration-300"
+                      initial={{ x: 0 }}
+                      whileHover={{ x: 4 }}
+                    >
+                      →
+                    </motion.div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Coming Soon Cards */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 opacity-60"
+            >
+              <div className="text-4xl mb-4 opacity-50">🧩</div>
+              <h3 className="text-2xl font-bold text-white mb-3">
+                スライドパズル
+              </h3>
+              <p className="text-gray-400 mb-4">
+                数字を正しい順序に並べるクラシックなパズルゲーム
+              </p>
+              <span className="text-gray-500 font-semibold">近日公開</span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 opacity-60"
+            >
+              <div className="text-4xl mb-4 opacity-50">🎯</div>
+              <h3 className="text-2xl font-bold text-white mb-3">
+                マインスイーパー
+              </h3>
+              <p className="text-gray-400 mb-4">
+                地雷を避けながら全てのマスを開く推理ゲーム
+              </p>
+              <span className="text-gray-500 font-semibold">近日公開</span>
+            </motion.div>
+          </motion.div>
+
+          {/* Features */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center"
+          >
+            <div className="text-white">
+              <div className="text-3xl mb-2">🏆</div>
+              <h4 className="font-semibold mb-1">スコア記録</h4>
+              <p className="text-gray-400 text-sm">
+                あなたのベストタイムと手数を記録
+              </p>
+            </div>
+            <div className="text-white">
+              <div className="text-3xl mb-2">📱</div>
+              <h4 className="font-semibold mb-1">レスポンシブ対応</h4>
+              <p className="text-gray-400 text-sm">
+                PC・タブレット・スマホで快適プレイ
+              </p>
+            </div>
+            <div className="text-white">
+              <div className="text-3xl mb-2">🎨</div>
+              <h4 className="font-semibold mb-1">美しいアニメーション</h4>
+              <p className="text-gray-400 text-sm">
+                滑らかな動きと視覚効果でゲーム体験を向上
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
