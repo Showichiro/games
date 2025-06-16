@@ -167,6 +167,12 @@ export default function LightsOut() {
 
   useEffect(() => {
     setIsClient(true);
+    
+    // Check tutorial status
+    const hasSeenTutorial = localStorage.getItem("lights-out-tutorial-seen");
+    if (!hasSeenTutorial) {
+      setShowTutorial(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -174,15 +180,6 @@ export default function LightsOut() {
       setBoard(generateRandomBoard(difficulty));
     }
   }, [isClient, difficulty]);
-
-  useEffect(() => {
-    if (isClient) {
-      const hasSeenTutorial = localStorage.getItem("lights-out-tutorial-seen");
-      if (!hasSeenTutorial) {
-        setShowTutorial(true);
-      }
-    }
-  }, [isClient]);
 
   useEffect(() => {
     if (showTutorial && TUTORIAL_STEPS[tutorialStep]?.highlight === "board") {
@@ -203,11 +200,6 @@ export default function LightsOut() {
     return () => clearInterval(interval);
   }, [startTime, gameComplete, showTutorial]);
 
-  useEffect(() => {
-    if (moves > 0 && isGameComplete(board)) {
-      setGameComplete(true);
-    }
-  }, [board, moves]);
 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -215,39 +207,36 @@ export default function LightsOut() {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const [lastMove, setLastMove] = useState<{ row: number; col: number } | null>(null);
-
   const handleCellClick = useCallback(
     (row: number, col: number) => {
       if (gameComplete) return;
 
-      setBoard((prevBoard) => {
-        const newBoard = prevBoard.map((row) => [...row]);
-        toggleCell(newBoard, row, col);
-        return newBoard;
-      });
-      setMoves((prev) => prev + 1);
-      setLastMove({ row, col });
-    },
-    [gameComplete],
-  );
-
-  // Record move history when board state changes
-  useEffect(() => {
-    if (lastMove && moves > 0) {
+      const newBoard = board.map((boardRow) => [...boardRow]);
+      toggleCell(newBoard, row, col);
+      const newMoveCount = moves + 1;
+      
+      // Record move in history
       const moveRecord: MoveRecord = {
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${lastMove.row}-${lastMove.col}`,
-        row: lastMove.row,
-        col: lastMove.col,
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${row}-${col}`,
+        row,
+        col,
         timestamp: Date.now(),
-        moveNumber: moves,
-        boardState: board.map(row => [...row]), // Deep copy of current board state
+        moveNumber: newMoveCount,
+        boardState: newBoard.map(boardRow => [...boardRow]), // Deep copy of new board state
       };
       
+      // Update all states
+      setBoard(newBoard);
+      setMoves(newMoveCount);
       setMoveHistory(prev => [...prev, moveRecord]);
-      setLastMove(null);
-    }
-  }, [board, lastMove, moves]);
+      
+      // Check for game completion
+      if (isGameComplete(newBoard)) {
+        setGameComplete(true);
+      }
+    },
+    [gameComplete, board, moves],
+  );
 
   const resetGame = useCallback(() => {
     setBoard(generateRandomBoard(difficulty));
@@ -258,7 +247,6 @@ export default function LightsOut() {
     setHintCell(null);
     setHintsUsed(0);
     setMoveHistory([]);
-    setLastMove(null);
   }, [difficulty]);
 
   const newGame = useCallback(() => {
@@ -275,7 +263,6 @@ export default function LightsOut() {
     setHintCell(null);
     setHintsUsed(0);
     setMoveHistory([]);
-    setLastMove(null);
   }, []);
 
   const closeTutorial = useCallback(() => {
