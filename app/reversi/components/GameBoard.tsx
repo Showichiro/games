@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import GameCell from "./GameCell";
 import type { Board, Position, Player } from "../types";
 import { BOARD_SIZE } from "../constants/gameConstants";

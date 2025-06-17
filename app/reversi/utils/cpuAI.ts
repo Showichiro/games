@@ -16,7 +16,6 @@ export function evaluateBoard(
     return 0;
   }
 
-
   const positionValue = calculatePositionValue(board, player);
   const mobility = calculateMobility(board, player);
   const stability = calculateStability(board, player);
@@ -97,10 +96,7 @@ function calculateCornerControl(board: Board, player: Player): number {
   return control;
 }
 
-function isStablePosition(
-  board: Board,
-  position: Position,
-): boolean {
+function isStablePosition(board: Board, position: Position): boolean {
   const { row, col } = position;
 
   if (row === 0 || row === 7 || col === 0 || col === 7) {

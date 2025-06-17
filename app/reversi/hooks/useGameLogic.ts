@@ -17,9 +17,7 @@ interface UseGameLogicProps {
   onGameEnd?: (winner: Player | "draw" | null) => void;
 }
 
-export function useGameLogic({
-  onGameEnd,
-}: UseGameLogicProps = {}) {
+export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
   const [gameState, setGameState] = useState<GameState>(() => {
     const board = initializeBoard();
     const scores = countPieces(board);
