@@ -60,15 +60,17 @@ export default function GamePiece({
     },
   };
 
-  const pieceClasses = {
-    black: "bg-gradient-to-br from-gray-600 via-gray-900 to-black",
-    white: "bg-gradient-to-br from-white via-gray-100 to-gray-300",
-  };
+  const getPieceStyle = (player: Player) => ({
+    background:
+      player === "black"
+        ? `linear-gradient(135deg, var(--color-neutral-600), var(--color-neutral-900), var(--color-reversi-piece-black))`
+        : `linear-gradient(135deg, var(--color-reversi-piece-white), var(--color-neutral-100), var(--color-neutral-300))`,
+    borderColor: "var(--color-reversi-piece-border)",
+  });
 
   const glowEffect = isLastMove
     ? {
-        boxShadow:
-          "0 0 20px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.3)",
+        boxShadow: `0 0 20px var(--color-reversi-last-move), inset 0 0 20px rgba(255, 255, 255, 0.3)`,
       }
     : {
         boxShadow:
@@ -88,11 +90,17 @@ export default function GamePiece({
         }}
       >
         <motion.div
-          className={`
-                      w-full h-full rounded-full border-2 border-gray-400 relative overflow-hidden
-                      ${pieceClasses[currentDisplayPlayer]}
-                      ${isLastMove ? "ring-2 ring-yellow-400" : ""}
-                  `}
+          className={`w-full h-full rounded-full border-2 relative overflow-hidden ${
+            isLastMove ? "ring-2" : ""
+          }`}
+          style={{
+            ...getPieceStyle(currentDisplayPlayer),
+            ...glowEffect,
+            ...(isLastMove && {
+              "--tw-ring-color": "var(--color-reversi-last-move)",
+              ringColor: "var(--color-reversi-last-move)",
+            }),
+          }}
           variants={pieceVariants}
           initial={isAnimating ? "initial" : "animate"}
           animate={isFlipAnimating ? "flip" : "animate"}
@@ -104,13 +112,16 @@ export default function GamePiece({
             duration: isFlipAnimating ? 0.4 : 0.6,
             ease: isFlipAnimating ? "easeInOut" : "easeOut",
           }}
-          style={glowEffect}
         >
           {/* Inner light reflection */}
           <div
-            className={`absolute top-2 left-2 w-3 h-3 rounded-full opacity-60 ${
-              currentDisplayPlayer === "black" ? "bg-white" : "bg-gray-400"
-            }`}
+            className="absolute top-2 left-2 w-3 h-3 rounded-full opacity-60"
+            style={{
+              backgroundColor:
+                currentDisplayPlayer === "black"
+                  ? "var(--color-reversi-piece-white)"
+                  : "var(--color-neutral-400)",
+            }}
           />
 
           {/* Sparkle effect for last move */}
@@ -127,8 +138,7 @@ export default function GamePiece({
                 ease: "easeInOut",
               }}
               style={{
-                background:
-                  "radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%)",
+                background: `radial-gradient(circle, var(--color-reversi-last-move) 0%, transparent 70%)`,
               }}
             />
           )}
@@ -146,8 +156,9 @@ export default function GamePiece({
           {Array.from({ length: 6 }).map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-yellow-400 rounded-full"
+              className="absolute w-1 h-1 rounded-full"
               style={{
+                backgroundColor: "var(--color-reversi-capture-effect)",
                 left: `${20 + i * 10}%`,
                 top: `${20 + (i % 2) * 20}%`,
               }}

@@ -70,12 +70,16 @@ export default function GameBoard({
 
   return (
     <motion.div
-      className="inline-block bg-green-800 p-4 rounded-lg shadow-2xl"
+      className="inline-block p-4 rounded-lg shadow-2xl"
+      style={{ backgroundColor: "var(--color-reversi-board-bg)" }}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="relative grid grid-cols-8 gap-1 sm:gap-2 bg-green-900 p-1 sm:p-2 rounded w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[400px] xl:h-[400px] max-w-[85vw] max-h-[85vw]">
+      <div
+        className="relative grid grid-cols-8 gap-1 sm:gap-2 p-1 sm:p-2 rounded w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[400px] xl:h-[400px] max-w-[85vw] max-h-[85vw]"
+        style={{ backgroundColor: "var(--color-reversi-board-border)" }}
+      >
         {Array.from({ length: BOARD_SIZE }, (_, row) =>
           Array.from({ length: BOARD_SIZE }, (_, col) => (
             <GameCell

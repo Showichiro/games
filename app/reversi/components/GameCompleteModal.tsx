@@ -123,43 +123,48 @@ export default function GameCompleteModal({
         return {
           title: "🎉 あなたの勝ち！",
           message: "おめでとうございます！",
-          bgColor: "from-blue-600 to-blue-800",
+          bgStyle: { background: "var(--gradient-victory)" },
         };
       case "white":
         return {
           title: "😢 CPUの勝ち！",
           message: "次回がんばりましょう！",
-          bgColor: "from-red-600 to-red-800",
+          bgStyle: { background: "var(--gradient-defeat)" },
         };
       case "draw":
         return {
           title: "🤝 引き分け！",
           message: "互角の勝負でした！",
-          bgColor: "from-yellow-600 to-yellow-800",
+          bgStyle: { background: "var(--gradient-draw)" },
         };
       default:
         return {
           title: "ゲーム終了",
           message: "",
-          bgColor: "from-gray-600 to-gray-800",
+          bgStyle: {
+            background:
+              "linear-gradient(135deg, var(--color-neutral-600), var(--color-neutral-800))",
+          },
         };
     }
   };
 
-  const { title, message, bgColor } = getWinnerInfo();
+  const { title, message, bgStyle } = getWinnerInfo();
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 flex items-center justify-center z-50 p-4"
+          style={{ backgroundColor: "var(--color-overlay-dark)" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className={`bg-gradient-to-br ${bgColor} rounded-2xl p-6 max-w-md w-full mx-4 text-white shadow-2xl relative overflow-hidden`}
+            className="rounded-2xl p-6 max-w-md w-full mx-4 text-white shadow-2xl relative overflow-hidden"
+            style={bgStyle}
             initial={{ scale: 0.8, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 20 }}
@@ -190,7 +195,8 @@ export default function GameCompleteModal({
               </motion.p>
 
               <motion.div
-                className="bg-white/20 rounded-lg p-4 mb-6"
+                className="rounded-lg p-4 mb-6"
+                style={{ backgroundColor: "var(--color-overlay-light)" }}
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -213,7 +219,16 @@ export default function GameCompleteModal({
 
               <div className="flex space-x-3">
                 <motion.button
-                  className="flex-1 bg-white/20 hover:bg-white/30 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200"
+                  className="flex-1 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200"
+                  style={{ backgroundColor: "var(--color-overlay-light)" }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      "var(--color-neutral-700)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      "var(--color-overlay-light)";
+                  }}
                   whileHover={{ scale: 1.02, y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
@@ -224,7 +239,19 @@ export default function GameCompleteModal({
                   閉じる
                 </motion.button>
                 <motion.button
-                  className="flex-1 bg-white text-gray-800 hover:bg-gray-100 font-medium py-3 px-4 rounded-lg transition-all duration-200 shadow-lg"
+                  className="flex-1 font-medium py-3 px-4 rounded-lg transition-all duration-200 shadow-lg"
+                  style={{
+                    backgroundColor: "var(--color-white)",
+                    color: "var(--color-neutral-800)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      "var(--color-neutral-100)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      "var(--color-white)";
+                  }}
                   whileHover={{ scale: 1.02, y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onNewGame}

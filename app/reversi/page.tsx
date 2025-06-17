@@ -89,7 +89,10 @@ export default function ReversiPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-2 sm:p-4">
+    <div
+      className="min-h-screen p-2 sm:p-4"
+      style={{ background: "var(--gradient-game-bg)" }}
+    >
       <div className="container mx-auto max-w-4xl px-2 sm:px-4">
         <motion.div
           className="text-center"
@@ -140,7 +143,10 @@ export default function ReversiPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <div className="bg-gray-800 rounded-lg p-4 max-w-md">
+          <div
+            className="rounded-lg p-4 max-w-md"
+            style={{ backgroundColor: "var(--color-neutral-800)" }}
+          >
             <h3 className="text-white text-lg font-semibold mb-2">
               難易度設定
             </h3>
@@ -156,10 +162,26 @@ export default function ReversiPage() {
                 <button
                   key={level}
                   className={`px-3 py-1 rounded text-sm font-medium transition-all ${
-                    difficulty === level
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                    difficulty === level ? "text-white" : "text-white"
                   }`}
+                  style={{
+                    backgroundColor:
+                      difficulty === level
+                        ? "var(--color-interactive-focus)"
+                        : "var(--color-neutral-600)",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (difficulty !== level) {
+                      e.currentTarget.style.backgroundColor =
+                        "var(--color-neutral-500)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (difficulty !== level) {
+                      e.currentTarget.style.backgroundColor =
+                        "var(--color-neutral-600)";
+                    }
+                  }}
                   onClick={() => setDifficulty(level)}
                   disabled={gameState.isThinking}
                 >
@@ -170,7 +192,10 @@ export default function ReversiPage() {
                 </button>
               ))}
             </div>
-            <p className="text-gray-400 text-sm mt-2">
+            <p
+              className="text-sm mt-2"
+              style={{ color: "var(--color-neutral-400)" }}
+            >
               現在の難易度:{" "}
               {difficulty === "beginner"
                 ? "初級"

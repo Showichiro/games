@@ -32,14 +32,26 @@ export default function GameControls({
       transition={{ duration: 0.5, delay: 0.2 }}
     >
       <motion.button
-        className={`
-                    px-6 py-3 rounded-lg font-medium transition-all duration-200
-                    ${
-                      disabled
-                        ? "bg-gray-600 text-gray-400 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
-                    }
-                `}
+        className="px-6 py-3 rounded-lg font-medium transition-all duration-200 text-white shadow-lg"
+        style={{
+          backgroundColor: disabled
+            ? "var(--color-neutral-600)"
+            : "var(--color-interactive-focus)",
+          color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
+          cursor: disabled ? "not-allowed" : "pointer",
+        }}
+        onMouseEnter={(e) => {
+          if (!disabled) {
+            e.currentTarget.style.backgroundColor =
+              "var(--color-interactive-hover)";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!disabled) {
+            e.currentTarget.style.backgroundColor =
+              "var(--color-interactive-focus)";
+          }
+        }}
         variants={buttonVariants}
         whileHover={!disabled ? "hover" : {}}
         whileTap={!disabled ? "tap" : {}}
@@ -50,16 +62,32 @@ export default function GameControls({
       </motion.button>
 
       <motion.button
-        className={`
-                    px-6 py-3 rounded-lg font-medium transition-all duration-200 relative overflow-hidden
-                    ${
-                      disabled
-                        ? "bg-gray-600 text-gray-400 cursor-not-allowed"
-                        : showHints
-                          ? "bg-yellow-600 hover:bg-yellow-700 text-white shadow-lg"
-                          : "bg-gray-600 hover:bg-gray-700 text-white shadow-lg"
-                    }
-                `}
+        className="px-6 py-3 rounded-lg font-medium transition-all duration-200 relative overflow-hidden text-white shadow-lg"
+        style={{
+          backgroundColor: disabled
+            ? "var(--color-neutral-600)"
+            : showHints
+              ? "var(--color-warning-600)"
+              : "var(--color-neutral-600)",
+          color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
+          cursor: disabled ? "not-allowed" : "pointer",
+        }}
+        onMouseEnter={(e) => {
+          if (!disabled) {
+            const bgColor = showHints
+              ? "var(--color-warning-700)"
+              : "var(--color-neutral-700)";
+            e.currentTarget.style.backgroundColor = bgColor;
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!disabled) {
+            const bgColor = showHints
+              ? "var(--color-warning-600)"
+              : "var(--color-neutral-600)";
+            e.currentTarget.style.backgroundColor = bgColor;
+          }
+        }}
         variants={buttonVariants}
         whileHover={!disabled ? "hover" : {}}
         whileTap={!disabled ? "tap" : {}}
@@ -69,9 +97,9 @@ export default function GameControls({
           showHints && !disabled
             ? {
                 boxShadow: [
-                  "0 0 0 0 rgba(255, 193, 7, 0.4)",
-                  "0 0 0 10px rgba(255, 193, 7, 0)",
-                  "0 0 0 0 rgba(255, 193, 7, 0)",
+                  "0 0 0 0 var(--color-warning-400)",
+                  "0 0 0 10px transparent",
+                  "0 0 0 0 var(--color-warning-400)",
                 ],
               }
             : {}
