@@ -22,3 +22,9 @@ export interface MoveRecord {
   moveNumber: number;
   boardState: GameBoard;
 }
+
+export interface GameState {
+  board: GameBoard;
+  solution: Set<string>;
+  playerMoves: Set<string>;
+}
