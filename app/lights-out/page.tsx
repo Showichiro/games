@@ -175,6 +175,8 @@ const TUTORIAL_STEPS: TutorialStep[] = [
 
 export default function LightsOut() {
   const [board, setBoard] = useState<GameBoardType>(createInitialBoard);
+  const [initialBoard, setInitialBoard] = useState<GameBoardType>(createInitialBoard);
+  const [initialSolution, setInitialSolution] = useState<Set<string>>(new Set());
   const [moves, setMoves] = useState(0);
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [gameComplete, setGameComplete] = useState(false);
@@ -212,6 +214,8 @@ export default function LightsOut() {
         generateRandomBoard(difficulty);
       setBoard(newBoard);
       setSolution(newSolution);
+      setInitialBoard(newBoard.map(row => [...row])); // Deep copy
+      setInitialSolution(new Set(newSolution)); // Deep copy
     }
   }, [isClient, difficulty]);
 
@@ -299,10 +303,8 @@ export default function LightsOut() {
   );
 
   const resetGame = useCallback(() => {
-    const { board: newBoard, solution: newSolution } =
-      generateRandomBoard(difficulty);
-    setBoard(newBoard);
-    setSolution(newSolution);
+    setBoard(initialBoard.map(row => [...row])); // Deep copy from initialBoard
+    setSolution(new Set(initialSolution)); // Deep copy from initialSolution
     setPlayerMoves(new Set());
     setMoves(0);
     setStartTime(Date.now());
@@ -313,11 +315,29 @@ export default function LightsOut() {
     setMoveHistory([]);
     setAffectedCells(new Set());
     setShowCompletionAnimation(false);
-  }, [difficulty]);
+  }, [initialBoard, initialSolution]);
 
   const newGame = useCallback(() => {
-    resetGame();
-  }, [resetGame]);
+    const { board: newBoard, solution: newSolution } =
+      generateRandomBoard(difficulty);
+    setBoard(newBoard);
+    setSolution(newSolution);
+    // Also update the initial board and solution to this new game
+    setInitialBoard(newBoard.map(row => [...row]));
+    setInitialSolution(new Set(newSolution));
+
+    // Reset other game states
+    setPlayerMoves(new Set());
+    setMoves(0);
+    setStartTime(Date.now());
+    setGameComplete(false);
+    setElapsedTime(0);
+    setHintCell(null);
+    setHintsUsed(0);
+    setMoveHistory([]);
+    setAffectedCells(new Set());
+    setShowCompletionAnimation(false);
+  }, [difficulty, setInitialBoard, setInitialSolution]);
 
   const handleDifficultyChange = useCallback((newDifficulty: Difficulty) => {
     setDifficulty(newDifficulty);
@@ -325,6 +345,8 @@ export default function LightsOut() {
       generateRandomBoard(newDifficulty);
     setBoard(newBoard);
     setSolution(newSolution);
+    setInitialBoard(newBoard.map(row => [...row])); // Deep copy
+    setInitialSolution(new Set(newSolution)); // Deep copy
     setPlayerMoves(new Set());
     setMoves(0);
     setStartTime(Date.now());
