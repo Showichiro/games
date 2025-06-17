@@ -1,22 +1,22 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import type {
+  Board,
   GameState,
-  Position,
   Player,
   PlayerConfig,
-  Board,
+  Position,
 } from "../types";
-import {
-  initializeBoard,
-  getValidMoves,
-  makeMove,
-  hasValidMoves,
-  isGameOver,
-  getWinner,
-} from "../utils/gameLogic";
 import { countPieces } from "../utils/boardUtils";
+import {
+  getValidMoves,
+  getWinner,
+  hasValidMoves,
+  initializeBoard,
+  isGameOver,
+  makeMove,
+} from "../utils/gameLogic";
 import { useGameHistory } from "./useGameHistory";
 
 interface UseGameLogicProps {

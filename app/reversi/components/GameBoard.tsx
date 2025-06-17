@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { BOARD_SIZE } from "../constants/gameConstants";
+import type { Board, Player, Position } from "../types";
 import GameCell from "./GameCell";
 import RippleEffect from "./RippleEffect";
-import type { Board, Position, Player } from "../types";
-import { BOARD_SIZE } from "../constants/gameConstants";
 
 interface GameBoardProps {
   board: Board;

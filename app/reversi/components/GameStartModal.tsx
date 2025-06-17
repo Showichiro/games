@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
-import type { Player, Difficulty } from "../types";
+import { AnimatePresence, motion } from "motion/react";
+import type { Difficulty, Player } from "../types";
 
 interface GameStartModalProps {
   isOpen: boolean;

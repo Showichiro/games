@@ -1,9 +1,9 @@
-import type { Board, Position, Player } from "../types";
 import {
   BOARD_SIZE,
   COLUMN_LABELS,
   ROW_LABELS,
 } from "../constants/gameConstants";
+import type { Board, Player, Position } from "../types";
 
 export function createEmptyBoard(): Board {
   return Array(BOARD_SIZE)

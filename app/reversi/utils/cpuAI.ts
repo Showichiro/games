@@ -1,8 +1,8 @@
-import type { Board, Position, Player, Difficulty } from "../types";
-import { getValidMoves, makeMove, isGameOver, getWinner } from "./gameLogic";
-import { getOpponent } from "./boardUtils";
-import { POSITION_VALUES, EVALUATION_WEIGHTS } from "../constants/aiConstants";
+import { EVALUATION_WEIGHTS, POSITION_VALUES } from "../constants/aiConstants";
 import { DIFFICULTY_CONFIG } from "../constants/gameConstants";
+import type { Board, Difficulty, Player, Position } from "../types";
+import { getOpponent } from "./boardUtils";
+import { getValidMoves, getWinner, isGameOver, makeMove } from "./gameLogic";
 
 export function evaluateBoard(
   board: Board,

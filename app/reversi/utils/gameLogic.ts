@@ -1,10 +1,10 @@
-import type { Board, Position, Player } from "../types";
 import { DIRECTIONS, INITIAL_BOARD_STATE } from "../constants/gameConstants";
+import type { Board, Player, Position } from "../types";
 import {
   copyBoard,
-  isValidPosition,
-  getOpponent,
   countPieces,
+  getOpponent,
+  isValidPosition,
 } from "./boardUtils";
 
 export function initializeBoard(): Board {

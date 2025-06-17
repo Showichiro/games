@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import type { Board, Difficulty, Position, Player } from "../types";
+import { useCallback, useEffect } from "react";
+import type { Board, Difficulty, Player, Position } from "../types";
 import { getBestMove, getRandomThinkingTime } from "../utils/cpuAI";
 
 interface UseCpuPlayerProps {

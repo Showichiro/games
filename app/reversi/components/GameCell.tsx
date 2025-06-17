@@ -2,8 +2,8 @@
 
 import { motion } from "motion/react";
 import { useState } from "react";
+import type { CellState, Player, Position } from "../types";
 import GamePiece from "./GamePiece";
-import type { CellState, Position, Player } from "../types";
 
 interface GameCellProps {
   cellState: CellState;

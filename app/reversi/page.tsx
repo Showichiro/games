@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "motion/react";
+import { useState } from "react";
 import GameBoard from "./components/GameBoard";
-import GameHeader from "./components/GameHeader";
-import GameControls from "./components/GameControls";
 import GameCompleteModal from "./components/GameCompleteModal";
-import GameStartModal from "./components/GameStartModal";
+import GameControls from "./components/GameControls";
+import GameHeader from "./components/GameHeader";
 import GameHistoryPanel from "./components/GameHistoryPanel";
-import { useGameLogic } from "./hooks/useGameLogic";
+import GameStartModal from "./components/GameStartModal";
 import { useCpuPlayer } from "./hooks/useCpuPlayer";
+import { useGameLogic } from "./hooks/useGameLogic";
 import type { Difficulty, Player, PlayerConfig } from "./types";
 
 export default function ReversiPage() {

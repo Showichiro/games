@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import type {
   Board,
-  Position,
-  Player,
-  DetailedGameMove,
   DetailedGameHistory,
+  DetailedGameMove,
+  Player,
+  Position,
 } from "../types";
 import { createEmptyBoard } from "../utils/gameLogic";
 
