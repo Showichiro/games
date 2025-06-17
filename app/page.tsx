@@ -88,7 +88,50 @@ export default function Home() {
               </Link>
             </motion.div>
 
-            {/* Coming Soon Cards */}
+            {/* Reversi Game */}
+            <motion.div
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className="group"
+            >
+              <Link href="/reversi">
+                <div className="bg-neutral-0/10 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/20 hover:border-neutral-0/40 transition-all duration-300 cursor-pointer">
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    ⚫⚪
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">
+                    リバーシ
+                  </h3>
+                  <p className="text-neutral-300 mb-4 leading-relaxed">
+                    CPU対戦型の本格リバーシゲーム。派手なエフェクトで石が反転する様子を楽しもう。
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
+                      戦略思考
+                    </span>
+                    <span className="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm">
+                      CPU対戦
+                    </span>
+                    <span className="px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded-full text-sm">
+                      派手エフェクト
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-yellow-400 font-semibold">
+                      🎮 今すぐプレイ
+                    </span>
+                    <motion.div
+                      className="text-white group-hover:translate-x-1 transition-transform duration-300"
+                      initial={{ x: 0 }}
+                      whileHover={{ x: 4 }}
+                    >
+                      →
+                    </motion.div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="bg-neutral-0/5 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/10 opacity-60"
@@ -99,20 +142,6 @@ export default function Home() {
               </h3>
               <p className="text-neutral-400 mb-4">
                 数字を正しい順序に並べるクラシックなパズルゲーム
-              </p>
-              <span className="text-neutral-500 font-semibold">近日公開</span>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="bg-neutral-0/5 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/10 opacity-60"
-            >
-              <div className="text-4xl mb-4 opacity-50">🎯</div>
-              <h3 className="text-2xl font-bold text-white mb-3">
-                マインスイーパー
-              </h3>
-              <p className="text-neutral-400 mb-4">
-                地雷を避けながら全てのマスを開く推理ゲーム
               </p>
               <span className="text-neutral-500 font-semibold">近日公開</span>
             </motion.div>
