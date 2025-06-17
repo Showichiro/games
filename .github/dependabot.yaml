@@ -1,0 +1,62 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+    groups:
+      all-minor-updates:
+        update-types:
+          - "minor"
+        patterns:
+          - "*"
+
+      react-major:
+        update-types:
+          - "major"
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+
+      nextjs-major:
+        update-types:
+          - "major"
+        patterns:
+          - "next"
+          - "eslint-config-next"
+
+      tailwind-major:
+        update-types:
+          - "major"
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+
+      typescript-major:
+        update-types:
+          - "major"
+        patterns:
+          - "typescript"
+          - "@types/node"
+
+      eslint-major:
+        update-types:
+          - "major"
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+
+      biome-major:
+        update-types:
+          - "major"
+        patterns:
+          - "@biomejs/biome"
+
+      motion-major:
+        update-types:
+          - "major"
+        patterns:
+          - "motion"
