@@ -1,7 +1,7 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
 import type { Difficulty, DifficultyConfig } from "../types";
 
 interface HamburgerMenuProps {
