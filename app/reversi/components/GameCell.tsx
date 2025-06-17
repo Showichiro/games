@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import GamePiece from "./GamePiece";
-import type { CellState, Position } from "../types";
+import type { CellState, Position, Player } from "../types";
 
 interface GameCellProps {
   cellState: CellState;
@@ -82,11 +82,11 @@ export default function GameCell({
       {cellState && (
         <div className="absolute inset-0.5 sm:inset-1 md:inset-1.5 lg:inset-2">
           <GamePiece
-            player={cellState}
+            player={cellState as Player}
             isLastMove={isLastMove}
             isAnimating={isNewlyPlaced}
             isFlipping={isFlipping}
-            flipFromPlayer={flipFromPlayer}
+            flipFromPlayer={flipFromPlayer as Player | undefined}
           />
         </div>
       )}

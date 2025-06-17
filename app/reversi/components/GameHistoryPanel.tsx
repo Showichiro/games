@@ -135,9 +135,6 @@ export default function GameHistoryPanel({
                         ? "var(--color-interactive-focus)"
                         : "var(--color-neutral-700)",
                       color: "var(--color-white)",
-                      ringColor: moves.every((m) => !m.isCurrentMove)
-                        ? "var(--color-interactive-focus)"
-                        : "transparent",
                     }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -165,9 +162,6 @@ export default function GameHistoryPanel({
                           ? "var(--color-neutral-400)"
                           : "var(--color-white)",
                         opacity: move.isFutureMove ? 0.6 : 1,
-                        ringColor: move.isCurrentMove
-                          ? "var(--color-interactive-focus)"
-                          : "transparent",
                       }}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}

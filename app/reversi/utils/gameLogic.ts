@@ -8,7 +8,11 @@ import {
 } from "./boardUtils";
 
 export function initializeBoard(): Board {
-  return copyBoard(INITIAL_BOARD_STATE as Board);
+  return copyBoard(INITIAL_BOARD_STATE as unknown as Board);
+}
+
+export function createEmptyBoard(): Board {
+  return Array.from({ length: 8 }, () => Array(8).fill(null));
 }
 
 export function findCapturedPieces(
