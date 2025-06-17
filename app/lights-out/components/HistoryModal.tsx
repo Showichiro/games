@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
-import MiniBoard from "./MiniBoard";
+import { AnimatePresence, motion } from "motion/react";
 import type { MoveRecord } from "../types";
+import MiniBoard from "./MiniBoard";
 
 interface HistoryModalProps {
   showHistoryModal: boolean;

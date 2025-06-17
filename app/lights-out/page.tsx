@@ -1,21 +1,21 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
 import { motion } from "motion/react";
-import TutorialModal from "./components/TutorialModal";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import GameBoard from "./components/GameBoard";
+import GameCompleteModal from "./components/GameCompleteModal";
+import GameControls from "./components/GameControls";
+import GameHeader from "./components/GameHeader";
 import HamburgerMenu from "./components/HamburgerMenu";
 import HistoryModal from "./components/HistoryModal";
-import Link from "next/link";
-import GameBoard from "./components/GameBoard";
-import GameHeader from "./components/GameHeader";
-import GameControls from "./components/GameControls";
-import GameCompleteModal from "./components/GameCompleteModal";
 import MiniBoard from "./components/MiniBoard";
+import TutorialModal from "./components/TutorialModal";
 import type {
-  GameBoard as GameBoardType,
   Difficulty,
-  TutorialStep,
+  GameBoard as GameBoardType,
   MoveRecord,
+  TutorialStep,
 } from "./types";
 
 const GRID_SIZE = 5;
@@ -175,8 +175,11 @@ const TUTORIAL_STEPS: TutorialStep[] = [
 
 export default function LightsOut() {
   const [board, setBoard] = useState<GameBoardType>(createInitialBoard);
-  const [initialBoard, setInitialBoard] = useState<GameBoardType>(createInitialBoard);
-  const [initialSolution, setInitialSolution] = useState<Set<string>>(new Set());
+  const [initialBoard, setInitialBoard] =
+    useState<GameBoardType>(createInitialBoard);
+  const [initialSolution, setInitialSolution] = useState<Set<string>>(
+    new Set(),
+  );
   const [moves, setMoves] = useState(0);
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [gameComplete, setGameComplete] = useState(false);
@@ -214,7 +217,7 @@ export default function LightsOut() {
         generateRandomBoard(difficulty);
       setBoard(newBoard);
       setSolution(newSolution);
-      setInitialBoard(newBoard.map(row => [...row])); // Deep copy
+      setInitialBoard(newBoard.map((row) => [...row])); // Deep copy
       setInitialSolution(new Set(newSolution)); // Deep copy
     }
   }, [isClient, difficulty]);
@@ -303,7 +306,7 @@ export default function LightsOut() {
   );
 
   const resetGame = useCallback(() => {
-    setBoard(initialBoard.map(row => [...row])); // Deep copy from initialBoard
+    setBoard(initialBoard.map((row) => [...row])); // Deep copy from initialBoard
     setSolution(new Set(initialSolution)); // Deep copy from initialSolution
     setPlayerMoves(new Set());
     setMoves(0);
@@ -323,7 +326,7 @@ export default function LightsOut() {
     setBoard(newBoard);
     setSolution(newSolution);
     // Also update the initial board and solution to this new game
-    setInitialBoard(newBoard.map(row => [...row]));
+    setInitialBoard(newBoard.map((row) => [...row]));
     setInitialSolution(new Set(newSolution));
 
     // Reset other game states
@@ -345,7 +348,7 @@ export default function LightsOut() {
       generateRandomBoard(newDifficulty);
     setBoard(newBoard);
     setSolution(newSolution);
-    setInitialBoard(newBoard.map(row => [...row])); // Deep copy
+    setInitialBoard(newBoard.map((row) => [...row])); // Deep copy
     setInitialSolution(new Set(newSolution)); // Deep copy
     setPlayerMoves(new Set());
     setMoves(0);
