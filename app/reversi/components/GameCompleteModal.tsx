@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useState } from "react";
 import type { Player } from "../types";
 
 interface GameCompleteModalProps {
@@ -10,6 +11,102 @@ interface GameCompleteModalProps {
   onNewGame: () => void;
   onClose: () => void;
 }
+
+const VictoryFireworks = () => {
+  const [particles, setParticles] = useState<
+    Array<{
+      id: number;
+      x: number;
+      y: number;
+      color: string;
+      delay: number;
+    }>
+  >([]);
+
+  useEffect(() => {
+    const newParticles = Array.from({ length: 15 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      color: ["#FFD700", "#FF6B6B", "#4ECDC4", "#45B7D1", "#F9CA24"][
+        Math.floor(Math.random() * 5)
+      ],
+      delay: Math.random() * 2,
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute w-2 h-2 rounded-full"
+          style={{
+            backgroundColor: particle.color,
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+            boxShadow: `0 0 6px ${particle.color}`,
+          }}
+          animate={{
+            scale: [0, 1, 0],
+            opacity: [0, 1, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            delay: particle.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const DefeatRain = () => {
+  const [drops, setDrops] = useState<
+    Array<{
+      id: number;
+      x: number;
+      delay: number;
+    }>
+  >([]);
+
+  useEffect(() => {
+    const newDrops = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      delay: Math.random() * 3,
+    }));
+    setDrops(newDrops);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {drops.map((drop) => (
+        <motion.div
+          key={drop.id}
+          className="absolute w-0.5 h-4 bg-gray-400 opacity-60"
+          style={{
+            left: `${drop.x}%`,
+            top: "-10%",
+          }}
+          animate={{
+            y: ["0vh", "110vh"],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            delay: drop.delay,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default function GameCompleteModal({
   isOpen,
@@ -62,14 +159,18 @@ export default function GameCompleteModal({
           onClick={onClose}
         >
           <motion.div
-            className={`bg-gradient-to-br ${bgColor} rounded-2xl p-6 max-w-md w-full mx-4 text-white shadow-2xl`}
+            className={`bg-gradient-to-br ${bgColor} rounded-2xl p-6 max-w-md w-full mx-4 text-white shadow-2xl relative overflow-hidden`}
             initial={{ scale: 0.8, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="text-center">
+            {/* Background Effects */}
+            {winner === "black" && <VictoryFireworks />}
+            {winner === "white" && <DefeatRain />}
+
+            <div className="text-center relative z-10">
               <motion.h2
                 className="text-3xl font-bold mb-2"
                 initial={{ y: -10, opacity: 0 }}

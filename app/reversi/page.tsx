@@ -52,6 +52,7 @@ export default function ReversiPage() {
   });
 
   const handleNewGame = () => {
+    setShowGameCompleteModal(false);
     setShowGameStartModal(true);
   };
 
@@ -114,6 +115,7 @@ export default function ReversiPage() {
             board={gameState.board}
             validMoves={gameState.validMoves}
             lastMove={gameState.lastMove}
+            capturedPieces={gameState.capturedPieces}
             currentPlayer={gameState.currentPlayer}
             onCellClick={makePlayerMove}
             disabled={
