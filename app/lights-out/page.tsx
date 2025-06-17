@@ -33,20 +33,26 @@ const createInitialBoard = (): GameBoardType => {
 
 const generateRandomBoard = (
   difficulty: Difficulty = "medium",
-): GameBoardType => {
+): { board: GameBoardType; solution: Set<string> } => {
   const board = createInitialBoard();
   const config = DIFFICULTY_CONFIG[difficulty];
-  const moves =
+  const movesToMake =
     Math.floor(Math.random() * (config.maxMoves - config.minMoves + 1)) +
     config.minMoves;
+  const solution = new Set<string>();
 
-  for (let i = 0; i < moves; i++) {
+  while (solution.size < movesToMake) {
     const row = Math.floor(Math.random() * GRID_SIZE);
     const col = Math.floor(Math.random() * GRID_SIZE);
-    toggleCell(board, row, col);
+    const cellCoord = `${row}-${col}`;
+
+    if (!solution.has(cellCoord)) {
+      toggleCell(board, row, col);
+      solution.add(cellCoord);
+    }
   }
 
-  return board;
+  return { board, solution };
 };
 
 const getAffectedCells = (row: number, col: number): Set<string> => {
@@ -104,39 +110,28 @@ const isGameComplete = (board: GameBoardType): boolean => {
   return board.every((row) => row.every((cell) => !cell));
 };
 
-// Simple hint algorithm - finds a random valid move that reduces the number of lit cells
 const findHintMove = (
-  board: GameBoardType,
+  solution: Set<string>,
+  playerMoves: Set<string>,
 ): { row: number; col: number } | null => {
-  const moves: { row: number; col: number }[] = [];
-
-  for (let row = 0; row < GRID_SIZE; row++) {
-    for (let col = 0; col < GRID_SIZE; col++) {
-      // Simulate the move
-      const testBoard = board.map((r) => [...r]);
-      toggleCell(testBoard, row, col);
-
-      // Count lit cells before and after
-      const originalLit = board.flat().filter(Boolean).length;
-      const newLit = testBoard.flat().filter(Boolean).length;
-
-      // If this move reduces lit cells, it's potentially helpful
-      if (newLit < originalLit) {
-        moves.push({ row, col });
-      }
+  // Priority 1: Suggest unpressed solution cells
+  for (const cellCoord of solution) {
+    if (!playerMoves.has(cellCoord)) {
+      const [sRow, sCol] = cellCoord.split("-").map(Number);
+      return { row: sRow, col: sCol };
     }
   }
 
-  // Return a random good move, or any move if no good moves found
-  if (moves.length > 0) {
-    return moves[Math.floor(Math.random() * moves.length)];
+  // Priority 2: Suggest undoing incorrect moves
+  for (const cellCoord of playerMoves) {
+    if (!solution.has(cellCoord)) {
+      const [sRow, sCol] = cellCoord.split("-").map(Number);
+      return { row: sRow, col: sCol };
+    }
   }
 
-  // Fallback: return any random move
-  return {
-    row: Math.floor(Math.random() * GRID_SIZE),
-    col: Math.floor(Math.random() * GRID_SIZE),
-  };
+  // No hint needed
+  return null;
 };
 
 const TUTORIAL_STEPS: TutorialStep[] = [
@@ -198,6 +193,8 @@ export default function LightsOut() {
   const [moveHistory, setMoveHistory] = useState<MoveRecord[]>([]);
   const [affectedCells, setAffectedCells] = useState<Set<string>>(new Set());
   const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
+  const [solution, setSolution] = useState<Set<string>>(new Set());
+  const [playerMoves, setPlayerMoves] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setIsClient(true);
@@ -211,7 +208,10 @@ export default function LightsOut() {
 
   useEffect(() => {
     if (isClient) {
-      setBoard(generateRandomBoard(difficulty));
+      const { board: newBoard, solution: newSolution } =
+        generateRandomBoard(difficulty);
+      setBoard(newBoard);
+      setSolution(newSolution);
     }
   }, [isClient, difficulty]);
 
@@ -267,6 +267,16 @@ export default function LightsOut() {
       setMoves(newMoveCount);
       setMoveHistory((prev) => [...prev, moveRecord]);
 
+      // Update player moves
+      const cellCoord = `${row}-${col}`;
+      const newPlayerMoves = new Set(playerMoves);
+      if (newPlayerMoves.has(cellCoord)) {
+        newPlayerMoves.delete(cellCoord);
+      } else {
+        newPlayerMoves.add(cellCoord);
+      }
+      setPlayerMoves(newPlayerMoves);
+
       // Clear affected cells animation after delay
       setTimeout(() => {
         setAffectedCells(new Set());
@@ -285,11 +295,15 @@ export default function LightsOut() {
         }, 2500);
       }
     },
-    [gameComplete, board, moves],
+    [gameComplete, board, moves, playerMoves],
   );
 
   const resetGame = useCallback(() => {
-    setBoard(generateRandomBoard(difficulty));
+    const { board: newBoard, solution: newSolution } =
+      generateRandomBoard(difficulty);
+    setBoard(newBoard);
+    setSolution(newSolution);
+    setPlayerMoves(new Set());
     setMoves(0);
     setStartTime(Date.now());
     setGameComplete(false);
@@ -307,7 +321,11 @@ export default function LightsOut() {
 
   const handleDifficultyChange = useCallback((newDifficulty: Difficulty) => {
     setDifficulty(newDifficulty);
-    setBoard(generateRandomBoard(newDifficulty));
+    const { board: newBoard, solution: newSolution } =
+      generateRandomBoard(newDifficulty);
+    setBoard(newBoard);
+    setSolution(newSolution);
+    setPlayerMoves(new Set());
     setMoves(0);
     setStartTime(Date.now());
     setGameComplete(false);
@@ -362,7 +380,7 @@ export default function LightsOut() {
   const showHint = useCallback(() => {
     if (gameComplete) return;
 
-    const hint = findHintMove(board);
+    const hint = findHintMove(solution, playerMoves);
     if (hint) {
       setHintCell(hint);
       setHintsUsed((prev) => prev + 1);
@@ -372,7 +390,7 @@ export default function LightsOut() {
         setHintCell(null);
       }, 3000);
     }
-  }, [board, gameComplete]);
+  }, [solution, playerMoves, gameComplete]);
 
   const replayToMove = useCallback(
     (moveIndex: number) => {
