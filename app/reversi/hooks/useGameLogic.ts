@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import type { GameState, Position, Player, PlayerConfig } from "../types";
+import type {
+  GameState,
+  Position,
+  Player,
+  PlayerConfig,
+  Board,
+} from "../types";
 import {
   initializeBoard,
   getValidMoves,
@@ -11,6 +17,7 @@ import {
   getWinner,
 } from "../utils/gameLogic";
 import { countPieces } from "../utils/boardUtils";
+import { useGameHistory } from "./useGameHistory";
 
 interface UseGameLogicProps {
   playerConfig?: PlayerConfig;
@@ -21,6 +28,42 @@ export function useGameLogic({
   playerConfig = { humanPlayer: "black", cpuPlayer: "white" },
   onGameEnd,
 }: UseGameLogicProps = {}) {
+  // ゲーム状態復元用のコールバック
+  const handleRestoreGameState = useCallback(
+    (
+      board: Board,
+      currentPlayer: Player,
+      scores: { black: number; white: number } /* , moveIndex: number */,
+    ) => {
+      const validMoves = getValidMoves(board, currentPlayer);
+      const gameHasEnded = isGameOver(board);
+
+      setGameState((prev) => ({
+        ...prev,
+        board,
+        currentPlayer,
+        validMoves,
+        scores,
+        gameStatus: gameHasEnded ? "finished" : "playing",
+        lastMove: null, // 履歴から復元時はlastMoveをクリア
+        capturedPieces: [],
+        isThinking: false,
+      }));
+    },
+    [],
+  );
+
+  // 履歴管理フック
+  const {
+    history,
+    addMove,
+    undoMove,
+    redoMove,
+    jumpToMove,
+    clearHistory,
+    getMovesForDisplay,
+  } = useGameHistory({ onRestoreGameState: handleRestoreGameState });
+
   const [gameState, setGameState] = useState<GameState>(() => {
     const board = initializeBoard();
     const scores = countPieces(board);
@@ -51,7 +94,8 @@ export function useGameLogic({
       capturedPieces: [],
       isThinking: firstPlayer === playerConfig.cpuPlayer,
     });
-  }, [playerConfig]);
+    clearHistory(); // 履歴もクリア
+  }, [playerConfig, clearHistory]);
 
   const switchPlayer = useCallback((currentPlayer: Player): Player => {
     return currentPlayer === "black" ? "white" : "black";
@@ -106,6 +150,15 @@ export function useGameLogic({
             !gameHasEnded,
         }));
 
+        // 履歴に手を追加
+        addMove(
+          position,
+          gameState.currentPlayer,
+          capturedPieces,
+          newBoard,
+          newScores,
+        );
+
         if (gameHasEnded && onGameEnd) {
           const winner = getWinner(newBoard);
           onGameEnd(winner);
@@ -117,7 +170,7 @@ export function useGameLogic({
         return false;
       }
     },
-    [gameState, switchPlayer, onGameEnd, playerConfig],
+    [gameState, switchPlayer, onGameEnd, playerConfig, addMove],
   );
 
   const makeCpuMove = useCallback(
@@ -156,6 +209,15 @@ export function useGameLogic({
           isThinking: false,
         }));
 
+        // 履歴に手を追加
+        addMove(
+          cpuMove,
+          playerConfig.cpuPlayer,
+          capturedPieces,
+          newBoard,
+          newScores,
+        );
+
         if (gameHasEnded && onGameEnd) {
           const winner = getWinner(newBoard);
           onGameEnd(winner);
@@ -168,7 +230,7 @@ export function useGameLogic({
         return false;
       }
     },
-    [gameState, onGameEnd, playerConfig, switchPlayer],
+    [gameState, onGameEnd, playerConfig, switchPlayer, addMove],
   );
 
   const setThinking = useCallback((thinking: boolean) => {
@@ -214,5 +276,11 @@ export function useGameLogic({
     winner:
       gameState.gameStatus === "finished" ? getWinner(gameState.board) : null,
     playerConfig,
+    // 履歴関連
+    history,
+    undoMove,
+    redoMove,
+    jumpToMove,
+    getMovesForDisplay,
   };
 }

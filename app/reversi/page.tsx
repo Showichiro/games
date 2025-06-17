@@ -7,6 +7,7 @@ import GameHeader from "./components/GameHeader";
 import GameControls from "./components/GameControls";
 import GameCompleteModal from "./components/GameCompleteModal";
 import GameStartModal from "./components/GameStartModal";
+import GameHistoryPanel from "./components/GameHistoryPanel";
 import { useGameLogic } from "./hooks/useGameLogic";
 import { useCpuPlayer } from "./hooks/useCpuPlayer";
 import type { Difficulty, Player, PlayerConfig } from "./types";
@@ -16,6 +17,7 @@ export default function ReversiPage() {
   const [showHints, setShowHints] = useState(true);
   const [showGameCompleteModal, setShowGameCompleteModal] = useState(false);
   const [showGameStartModal, setShowGameStartModal] = useState(true);
+  const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [playerConfig, setPlayerConfig] = useState<PlayerConfig>({
     humanPlayer: "black",
     cpuPlayer: "white",
@@ -29,6 +31,11 @@ export default function ReversiPage() {
     setThinking,
     isGameOver,
     winner,
+    history,
+    undoMove,
+    redoMove,
+    jumpToMove,
+    getMovesForDisplay,
   } = useGameLogic({
     playerConfig,
     onGameEnd: (gameWinner) => {
@@ -130,12 +137,25 @@ export default function ReversiPage() {
           />
         </motion.div>
 
-        <GameControls
-          onNewGame={handleNewGame}
-          onToggleHints={handleToggleHints}
-          showHints={showHints}
-          disabled={gameState.isThinking}
-        />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <GameControls
+            onNewGame={handleNewGame}
+            onToggleHints={handleToggleHints}
+            showHints={showHints}
+            disabled={gameState.isThinking}
+          />
+
+          <GameHistoryPanel
+            moves={getMovesForDisplay()}
+            onJumpToMove={jumpToMove}
+            onUndo={undoMove}
+            onRedo={redoMove}
+            canUndo={history.canUndo}
+            canRedo={history.canRedo}
+            isOpen={showHistoryPanel}
+            onToggle={() => setShowHistoryPanel(!showHistoryPanel)}
+          />
+        </div>
 
         <motion.div
           className="mt-8 flex justify-center"

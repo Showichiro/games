@@ -35,9 +35,27 @@ export interface Move {
   capturedPieces: Position[];
 }
 
+export interface DetailedGameMove {
+  id: string;
+  position: Position;
+  player: Player;
+  timestamp: number;
+  capturedPieces: Position[];
+  boardState: Board;
+  scores: { black: number; white: number };
+  moveNumber: number;
+}
+
 export interface GameHistory {
   moves: Move[];
   scores: { black: number; white: number }[];
+}
+
+export interface DetailedGameHistory {
+  moves: DetailedGameMove[];
+  currentMoveIndex: number;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 export interface GameStats {
