@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "biome format --write .",
     "check": "biome check --write .",
-    "ci": "biome ci"
+    "ci": "biome ci ."
   },
   "dependencies": {
     "motion": "^12.18.1",
