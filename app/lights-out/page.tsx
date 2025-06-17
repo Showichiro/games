@@ -419,7 +419,7 @@ export default function LightsOut() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800">
       <HamburgerMenu
         showMenu={showMenu}
         difficulty={difficulty}
@@ -469,7 +469,7 @@ export default function LightsOut() {
         </div>
 
         {/* Sidebar for History Panel */}
-        <div className="w-80 bg-slate-800 border-l border-slate-700 p-6">
+        <div className="w-80 bg-neutral-800 border-l border-neutral-700 p-6">
           <div className="text-white">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold">
@@ -477,7 +477,7 @@ export default function LightsOut() {
               </h3>
               {moveHistory.length > 0 && (
                 <button
-                  className="text-red-400 hover:text-red-300 text-sm font-medium"
+                  className="text-error-500 hover:text-error-700 text-sm font-medium"
                   onClick={clearHistory}
                 >
                   クリア
@@ -485,10 +485,10 @@ export default function LightsOut() {
               )}
             </div>
 
-            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-slate-800 scrollbar-thumb-slate-600">
+            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-neutral-800 scrollbar-thumb-neutral-600">
               <div className="min-h-[12rem]">
                 {moveHistory.length === 0 ? (
-                  <div className="text-gray-400 text-center py-8">
+                  <div className="text-neutral-400 text-center py-8">
                     <p>まだ操作履歴がありません</p>
                     <p className="text-sm mt-2">
                       ゲームを開始すると、ここに履歴が表示されます
@@ -502,10 +502,10 @@ export default function LightsOut() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.03 }}
-                        className="flex items-center justify-between p-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors text-sm min-w-0"
+                        className="flex items-center justify-between p-2 bg-neutral-700 rounded-lg hover:bg-neutral-600 transition-colors text-sm min-w-0"
                       >
                         <div className="flex items-center gap-2 min-w-0 flex-1">
-                          <div className="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+                          <div className="w-5 h-5 bg-brand-500 text-neutral-0 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
                             {record.moveNumber}
                           </div>
                           <div className="flex-shrink-0">
@@ -517,7 +517,7 @@ export default function LightsOut() {
                           </div>
                         </div>
                         <button
-                          className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors flex-shrink-0 ml-2"
+                          className="px-2 py-1 text-xs bg-brand-primary hover:bg-brand-700 text-neutral-0 rounded transition-colors flex-shrink-0 ml-2"
                           onClick={() => replayToMove(index)}
                         >
                           再生
@@ -531,24 +531,24 @@ export default function LightsOut() {
 
             <div className="space-y-2">
               <Link href="/" className="block">
-                <button className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors">
+                <button className="w-full px-4 py-2 bg-brand-primary hover:bg-brand-700 text-neutral-0 rounded-lg font-semibold transition-colors">
                   🏠 ホームに戻る
                 </button>
               </Link>
               <button
-                className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors relative"
+                className="w-full px-4 py-2 bg-success-600 hover:bg-success-700 text-neutral-0 rounded-lg font-semibold transition-colors relative"
                 onClick={showHint}
                 disabled={gameComplete}
               >
                 💡 ヒント
                 {hintsUsed > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-error-500 text-neutral-0 text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {hintsUsed}
                   </span>
                 )}
               </button>
               <button
-                className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors"
+                className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-neutral-0 rounded-lg font-semibold transition-colors"
                 onClick={showTutorialAgain}
               >
                 ❓ ルール説明

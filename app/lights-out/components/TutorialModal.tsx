@@ -29,33 +29,33 @@ export default function TutorialModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 bg-neutral-950/70 flex items-center justify-center p-4 z-50"
         >
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            className="bg-white rounded-2xl p-6 text-center max-w-md w-full relative"
+            className="bg-neutral-0 rounded-2xl p-6 text-center max-w-md w-full relative"
           >
             <button
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl"
+              className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 text-xl"
               onClick={onClose}
             >
               ×
             </button>
 
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-3">
+              <h2 className="text-xl font-bold text-default-font mb-3">
                 {tutorialSteps[tutorialStep]?.title}
               </h2>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-subtext-color leading-relaxed">
                 {tutorialSteps[tutorialStep]?.content}
               </p>
             </div>
 
             {/* Demo Grid for Tutorial */}
             {tutorialSteps[tutorialStep]?.highlight === "board" && (
-              <div className="bg-slate-100 p-3 rounded-lg mb-6">
+              <div className="bg-neutral-100 p-3 rounded-lg mb-6">
                 <div className="grid grid-cols-3 gap-1 w-24 mx-auto">
                   {Array(9)
                     .fill(null)
@@ -78,7 +78,7 @@ export default function TutorialModal({
                           className={`aspect-square rounded border-2 ${
                             isLit
                               ? "bg-yellow-400 border-yellow-300"
-                              : "bg-slate-300 border-slate-400"
+                              : "bg-neutral-300 border-neutral-400"
                           }`}
                           animate={{
                             scale: isLit ? 1.1 : 1,
@@ -92,7 +92,7 @@ export default function TutorialModal({
                       );
                     })}
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-subtext-color mt-2">
                   {demoToggle
                     ? "中央タップで十字パターンが反転"
                     : "十字パターン - 中央をタップ..."}
@@ -106,7 +106,7 @@ export default function TutorialModal({
                 <div
                   key={index}
                   className={`w-2 h-2 rounded-full ${
-                    index === tutorialStep ? "bg-blue-600" : "bg-gray-300"
+                    index === tutorialStep ? "bg-brand-600" : "bg-neutral-300"
                   }`}
                 />
               ))}
@@ -116,7 +116,7 @@ export default function TutorialModal({
             <div className="flex gap-3 justify-center">
               {tutorialStep > 0 && (
                 <button
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition-colors"
+                  className="px-4 py-2 bg-neutral-300 text-neutral-700 rounded-lg font-semibold hover:bg-neutral-400 transition-colors"
                   onClick={onPrev}
                 >
                   前へ
@@ -125,14 +125,14 @@ export default function TutorialModal({
 
               {tutorialStep < tutorialSteps.length - 1 ? (
                 <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-brand-primary text-neutral-0 rounded-lg font-semibold hover:bg-brand-700 transition-colors"
                   onClick={onNext}
                 >
                   次へ
                 </button>
               ) : (
                 <button
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                  className="px-4 py-2 bg-success-600 text-neutral-0 rounded-lg font-semibold hover:bg-success-700 transition-colors"
                   onClick={onClose}
                 >
                   始める
@@ -140,7 +140,7 @@ export default function TutorialModal({
               )}
 
               <button
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition-colors"
+                className="px-4 py-2 bg-neutral-300 text-neutral-700 rounded-lg font-semibold hover:bg-neutral-400 transition-colors"
                 onClick={onClose}
               >
                 スキップ

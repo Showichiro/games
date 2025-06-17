@@ -30,7 +30,7 @@ export default function HamburgerMenu({
       {/* Hamburger Menu Button */}
       <div className="fixed top-4 right-4 z-40 md:hidden">
         <motion.button
-          className="w-10 h-10 bg-slate-700 rounded-lg flex items-center justify-center text-white hover:bg-slate-600 transition-colors"
+          className="w-10 h-10 bg-neutral-700 rounded-lg flex items-center justify-center text-white hover:bg-neutral-600 transition-colors"
           whileTap={{ scale: 0.95 }}
           onClick={onToggleMenu}
         >
@@ -70,7 +70,7 @@ export default function HamburgerMenu({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/30 z-30 md:hidden"
+              className="fixed inset-0 bg-neutral-950/30 z-30 md:hidden"
               onClick={onCloseMenu}
             />
             <motion.div
@@ -81,18 +81,18 @@ export default function HamburgerMenu({
             >
               <div className="py-2">
                 <Link href="/" className="block">
-                  <div className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-gray-700 font-medium">
+                  <div className="w-full px-4 py-3 text-left hover:bg-neutral-100 transition-colors text-neutral-700 font-medium">
                     🏠 ホームに戻る
                   </div>
                 </Link>
                 <button
-                  className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-gray-700 font-medium"
+                  className="w-full px-4 py-3 text-left hover:bg-neutral-100 transition-colors text-neutral-700 font-medium"
                   onClick={onOpenHistory}
                 >
                   📊 操作履歴を見る
                 </button>
                 <button
-                  className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-gray-700 font-medium"
+                  className="w-full px-4 py-3 text-left hover:bg-neutral-100 transition-colors text-neutral-700 font-medium"
                   onClick={() => {
                     onShowTutorial();
                     onCloseMenu();
@@ -102,7 +102,7 @@ export default function HamburgerMenu({
                 </button>
                 <hr className="my-2" />
                 <div className="px-4 py-2">
-                  <p className="text-sm text-gray-500 mb-2">難易度</p>
+                  <p className="text-sm text-neutral-500 mb-2">難易度</p>
                   <div className="flex gap-1">
                     {(Object.keys(difficultyConfig) as Difficulty[]).map(
                       (diff) => (
@@ -110,8 +110,8 @@ export default function HamburgerMenu({
                           key={diff}
                           className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                             difficulty === diff
-                              ? "bg-blue-600 text-white"
-                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                              ? "bg-brand-primary text-neutral-0"
+                              : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
                           }`}
                           onClick={() => {
                             onDifficultyChange(diff);

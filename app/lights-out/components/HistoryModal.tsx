@@ -34,16 +34,16 @@ export default function HistoryModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/70 flex items-end justify-center p-4 z-50 md:items-center"
+          className="fixed inset-0 bg-neutral-950/70 flex items-end justify-center p-4 z-50 md:items-center"
         >
           <motion.div
             initial={{ y: "100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "100%", opacity: 0 }}
-            className="bg-white rounded-t-2xl md:rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden"
+            className="bg-neutral-0 rounded-t-2xl md:rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden"
           >
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-lg font-bold text-gray-800">
+            <div className="p-4 border-b border-neutral-200 flex justify-between items-center">
+              <h3 className="text-lg font-bold text-default-font">
                 操作履歴 ({moveHistory.length})
               </h3>
               <div className="flex gap-2">
@@ -56,7 +56,7 @@ export default function HistoryModal({
                   </button>
                 )}
                 <button
-                  className="text-gray-400 hover:text-gray-600 text-xl"
+                  className="text-neutral-400 hover:text-neutral-600 text-xl"
                   onClick={onClose}
                 >
                   ×
@@ -65,7 +65,7 @@ export default function HistoryModal({
             </div>
             <div className="p-4 overflow-y-auto max-h-96">
               {moveHistory.length === 0 ? (
-                <div className="text-center text-gray-500 py-8">
+                <div className="text-center text-subtext-color py-8">
                   <p>まだ操作履歴がありません</p>
                   <p className="text-sm mt-2">
                     ゲームを開始すると、ここに履歴が表示されます
@@ -79,10 +79,10 @@ export default function HistoryModal({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                      className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                        <div className="w-6 h-6 bg-brand-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
                           {record.moveNumber}
                         </div>
                         <div className="flex items-center gap-3">
@@ -92,17 +92,17 @@ export default function HistoryModal({
                             showMove={{ row: record.row, col: record.col }}
                           />
                           <div>
-                            <div className="text-sm font-medium text-gray-800">
+                            <div className="text-sm font-medium text-default-font">
                               手数 {record.moveNumber}
                             </div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-subtext-color">
                               {formatTime(record.timestamp)}
                             </div>
                           </div>
                         </div>
                       </div>
                       <button
-                        className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors"
+                        className="px-3 py-1 text-xs bg-brand-100 text-brand-700 rounded-full hover:bg-brand-200 transition-colors"
                         onClick={() => onReplayToMove(index)}
                       >
                         再生
