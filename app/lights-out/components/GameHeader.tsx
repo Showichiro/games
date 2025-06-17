@@ -25,7 +25,7 @@ export default function GameHeader({
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 lg:mb-6">
         ライツアウト
       </h1>
-      <div className="flex justify-center gap-6 lg:gap-8 text-gray-300 mb-4 lg:mb-6 text-sm md:text-base lg:text-lg">
+      <div className="flex justify-center gap-6 lg:gap-8 text-neutral-300 mb-4 lg:mb-6 text-sm md:text-base lg:text-lg">
         <div>手数: {moves}</div>
         <div>時間: {formatTime(elapsedTime)}</div>
       </div>
@@ -37,8 +37,8 @@ export default function GameHeader({
             key={diff}
             className={`px-3 py-1 lg:px-4 lg:py-2 rounded-lg text-sm lg:text-base font-medium transition-colors ${
               difficulty === diff
-                ? "bg-blue-600 text-white"
-                : "bg-slate-600 text-gray-300 hover:bg-slate-500"
+                ? "bg-brand-primary text-neutral-0"
+                : "bg-neutral-600 text-neutral-0 hover:bg-neutral-700"
             }`}
             whileTap={{ scale: 0.95 }}
             onClick={() => onDifficultyChange(diff)}

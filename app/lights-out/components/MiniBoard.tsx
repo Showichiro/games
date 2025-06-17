@@ -30,8 +30,8 @@ export default function MiniBoard({
               className={`${cellSize} rounded-sm border ${
                 cell
                   ? "bg-yellow-400 border-yellow-300"
-                  : "bg-gray-400 border-gray-300"
-              } ${isMove ? "ring-1 ring-blue-400" : ""}`}
+                   : "bg-neutral-400 border-neutral-300"
+               } ${isMove ? "ring-1 ring-brand-400" : ""}`}
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               transition={{ delay: (rowIndex * 5 + colIndex) * 0.01 }}

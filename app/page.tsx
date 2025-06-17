@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+    <div className="min-h-screen bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700">
       <div className="flex items-center justify-center min-h-screen p-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -30,7 +30,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed"
+            className="text-xl md:text-2xl text-neutral-300 mb-12 leading-relaxed"
           >
             頭脳を刺激する様々なパズルゲームで
             <br />
@@ -51,18 +51,18 @@ export default function Home() {
               className="group"
             >
               <Link href="/lights-out">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:border-white/40 transition-all duration-300 cursor-pointer">
+                <div className="bg-neutral-0/10 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/20 hover:border-neutral-0/40 transition-all duration-300 cursor-pointer">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                     💡
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-3">
                     ライツアウト
                   </h3>
-                  <p className="text-gray-300 mb-4 leading-relaxed">
+                  <p className="text-neutral-300 mb-4 leading-relaxed">
                     5×5のグリッドで全てのライトを消すパズルゲーム。十字パターンの連鎖反応を使って戦略的に攻略しよう。
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-brand-500/20 text-brand-300 rounded-full text-sm">
                       論理思考
                     </span>
                     <span className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm">
@@ -91,30 +91,30 @@ export default function Home() {
             {/* Coming Soon Cards */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 opacity-60"
+              className="bg-neutral-0/5 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/10 opacity-60"
             >
               <div className="text-4xl mb-4 opacity-50">🧩</div>
               <h3 className="text-2xl font-bold text-white mb-3">
                 スライドパズル
               </h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-neutral-400 mb-4">
                 数字を正しい順序に並べるクラシックなパズルゲーム
               </p>
-              <span className="text-gray-500 font-semibold">近日公開</span>
+              <span className="text-neutral-500 font-semibold">近日公開</span>
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 opacity-60"
+              className="bg-neutral-0/5 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/10 opacity-60"
             >
               <div className="text-4xl mb-4 opacity-50">🎯</div>
               <h3 className="text-2xl font-bold text-white mb-3">
                 マインスイーパー
               </h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-neutral-400 mb-4">
                 地雷を避けながら全てのマスを開く推理ゲーム
               </p>
-              <span className="text-gray-500 font-semibold">近日公開</span>
+              <span className="text-neutral-500 font-semibold">近日公開</span>
             </motion.div>
           </motion.div>
 
@@ -128,21 +128,21 @@ export default function Home() {
             <div className="text-white">
               <div className="text-3xl mb-2">🏆</div>
               <h4 className="font-semibold mb-1">スコア記録</h4>
-              <p className="text-gray-400 text-sm">
+              <p className="text-neutral-400 text-sm">
                 あなたのベストタイムと手数を記録
               </p>
             </div>
             <div className="text-white">
               <div className="text-3xl mb-2">📱</div>
               <h4 className="font-semibold mb-1">レスポンシブ対応</h4>
-              <p className="text-gray-400 text-sm">
+              <p className="text-neutral-400 text-sm">
                 PC・タブレット・スマホで快適プレイ
               </p>
             </div>
             <div className="text-white">
               <div className="text-3xl mb-2">🎨</div>
               <h4 className="font-semibold mb-1">美しいアニメーション</h4>
-              <p className="text-gray-400 text-sm">
+              <p className="text-neutral-400 text-sm">
                 滑らかな動きと視覚効果でゲーム体験を向上
               </p>
             </div>

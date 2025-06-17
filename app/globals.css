@@ -61,6 +61,21 @@
   --color-white: rgb(255, 255, 255);
   --color-default-background: rgb(255, 255, 255);
 
+  /* ゲーム専用カラー */
+  --color-game-active: var(--color-warning-400);
+  --color-game-inactive: var(--color-neutral-600);
+  --color-game-success: var(--color-success-400);
+  --color-game-hint: var(--color-brand-400);
+
+  /* インタラクティブ要素 */
+  --color-interactive-hover: var(--color-brand-700);
+  --color-interactive-active: var(--color-brand-800);
+  --color-interactive-focus: var(--color-brand-500);
+
+  /* 半透明背景用 */
+  --color-overlay-light: rgba(255, 255, 255, 0.1);
+  --color-overlay-dark: rgba(0, 0, 0, 0.5);
+
   /* Fonts */
   --text-caption: 12px;
   --text-caption--font-weight: 400;
