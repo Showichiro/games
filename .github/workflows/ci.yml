@@ -15,6 +15,6 @@ jobs:
       - name: Run lint
         run: pnpm lint
       - name: Run ci
-        run: pnpm ci
+        run: pnpm run ci
       - name: Run tsc
         run: pnpm tsc --noEmit
