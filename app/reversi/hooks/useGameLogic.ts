@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import type { GameState, Position, Player, Difficulty } from "../types";
+import type { GameState, Position, Player, PlayerConfig } from "../types";
 import {
   initializeBoard,
   getValidMoves,
@@ -13,18 +13,22 @@ import {
 import { countPieces } from "../utils/boardUtils";
 
 interface UseGameLogicProps {
-  difficulty?: Difficulty;
+  playerConfig?: PlayerConfig;
   onGameEnd?: (winner: Player | "draw" | null) => void;
 }
 
-export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
+export function useGameLogic({
+  playerConfig = { humanPlayer: "black", cpuPlayer: "white" },
+  onGameEnd,
+}: UseGameLogicProps = {}) {
   const [gameState, setGameState] = useState<GameState>(() => {
     const board = initializeBoard();
     const scores = countPieces(board);
+    const firstPlayer: Player = "black"; // 常に黒が先手
     return {
       board,
-      currentPlayer: "black" as Player,
-      validMoves: getValidMoves(board, "black"),
+      currentPlayer: firstPlayer,
+      validMoves: getValidMoves(board, firstPlayer),
       gameStatus: "playing",
       scores,
       lastMove: null,
@@ -36,17 +40,18 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
   const resetGame = useCallback(() => {
     const board = initializeBoard();
     const scores = countPieces(board);
+    const firstPlayer: Player = "black"; // 常に黒が先手
     setGameState({
       board,
-      currentPlayer: "black",
-      validMoves: getValidMoves(board, "black"),
+      currentPlayer: firstPlayer,
+      validMoves: getValidMoves(board, firstPlayer),
       gameStatus: "playing",
       scores,
       lastMove: null,
       capturedPieces: [],
-      isThinking: false,
+      isThinking: firstPlayer === playerConfig.cpuPlayer,
     });
-  }, []);
+  }, [playerConfig]);
 
   const switchPlayer = useCallback((currentPlayer: Player): Player => {
     return currentPlayer === "black" ? "white" : "black";
@@ -54,7 +59,11 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
 
   const makePlayerMove = useCallback(
     (position: Position) => {
-      if (gameState.gameStatus !== "playing" || gameState.isThinking) {
+      if (
+        gameState.gameStatus !== "playing" ||
+        gameState.isThinking ||
+        gameState.currentPlayer !== playerConfig.humanPlayer
+      ) {
         return false;
       }
 
@@ -92,7 +101,9 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
           lastMove: position,
           capturedPieces,
           isThinking:
-            nextPlayerCanMove && nextPlayer === "white" && !gameHasEnded,
+            nextPlayerCanMove &&
+            nextPlayer === playerConfig.cpuPlayer &&
+            !gameHasEnded,
         }));
 
         if (gameHasEnded && onGameEnd) {
@@ -106,14 +117,14 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
         return false;
       }
     },
-    [gameState, switchPlayer, onGameEnd],
+    [gameState, switchPlayer, onGameEnd, playerConfig],
   );
 
   const makeCpuMove = useCallback(
     (cpuMove: Position) => {
       if (
         gameState.gameStatus !== "playing" ||
-        gameState.currentPlayer !== "white"
+        gameState.currentPlayer !== playerConfig.cpuPlayer
       ) {
         return false;
       }
@@ -122,21 +133,22 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
         const { newBoard, capturedPieces } = makeMove(
           gameState.board,
           cpuMove,
-          "white",
+          playerConfig.cpuPlayer,
         );
 
         const newScores = countPieces(newBoard);
-        const nextValidMoves = getValidMoves(newBoard, "black");
+        const nextPlayer = switchPlayer(playerConfig.cpuPlayer);
+        const nextValidMoves = getValidMoves(newBoard, nextPlayer);
         const gameHasEnded = isGameOver(newBoard);
-        const playerCanMove = hasValidMoves(newBoard, "black");
+        const playerCanMove = hasValidMoves(newBoard, nextPlayer);
 
         setGameState((prev) => ({
           ...prev,
           board: newBoard,
-          currentPlayer: playerCanMove ? "black" : "white",
+          currentPlayer: playerCanMove ? nextPlayer : playerConfig.cpuPlayer,
           validMoves: playerCanMove
             ? nextValidMoves
-            : getValidMoves(newBoard, "white"),
+            : getValidMoves(newBoard, playerConfig.cpuPlayer),
           gameStatus: gameHasEnded ? "finished" : "playing",
           scores: newScores,
           lastMove: cpuMove,
@@ -156,7 +168,7 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
         return false;
       }
     },
-    [gameState, onGameEnd],
+    [gameState, onGameEnd, playerConfig, switchPlayer],
   );
 
   const setThinking = useCallback((thinking: boolean) => {
@@ -185,10 +197,10 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
         ...prev,
         currentPlayer: nextPlayer,
         validMoves: nextValidMoves,
-        isThinking: nextPlayer === "white",
+        isThinking: nextPlayer === playerConfig.cpuPlayer,
       }));
     }
-  }, [gameState, switchPlayer, onGameEnd]);
+  }, [gameState, switchPlayer, onGameEnd, playerConfig]);
 
   return {
     gameState,
@@ -201,5 +213,6 @@ export function useGameLogic({ onGameEnd }: UseGameLogicProps = {}) {
     isGameOver: gameState.gameStatus === "finished",
     winner:
       gameState.gameStatus === "finished" ? getWinner(gameState.board) : null,
+    playerConfig,
   };
 }

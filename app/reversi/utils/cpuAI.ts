@@ -182,9 +182,10 @@ export function minimax(
 export function getBestMove(
   board: Board,
   difficulty: Difficulty,
+  cpuPlayer: Player = "white",
 ): Position | null {
   const config = DIFFICULTY_CONFIG[difficulty];
-  const validMoves = getValidMoves(board, "white");
+  const validMoves = getValidMoves(board, cpuPlayer);
 
   if (validMoves.length === 0) {
     return null;
@@ -204,7 +205,7 @@ export function getBestMove(
     -Infinity,
     Infinity,
     true,
-    "white",
+    cpuPlayer,
   );
 
   return result.move || validMoves[0];

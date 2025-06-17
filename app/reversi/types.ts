@@ -48,3 +48,8 @@ export interface GameStats {
   winRate: number;
   bestScore: number;
 }
+
+export interface PlayerConfig {
+  humanPlayer: Player;
+  cpuPlayer: Player;
+}

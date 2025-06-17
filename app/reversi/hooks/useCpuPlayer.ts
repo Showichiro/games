@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
-import type { Board, Difficulty, Position } from "../types";
+import type { Board, Difficulty, Position, Player } from "../types";
 import { getBestMove, getRandomThinkingTime } from "../utils/cpuAI";
 
 interface UseCpuPlayerProps {
   board: Board;
   isThinking: boolean;
-  currentPlayer: "black" | "white";
+  currentPlayer: Player;
+  cpuPlayer: Player;
   gameStatus: "playing" | "paused" | "finished";
   difficulty: Difficulty;
   onCpuMove: (move: Position) => void;
@@ -18,13 +19,18 @@ export function useCpuPlayer({
   board,
   isThinking,
   currentPlayer,
+  cpuPlayer,
   gameStatus,
   difficulty,
   onCpuMove,
   onSetThinking,
 }: UseCpuPlayerProps) {
   const makeCpuMove = useCallback(async () => {
-    if (gameStatus !== "playing" || currentPlayer !== "white" || !isThinking) {
+    if (
+      gameStatus !== "playing" ||
+      currentPlayer !== cpuPlayer ||
+      !isThinking
+    ) {
       return;
     }
 
@@ -33,11 +39,11 @@ export function useCpuPlayer({
 
       await new Promise((resolve) => setTimeout(resolve, thinkingTime));
 
-      if (gameStatus !== "playing" || currentPlayer !== "white") {
+      if (gameStatus !== "playing" || currentPlayer !== cpuPlayer) {
         return;
       }
 
-      const bestMove = getBestMove(board, difficulty);
+      const bestMove = getBestMove(board, difficulty, cpuPlayer);
 
       if (bestMove) {
         onCpuMove(bestMove);
@@ -52,6 +58,7 @@ export function useCpuPlayer({
     board,
     isThinking,
     currentPlayer,
+    cpuPlayer,
     gameStatus,
     difficulty,
     onCpuMove,
@@ -59,12 +66,12 @@ export function useCpuPlayer({
   ]);
 
   useEffect(() => {
-    if (isThinking && currentPlayer === "white" && gameStatus === "playing") {
+    if (isThinking && currentPlayer === cpuPlayer && gameStatus === "playing") {
       makeCpuMove();
     }
-  }, [isThinking, currentPlayer, gameStatus, makeCpuMove]);
+  }, [isThinking, currentPlayer, cpuPlayer, gameStatus, makeCpuMove]);
 
   return {
-    isThinking: isThinking && currentPlayer === "white",
+    isThinking: isThinking && currentPlayer === cpuPlayer,
   };
 }

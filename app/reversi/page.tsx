@@ -5,13 +5,21 @@ import { motion } from "motion/react";
 import GameBoard from "./components/GameBoard";
 import GameHeader from "./components/GameHeader";
 import GameControls from "./components/GameControls";
+import GameCompleteModal from "./components/GameCompleteModal";
+import GameStartModal from "./components/GameStartModal";
 import { useGameLogic } from "./hooks/useGameLogic";
 import { useCpuPlayer } from "./hooks/useCpuPlayer";
-import type { Difficulty } from "./types";
+import type { Difficulty, Player, PlayerConfig } from "./types";
 
 export default function ReversiPage() {
   const [difficulty, setDifficulty] = useState<Difficulty>("beginner");
   const [showHints, setShowHints] = useState(true);
+  const [showGameCompleteModal, setShowGameCompleteModal] = useState(false);
+  const [showGameStartModal, setShowGameStartModal] = useState(true);
+  const [playerConfig, setPlayerConfig] = useState<PlayerConfig>({
+    humanPlayer: "black",
+    cpuPlayer: "white",
+  });
 
   const {
     gameState,
@@ -22,20 +30,12 @@ export default function ReversiPage() {
     isGameOver,
     winner,
   } = useGameLogic({
-    difficulty,
+    playerConfig,
     onGameEnd: (gameWinner) => {
       if (gameWinner) {
-        const winnerText =
-          gameWinner === "black"
-            ? "あなたの勝ち！"
-            : gameWinner === "white"
-              ? "CPUの勝ち！"
-              : "引き分け！";
         setTimeout(() => {
-          alert(
-            `ゲーム終了！ ${winnerText}\n\n最終スコア: あなた ${gameState.scores.black} - ${gameState.scores.white} CPU`,
-          );
-        }, 500);
+          setShowGameCompleteModal(true);
+        }, 1000);
       }
     },
   });
@@ -44,6 +44,7 @@ export default function ReversiPage() {
     board: gameState.board,
     isThinking: gameState.isThinking,
     currentPlayer: gameState.currentPlayer,
+    cpuPlayer: playerConfig.cpuPlayer,
     gameStatus: gameState.gameStatus,
     difficulty,
     onCpuMove: makeCpuMove,
@@ -51,11 +52,30 @@ export default function ReversiPage() {
   });
 
   const handleNewGame = () => {
+    setShowGameStartModal(true);
+  };
+
+  const handlePlayerSelect = (selectedPlayer: Player) => {
+    const newPlayerConfig: PlayerConfig = {
+      humanPlayer: selectedPlayer,
+      cpuPlayer: selectedPlayer === "black" ? "white" : "black",
+    };
+    setPlayerConfig(newPlayerConfig);
+    setShowGameStartModal(false);
+    setShowGameCompleteModal(false);
     resetGame();
   };
 
   const handleToggleHints = () => {
     setShowHints(!showHints);
+  };
+
+  const handleCloseModal = () => {
+    setShowGameCompleteModal(false);
+  };
+
+  const handleCloseStartModal = () => {
+    setShowGameStartModal(false);
   };
 
   const getGameStatusText = () => {
@@ -68,8 +88,8 @@ export default function ReversiPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
-      <div className="container mx-auto max-w-4xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-2 sm:p-4">
+      <div className="container mx-auto max-w-4xl px-2 sm:px-4">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: -20 }}
@@ -85,7 +105,7 @@ export default function ReversiPage() {
         </motion.div>
 
         <motion.div
-          className="flex justify-center mb-6"
+          className="flex justify-center mb-6 overflow-hidden"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -99,7 +119,7 @@ export default function ReversiPage() {
             disabled={
               gameState.isThinking ||
               isGameOver ||
-              gameState.currentPlayer !== "black"
+              gameState.currentPlayer !== playerConfig.humanPlayer
             }
             showHints={showHints}
           />
@@ -160,6 +180,22 @@ export default function ReversiPage() {
             </p>
           </div>
         </motion.div>
+
+        <GameStartModal
+          isOpen={showGameStartModal}
+          onPlayerSelect={handlePlayerSelect}
+          onClose={handleCloseStartModal}
+          difficulty={difficulty}
+          onDifficultyChange={setDifficulty}
+        />
+
+        <GameCompleteModal
+          isOpen={showGameCompleteModal}
+          winner={winner}
+          scores={gameState.scores}
+          onNewGame={handleNewGame}
+          onClose={handleCloseModal}
+        />
       </div>
     </div>
   );
