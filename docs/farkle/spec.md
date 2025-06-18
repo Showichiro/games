@@ -66,30 +66,49 @@
 
 ### 3.2 モバイル最適化 UI
 
-- **レイアウト**
-  ```
-  モバイル（縦向き）:
-  +------------------+
-  |     Farkle       |
-  | Player 1: 2,450  |
-  | Turn: 350        |
-  +------------------+
-  |                  |
-  |   🎲 🎲 🎲      |
-  |   🎲 🎲 🎲      |
-  |                  |
-  | Selected: 1,5    |
-  | Score: 150       |
-  +------------------+
-  | [Roll] [Bank]    |
-  | [New Game]       |
-  +------------------+
+- **レイアウト設計**（共通コンポーネント活用）
+  ```typescript
+  // GameLayoutを使用した全体レイアウト
+  <GameLayout>
+    <div className="max-w-md mx-auto">
+      {/* ヘッダー部分 */}
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-white">Farkle</h1>
+        <div className="text-lg text-neutral-300">
+          Player 1: 2,450 | Turn: 350
+        </div>
+      </div>
+      
+      {/* ゲーム盤面 */}
+      <BoardContainer>
+        {/* サイコログリッド（3×2） */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          {/* 6個のサイコロ */}
+        </div>
+        
+        {/* 得点表示 */}
+        <div className="text-center mb-4">
+          <div>Selected: 1,5</div>
+          <div>Score: 150</div>
+        </div>
+      </BoardContainer>
+      
+      {/* 操作ボタン */}
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          <Button variant="primary" fullWidth>Roll</Button>
+          <Button variant="success" fullWidth>Bank</Button>
+        </div>
+        <Button variant="secondary" fullWidth>New Game</Button>
+      </div>
+    </div>
+  </GameLayout>
   ```
 
 - **タッチターゲット**
-  - サイコロサイズ: 60×60px以上
-  - ボタン最小サイズ: 44×44px
-  - 適切な余白とタッチエリア
+  - サイコロサイズ: 60×60px以上（タップ領域確保）
+  - Buttonコンポーネントのサイズ活用: 'md'（44×44px以上保証）
+  - BoardContainer内の適切なpadding活用
 
 ### 3.3 アニメーション仕様（motion）
 
@@ -131,7 +150,7 @@
   - スコアアタックモード（制限時間内で最高得点）
   - 練習モード（得点計算の学習）
 
-- **マルチプレイヤー**
+- **マルチプレイヤー**（将来実装予定）
   - ローカル対戦（デバイス共有）
   - ホットシート方式（交代でプレイ）
 
@@ -168,7 +187,6 @@
 
 - **ジェスチャー**
   - サイコロのドラッグ選択（複数選択）
-  - スワイプでプレイヤー切り替え
   - プルダウンで新規ゲーム
 
 - **画面対応**
@@ -207,13 +225,13 @@
 
 ```
 app/farkle/
-├── page.tsx                 # メインゲームページ
+├── page.tsx                 # メインゲームページ（GameLayout使用）
 ├── components/
-│   ├── GameBoard.tsx        # ゲーム盤面
-│   ├── Dice.tsx            # サイコロコンポーネント
+│   ├── GameBoard.tsx        # ゲーム盤面（BoardContainer使用）
+│   ├── Dice.tsx            # サイコロコンポーネント（motion付き）
 │   ├── ScoreDisplay.tsx    # スコア表示
 │   ├── PlayerInfo.tsx      # プレイヤー情報
-│   ├── GameControls.tsx    # ゲーム操作ボタン
+│   ├── GameControls.tsx    # ゲーム操作ボタン（Button使用）
 │   ├── ScoreCalculator.tsx # 得点計算表示
 │   ├── TutorialModal.tsx   # チュートリアル
 │   ├── GameOverModal.tsx   # ゲーム終了画面
@@ -229,6 +247,15 @@ app/farkle/
     ├── scoreCalculator.ts  # 得点計算ロジック
     ├── gameLogic.ts       # ゲームルール実装
     └── aiPlayer.ts        # AIプレイヤー
+
+# 共通コンポーネント活用
+# - GameLayout: 全体レイアウト
+# - BoardContainer: ゲーム盤面背景
+# - Button系: 操作ボタン（variant活用）
+#   - primary: Roll
+#   - success: Bank
+#   - secondary: New Game
+#   - danger: 危険なアクション
 ```
 
 ### 5.3 状態管理設計
@@ -248,7 +275,7 @@ interface GameState {
   
   // ゲーム設定
   targetScore: number;
-  gameMode: 'single' | 'multi';
+  gameMode: 'single'; // マルチプレイヤーは将来実装
   aiDifficulty: 'easy' | 'normal' | 'hard';
 }
 
@@ -265,11 +292,13 @@ interface Player {
 
 ### 6.1 視覚デザイン
 
-- **カラーパレット**
-  - メイン: ダークグリーン（フェルトテーブル風）
-  - アクセント: ゴールド（得点・選択状態）
-  - サイコロ: アイボリー（立体感）
-  - 警告: レッド（Farkle状態）
+- **カラーパレット**（既存の共通デザインと調和）
+  - ベース: GameLayout（neutral-900背景、white文字）
+  - ボード: BoardContainer（neutral-700背景）
+  - アクセント: ゴールド/イエロー（得点・選択状態）
+  - サイコロ: アイボリー/白（立体感）
+  - 警告: Button danger variant（レッド系）
+  - 成功: Button success variant（グリーン系）
 
 - **サイコロデザイン**
   - 3D風の立体表現
@@ -315,7 +344,11 @@ interface Player {
 - 統計機能
 - チュートリアル
 
-### Phase 4: 最終調整
+### Phase 4 (将来): マルチプレイヤー機能
+- ローカル対戦機能
+- ホットシート方式の実装
+
+### Phase 5: 最終調整
 - パフォーマンス最適化
 - アクセシビリティ対応
 - バグ修正・テスト
