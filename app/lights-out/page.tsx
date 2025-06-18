@@ -1,9 +1,9 @@
 "use client";
 
-import { GameLayout, BoardContainer } from "@/components/common";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { BoardContainer, GameLayout } from "@/components/common";
 import GameBoard from "./components/GameBoard";
 import GameCompleteModal from "./components/GameCompleteModal";
 import GameControls from "./components/GameControls";
@@ -459,7 +459,9 @@ export default function LightsOut() {
 
       <GameLayout
         sidebar={
-          <> {/* This content goes into GameLayout's aside (w-64, bg-neutral-800) */}
+          <>
+            {" "}
+            {/* This content goes into GameLayout's aside (w-64, bg-neutral-800) */}
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-neutral-100">
                 操作履歴 ({moveHistory.length})
@@ -473,8 +475,9 @@ export default function LightsOut() {
                 </button>
               )}
             </div>
-
-            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-neutral-700 scrollbar-thumb-neutral-500 pr-1"> {/* Adjusted scrollbar track for solid bg */}
+            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-neutral-700 scrollbar-thumb-neutral-500 pr-1">
+              {" "}
+              {/* Adjusted scrollbar track for solid bg */}
               <div className="min-h-[12rem]">
                 {moveHistory.length === 0 ? (
                   <div className="text-neutral-400 text-center py-8">
@@ -517,7 +520,6 @@ export default function LightsOut() {
                 )}
               </div>
             </div>
-
             <div className="space-y-2">
               <Link href="/" className="block">
                 <button className="w-full px-4 py-2 bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded-lg font-semibold transition-colors">
