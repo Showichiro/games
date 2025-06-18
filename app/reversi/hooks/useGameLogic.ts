@@ -84,6 +84,8 @@ export function useGameLogic({
     const board = initializeBoard();
     const scores = countPieces(board);
     const firstPlayer: Player = "black"; // 常に黒が先手
+    const shouldStartThinking = firstPlayer === playerConfig.cpuPlayer;
+
     setGameState({
       board,
       currentPlayer: firstPlayer,
@@ -92,7 +94,7 @@ export function useGameLogic({
       scores,
       lastMove: null,
       capturedPieces: [],
-      isThinking: firstPlayer === playerConfig.cpuPlayer,
+      isThinking: shouldStartThinking,
     });
     clearHistory(); // 履歴もクリア
   }, [playerConfig, clearHistory]);

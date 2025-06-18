@@ -8,6 +8,7 @@ interface GameHeaderProps {
   currentPlayer: Player;
   isThinking?: boolean;
   gameStatus?: string;
+  humanPlayer?: Player;
 }
 
 export default function GameHeader({
@@ -15,10 +16,11 @@ export default function GameHeader({
   currentPlayer,
   isThinking = false,
   gameStatus,
+  humanPlayer = "black",
 }: GameHeaderProps) {
   const playerNames = {
-    black: "あなた",
-    white: "CPU",
+    black: humanPlayer === "black" ? "あなた" : "CPU",
+    white: humanPlayer === "white" ? "あなた" : "CPU",
   };
 
   const playerIcons = {

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameLayout } from "@/components/common";
 import CpuThinking from "./components/CpuThinking";
 import GameBoard from "./components/GameBoard";
@@ -55,6 +55,11 @@ export default function ReversiPage() {
     },
   });
 
+  // Reset game when player configuration changes
+  useEffect(() => {
+    resetGame();
+  }, [playerConfig, resetGame]);
+
   useCpuPlayer({
     board: gameState.board,
     isThinking: gameState.isThinking,
@@ -79,7 +84,6 @@ export default function ReversiPage() {
     setPlayerConfig(newPlayerConfig);
     setShowGameStartModal(false);
     setShowGameCompleteModal(false);
-    resetGame();
   };
 
   const handleToggleHints = () => {
@@ -96,8 +100,8 @@ export default function ReversiPage() {
 
   const getGameStatusText = () => {
     if (isGameOver) {
-      if (winner === "black") return "🎉 あなたの勝ち！";
-      if (winner === "white") return "😢 CPUの勝ち！";
+      if (winner === playerConfig.humanPlayer) return "🎉 あなたの勝ち！";
+      if (winner === playerConfig.cpuPlayer) return "😢 CPUの勝ち！";
       return "🤝 引き分け！";
     }
     return undefined;
@@ -134,6 +138,7 @@ export default function ReversiPage() {
               currentPlayer={gameState.currentPlayer}
               isThinking={gameState.isThinking}
               gameStatus={getGameStatusText()}
+              humanPlayer={playerConfig.humanPlayer}
             />
           </motion.div>
 
