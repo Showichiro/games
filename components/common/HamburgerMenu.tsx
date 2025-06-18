@@ -39,7 +39,7 @@ export default function HamburgerMenu({
   return (
     <>
       {/* Hamburger Menu Button */}
-      <div className={`fixed z-40 ${positionClasses[position]}`}>
+      <div className={`fixed z-40 md:hidden ${positionClasses[position]}`}>
         <HamburgerIcon isOpen={isOpen} onClick={onToggle} />
       </div>
 
@@ -58,7 +58,9 @@ export default function HamburgerMenu({
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className={`fixed bg-white rounded-lg shadow-xl z-40 min-w-[200px] md:hidden ${menuPositionClasses[position]} ${className}`}
+              className={`fixed bg-white rounded-lg shadow-xl z-40 min-w-[200px] md:hidden ${
+                menuPositionClasses[position]
+              } ${className}`}
             >
               <div className="py-2">{children}</div>
             </motion.div>
