@@ -1,5 +1,6 @@
 "use client";
 
+import { GameLayout, BoardContainer } from "@/components/common";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -444,7 +445,7 @@ export default function LightsOut() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800 text-neutral-100">
       <HamburgerMenu
         showMenu={showMenu}
         difficulty={difficulty}
@@ -456,53 +457,16 @@ export default function LightsOut() {
         onDifficultyChange={handleDifficultyChange}
       />
 
-      {/* Desktop Layout */}
-      <div className="hidden lg:flex min-h-screen">
-        {/* Main Game Area */}
-        <div className="flex-1 flex items-center justify-center p-8">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-lg"
-          >
-            <GameHeader
-              moves={moves}
-              elapsedTime={elapsedTime}
-              difficulty={difficulty}
-              difficultyConfig={DIFFICULTY_CONFIG}
-              onDifficultyChange={handleDifficultyChange}
-              formatTime={formatTime}
-            />
-
-            <GameBoard
-              board={board}
-              gameComplete={gameComplete}
-              onCellClick={handleCellClick}
-              hintCell={hintCell}
-              affectedCells={affectedCells}
-              showCompletionAnimation={showCompletionAnimation}
-            />
-
-            <GameControls
-              onNewGame={newGame}
-              onResetGame={resetGame}
-              onShowTutorial={showTutorialAgain}
-              onHint={showHint}
-              hintsUsed={hintsUsed}
-            />
-          </motion.div>
-        </div>
-
-        {/* Sidebar for History Panel */}
-        <div className="w-80 bg-neutral-800 border-l border-neutral-700 p-6">
-          <div className="text-white">
+      <GameLayout
+        sidebar={
+          <div className="hidden lg:block"> {/* This content goes into GameLayout's aside (w-64, bg-neutral-800) */}
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold">
+              <h3 className="text-lg font-bold text-neutral-100">
                 操作履歴 ({moveHistory.length})
               </h3>
               {moveHistory.length > 0 && (
                 <button
-                  className="text-error-500 hover:text-error-700 text-sm font-medium"
+                  className="text-error-400 hover:text-error-300 text-sm font-medium"
                   onClick={clearHistory}
                 >
                   クリア
@@ -510,7 +474,7 @@ export default function LightsOut() {
               )}
             </div>
 
-            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-neutral-800 scrollbar-thumb-neutral-600">
+            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-neutral-700 scrollbar-thumb-neutral-500 pr-1"> {/* Adjusted scrollbar track for solid bg */}
               <div className="min-h-[12rem]">
                 {moveHistory.length === 0 ? (
                   <div className="text-neutral-400 text-center py-8">
@@ -527,7 +491,7 @@ export default function LightsOut() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.03 }}
-                        className="flex items-center justify-between p-2 bg-neutral-700 rounded-lg hover:bg-neutral-600 transition-colors text-sm min-w-0"
+                        className="flex items-center justify-between p-2 bg-neutral-700 rounded-lg hover:bg-neutral-600 transition-colors text-sm min-w-0" // Solid bg for items
                       >
                         <div className="flex items-center gap-2 min-w-0 flex-1">
                           <div className="w-5 h-5 bg-brand-500 text-neutral-0 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
@@ -542,7 +506,7 @@ export default function LightsOut() {
                           </div>
                         </div>
                         <button
-                          className="px-2 py-1 text-xs bg-brand-primary hover:bg-brand-700 text-neutral-0 rounded transition-colors flex-shrink-0 ml-2"
+                          className="px-2 py-1 text-xs bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded transition-colors flex-shrink-0 ml-2"
                           onClick={() => replayToMove(index)}
                         >
                           再生
@@ -556,12 +520,12 @@ export default function LightsOut() {
 
             <div className="space-y-2">
               <Link href="/" className="block">
-                <button className="w-full px-4 py-2 bg-brand-primary hover:bg-brand-700 text-neutral-0 rounded-lg font-semibold transition-colors">
+                <button className="w-full px-4 py-2 bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded-lg font-semibold transition-colors">
                   🏠 ホームに戻る
                 </button>
               </Link>
               <button
-                className="w-full px-4 py-2 bg-success-600 hover:bg-success-700 text-neutral-0 rounded-lg font-semibold transition-colors relative"
+                className="w-full px-4 py-2 bg-success-600 hover:bg-success-500 text-neutral-0 rounded-lg font-semibold transition-colors relative"
                 onClick={showHint}
                 disabled={gameComplete}
               >
@@ -573,50 +537,54 @@ export default function LightsOut() {
                 )}
               </button>
               <button
-                className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-neutral-0 rounded-lg font-semibold transition-colors"
+                className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-500 text-neutral-0 rounded-lg font-semibold transition-colors"
                 onClick={showTutorialAgain}
               >
                 ❓ ルール説明
               </button>
             </div>
           </div>
-        </div>
-      </div>
+        }
+      >
+        {/* Children of GameLayout start here */}
+        <GameHeader
+          moves={moves}
+          elapsedTime={elapsedTime}
+          difficulty={difficulty}
+          difficultyConfig={DIFFICULTY_CONFIG}
+          onDifficultyChange={handleDifficultyChange}
+          formatTime={formatTime}
+        />
 
-      {/* Mobile/Tablet Layout */}
-      <div className="lg:hidden flex flex-col items-center justify-center min-h-screen p-4">
+        {/* Main game content area (Board and Controls) */}
+        {/* The div with class "flex-1" from previous structure is removed as GameLayout's main area handles flex growth */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md"
+          className="w-full max-w-lg mx-auto lg:max-w-md xl:max-w-lg mt-4 lg:mt-6" // Added margin-top to space from GameHeader
         >
-          <GameHeader
-            moves={moves}
-            elapsedTime={elapsedTime}
-            difficulty={difficulty}
-            difficultyConfig={DIFFICULTY_CONFIG}
-            onDifficultyChange={handleDifficultyChange}
-            formatTime={formatTime}
-          />
-
-          <GameBoard
-            board={board}
-            gameComplete={gameComplete}
-            onCellClick={handleCellClick}
-            hintCell={hintCell}
-            affectedCells={affectedCells}
-            showCompletionAnimation={showCompletionAnimation}
-          />
-
-          <GameControls
-            onNewGame={newGame}
-            onResetGame={resetGame}
-            onShowTutorial={showTutorialAgain}
-            onHint={showHint}
-            hintsUsed={hintsUsed}
-          />
+          <BoardContainer>
+            <GameBoard
+              board={board}
+              gameComplete={gameComplete}
+              onCellClick={handleCellClick}
+              hintCell={hintCell}
+              affectedCells={affectedCells}
+              showCompletionAnimation={showCompletionAnimation}
+            />
+          </BoardContainer>
+          <div className="mt-4 lg:mt-6">
+            <GameControls
+              onNewGame={newGame}
+              onResetGame={resetGame}
+              onShowTutorial={showTutorialAgain}
+              onHint={showHint}
+              hintsUsed={hintsUsed}
+            />
+          </div>
         </motion.div>
-      </div>
+        {/* Children of GameLayout end here */}
+      </GameLayout>
 
       <HistoryModal
         showHistoryModal={showHistoryModal}
