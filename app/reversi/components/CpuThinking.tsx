@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
 import { Brain, Cpu } from "lucide-react";
+import { motion } from "motion/react";
 
 interface CpuThinkingProps {
   isVisible: boolean;

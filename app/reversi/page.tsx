@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import { GameLayout } from "@/components/common";
+import CpuThinking from "./components/CpuThinking";
 import GameBoard from "./components/GameBoard";
 import GameCompleteModal from "./components/GameCompleteModal";
 import GameControls from "./components/GameControls";
@@ -11,7 +12,6 @@ import GameHistoryPanel from "./components/GameHistoryPanel";
 import GameStartModal from "./components/GameStartModal";
 import SettingsModal from "./components/SettingsModal";
 import TutorialModal from "./components/TutorialModal";
-import CpuThinking from "./components/CpuThinking";
 import { useCpuPlayer } from "./hooks/useCpuPlayer";
 import { useGameLogic } from "./hooks/useGameLogic";
 import type { Difficulty, Player, PlayerConfig } from "./types";

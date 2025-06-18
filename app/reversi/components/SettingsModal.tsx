@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
-import { X, Settings, Volume2, VolumeX, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Settings, Volume2, VolumeX, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import Button from "@/components/common/Button";
 import type { Difficulty } from "../types";
 
