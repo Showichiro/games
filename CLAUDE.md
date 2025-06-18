@@ -131,6 +131,96 @@ This project uses the Motion library (framer-motion) for animations:
 - Provide appropriate animation durations (not too fast/slow)
 - Ensure animations don't interfere with functionality
 
-## Development Workflow
+## Code Review Guidelines
 
-- 作業が完了したらlint/format/buildを確認して問題なければコミットするというルールを記録
+### Review Principles
+
+**Quality First:**
+- Code must pass all quality checks (`pnpm lint`, `pnpm format`, `pnpm build`) before review
+- Reviews should focus on architecture, logic, and maintainability, not formatting
+- Ensure TypeScript strict mode compliance and proper type safety
+
+**Consistency and Standards:**
+- Follow existing project patterns and conventions
+- Use established common components (`components/common/`) when possible
+- Maintain consistent naming conventions across the codebase
+- Adhere to the established file and folder structure (`app/` for pages, `components/` for reusable UI)
+
+**Performance and User Experience:**
+- Review animation implementations for performance impact
+- Ensure proper loading states and error handling
+- Validate mobile responsiveness and accessibility
+- Check for unnecessary re-renders and optimize React components
+
+### Review Checklist
+
+**Code Structure:**
+- [ ] Follows Next.js App Router conventions
+- [ ] Uses TypeScript properly with appropriate types
+- [ ] Imports are organized (handled by Biome)
+- [ ] Path aliases (`@/*`) are used correctly
+- [ ] Common components are reused where appropriate
+
+**React Best Practices:**
+- [ ] Components are properly memoized when needed
+- [ ] Hooks are used correctly and follow rules of hooks
+- [ ] State management is appropriate for the use case
+- [ ] Event handlers are properly defined and don't cause unnecessary re-renders
+
+**Styling and UI:**
+- [ ] Tailwind CSS classes are used consistently
+- [ ] Motion animations follow established patterns
+- [ ] Responsive design is implemented
+- [ ] Button variants are semantically appropriate
+- [ ] Accessibility attributes are included where needed
+
+**Performance:**
+- [ ] No unnecessary dependencies are added
+- [ ] Images and assets are optimized
+- [ ] Client/server components are used appropriately
+- [ ] Bundle size impact is considered
+
+**Testing and Quality:**
+- [ ] All quality checks pass (`pnpm lint`, `pnpm format`, `pnpm build`)
+- [ ] Code is readable and well-documented
+- [ ] Error boundaries and error handling are in place
+- [ ] No console errors or warnings in development
+
+### Common Issues to Watch For
+
+**TypeScript:**
+- Missing or `any` types
+- Improper use of assertions
+- Missing null/undefined checks
+
+**React:**
+- Direct state mutation
+- Missing dependencies in effect hooks
+- Improper key props in lists
+- Memory leaks from uncleared subscriptions
+
+**Performance:**
+- Large bundle imports
+- Unnecessary re-renders
+- Missing memoization for expensive operations
+- Layout thrashing from animations
+
+**Accessibility:**
+- Missing alt text for images
+- Poor keyboard navigation
+- Insufficient color contrast
+- Missing ARIA labels
+
+### Communication Guidelines
+
+**Constructive Feedback:**
+- Explain the "why" behind suggestions
+- Provide specific examples or documentation links
+- Suggest alternatives rather than just pointing out problems
+- Focus on code improvement, not personal criticism
+
+**Efficient Reviews:**
+- Review in small, focused chunks
+- Prioritize high-impact issues first
+- Use code comments for specific line feedback
+- Summarize overall architectural concerns separately
