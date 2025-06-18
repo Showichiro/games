@@ -120,11 +120,14 @@ export default function HamburgerMenu({
                   <p className="text-sm text-neutral-500 mb-2">難易度</p>
                   <div className="flex gap-1">
                     {(Object.keys(difficultyConfig) as Difficulty[]).map(
-                      (d) => ( // Renamed diff to d for clarity
+                      (
+                        d, // Renamed diff to d for clarity
+                      ) => (
                         <Button
                           key={d}
                           size="xs" // px-2.5 py-1.5 text-xs. Original: px-2 py-1 text-xs
-                          className={`px-2 py-1 font-medium transition-colors focus:ring-offset-0 focus:ring-1 ${ // Keep original padding, adjust focus ring
+                          className={`px-2 py-1 font-medium transition-colors focus:ring-offset-0 focus:ring-1 ${
+                            // Keep original padding, adjust focus ring
                             difficulty === d
                               ? "bg-brand-primary text-neutral-0 focus:ring-brand-300"
                               : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300 focus:ring-neutral-400"
