@@ -19,8 +19,7 @@ export default function GameHeader({
   difficultyConfig,
   onDifficultyChange,
   formatTime,
-}: GameHeaderProps) {
-  const tapMotionProps = { whileTap: { scale: 0.95 } }; // To match original tap effect
+}: GameHeaderProps) { // To match original tap effect
 
   return (
     <div className="text-center mb-6 lg:mb-8 relative">
@@ -44,10 +43,6 @@ export default function GameHeader({
                   ? "bg-brand-primary text-neutral-0 focus:ring-brand-300"
                   : "bg-neutral-600 text-neutral-0 hover:bg-neutral-700 focus:ring-neutral-400"
               }`}
-              // Pass motionProps to ensure the tap effect is consistent,
-              // LightsOutButton default hover will also apply.
-              // If only tap is desired, motionProps={{...tapMotionProps, whileHover: {}}}
-              motionProps={tapMotionProps}
               onClick={() => onDifficultyChange(d)}
               // The `variant` prop could be used if styles were aligned, e.g., variant={isActive ? 'primary' : 'dark'}
               // But here specific class names are more direct for matching existing styles.

@@ -10,6 +10,7 @@ export {
   default as Button,
   IconButton,
   LightsOutButton,
+  LightsOutIconButton,
   LightsOutPrimaryButton,
   LightsOutSecondaryButton,
   LightsOutSuccessButton,

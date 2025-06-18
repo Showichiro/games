@@ -21,8 +21,6 @@ export default function GameControls({
   onHint,
   hintsUsed,
 }: GameControlsProps) {
-  // Custom motion props to replicate existing whileTap, if LightsOutButton defaults are not enough
-  const tapMotionProps = { whileTap: { scale: 0.95 } };
 
   return (
     <div className="flex gap-3 lg:gap-4 justify-center flex-wrap">
@@ -35,7 +33,6 @@ export default function GameControls({
       <LightsOutPrimaryButton
         size="xl" // Provides base padding and text size
         className="lg:px-8 lg:py-4 text-sm lg:text-base bg-brand-primary hover:bg-brand-700 text-neutral-0" // Overrides for specific colors and responsive text/padding
-        motionProps={tapMotionProps}
         onClick={onNewGame}
       >
         新規
@@ -51,7 +48,6 @@ export default function GameControls({
       <LightsOutSecondaryButton
         size="xl" // Provides base padding and text size
         className="lg:px-8 lg:py-4 text-sm lg:text-base bg-neutral-600 hover:bg-neutral-700 text-neutral-0" // Overrides for specific colors and responsive text/padding
-        motionProps={tapMotionProps}
         onClick={onResetGame}
       >
         リセット
@@ -66,7 +62,6 @@ export default function GameControls({
         variant="success" // Base is green-500
         size="md" // px-4 py-2, original py-3
         className="px-4 py-3 bg-success-600 hover:bg-success-700 text-neutral-0 relative lg:hidden" // Custom padding, exact colors, and visibility
-        motionProps={tapMotionProps}
         onClick={onHint}
         aria-label="Hint"
       >
@@ -86,7 +81,6 @@ export default function GameControls({
       <LightsOutButton
         size="md" // px-4 py-2, original py-3
         className="px-4 py-3 bg-purple-600 hover:bg-purple-700 text-neutral-0 relative lg:hidden" // Custom padding, exact colors, and visibility
-        motionProps={tapMotionProps}
         onClick={onShowTutorial}
         aria-label="Tutorial"
       >

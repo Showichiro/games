@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react"; // motion needed for icon and AnimatePresence
 import Link from "next/link";
-import { Button, IconButton } from "@/components/common"; // Changed path alias
+import { Button, LightsOutIconButton } from "@/components/common"; // Changed path alias
 import type { Difficulty, DifficultyConfig } from "../types";
 
 interface HamburgerMenuProps {
@@ -30,7 +30,7 @@ export default function HamburgerMenu({
     <>
       {/* Hamburger Menu Button */}
       <div className="fixed top-4 right-4 z-40 md:hidden">
-        <IconButton
+        <LightsOutIconButton
           icon={
             <div className="w-5 h-5 flex flex-col justify-around">
               <motion.div
@@ -63,7 +63,6 @@ export default function HamburgerMenu({
           variant="dark" // bg-gray-800, text-white. Original was bg-neutral-700. This is close.
           size="md" // Default padding. Icon size w-5 h-5.
           className="w-10 h-10 bg-neutral-700 hover:bg-neutral-600 text-white" // Override for exact colors and size
-          motionProps={{ whileTap: { scale: 0.95 } }}
         />
       </div>
 
