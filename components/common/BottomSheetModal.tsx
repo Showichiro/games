@@ -3,7 +3,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 
-export interface BottomSheetModalProps { // Added export
+export interface BottomSheetModalProps {
+  // Added export
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -41,13 +42,13 @@ export default function BottomSheetModal({
             {/* Header */}
             <div className="p-4 border-b border-neutral-200 flex justify-between items-center flex-shrink-0">
               <h3 className="text-lg font-bold text-default-font">{title}</h3>
-              {headerActions && <div className="flex gap-2 items-center">{headerActions}</div>}
+              {headerActions && (
+                <div className="flex gap-2 items-center">{headerActions}</div>
+              )}
             </div>
 
             {/* Content */}
-            <div className="p-4 overflow-y-auto flex-grow">
-              {children}
-            </div>
+            <div className="p-4 overflow-y-auto flex-grow">{children}</div>
           </motion.div>
         </motion.div>
       )}

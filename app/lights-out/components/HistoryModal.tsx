@@ -58,10 +58,7 @@ export default function HistoryModal({
       onClose={onClose}
       title={`操作履歴 (${moveHistory.length})`}
       headerActions={headerActions}
-      // className can be used to pass specific styling to the sheet's main div if needed, e.g. "max-w-lg"
-      // The BottomSheetModal already has max-w-md by default.
     >
-      {/* Content for BottomSheetModal's children prop */}
       {moveHistory.length === 0 ? (
         <div className="text-center text-subtext-color py-8">
           <p>まだ操作履歴がありません</p>
@@ -77,7 +74,7 @@ export default function HistoryModal({
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors dark:bg-neutral-800 dark:hover:bg-neutral-700"
+              className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 bg-brand-500 text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0">
@@ -101,7 +98,7 @@ export default function HistoryModal({
               </div>
               <Button
                 size="xs"
-                className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full hover:bg-brand-200 transition-colors focus:ring-brand-300 focus:ring-offset-0 dark:bg-brand-800 dark:text-brand-200 dark:hover:bg-brand-700 shrink-0"
+                className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full hover:bg-brand-200 transition-colors focus:ring-brand-300 focus:ring-offset-0 shrink-0"
                 onClick={() => onReplayToMove(index)}
               >
                 再生

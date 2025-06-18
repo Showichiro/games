@@ -3,7 +3,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 
-export interface ModalProps { // Added export
+export interface ModalProps {
+  // Added export
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;

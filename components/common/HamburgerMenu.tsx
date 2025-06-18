@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 import HamburgerIcon from "./HamburgerIcon"; // Import the new HamburgerIcon
 
-export interface HamburgerMenuProps { // Added export
+export interface HamburgerMenuProps {
+  // Added export
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;

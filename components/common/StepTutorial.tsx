@@ -3,15 +3,17 @@
 import React from "react";
 import { motion } from "motion/react";
 import Modal from "./Modal"; // Using the common Modal component
-import { Button } from "./Button"; // Assuming Button is in common
+import Button from "./Button";
 
-export interface TutorialStep { // Added export
+export interface TutorialStep {
+  // Added export
   title: string;
   content: React.ReactNode;
   customContent?: React.ReactNode;
 }
 
-export interface StepTutorialProps { // Added export
+export interface StepTutorialProps {
+  // Added export
   isOpen: boolean;
   onClose: () => void;
   steps: TutorialStep[];
@@ -44,7 +46,11 @@ export default function StepTutorial({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="max-w-md w-full text-center">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="max-w-md w-full text-center"
+    >
       {/* Using motion.div for content scaling animation, similar to original TutorialModal */}
       <motion.div
         key={currentStep} // Animate when step changes

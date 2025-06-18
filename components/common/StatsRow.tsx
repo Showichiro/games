@@ -2,12 +2,14 @@
 
 import React from "react";
 
-export interface StatsItem { // Added export
+export interface StatsItem {
+  // Added export
   label: string;
   value: string | number;
 }
 
-export interface StatsRowProps { // Added export
+export interface StatsRowProps {
+  // Added export
   items: StatsItem[];
   className?: string;
   itemClassName?: string;
@@ -15,7 +17,7 @@ export interface StatsRowProps { // Added export
 
 export default function StatsRow({
   items,
-  className = "flex justify-center gap-6 text-neutral-700 dark:text-neutral-300 text-sm md:text-base", // Default styling
+  className = "flex justify-center gap-6 text-neutral-700 text-sm md:text-base", // Default styling
   itemClassName = "", // Default styling for individual items
 }: StatsRowProps) {
   return (

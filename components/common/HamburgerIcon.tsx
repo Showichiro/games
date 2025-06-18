@@ -3,7 +3,8 @@
 import { motion } from "motion/react";
 import React from "react";
 
-export interface HamburgerIconProps { // Added export
+export interface HamburgerIconProps {
+  // Added export
   isOpen: boolean;
   onClick: () => void;
   className?: string;
