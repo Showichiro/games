@@ -32,7 +32,7 @@ export default function HamburgerMenu({
       <div className="fixed top-4 right-4 z-40 md:hidden">
         <LightsOutIconButton
           icon={
-            <div className="w-5 h-5 flex flex-col justify-around">
+            <div className="w-5 h-5 flex flex-col justify-center items-center gap-1">
               <motion.div
                 className="w-full h-0.5 bg-current" // Use bg-current to inherit text color
                 animate={{
