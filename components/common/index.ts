@@ -1,8 +1,20 @@
 export { BoardContainer } from "./BoardContainer";
-export { GameLayout } from "./GameLayout";
-
+export type {
+  ButtonProps,
+  ButtonSize,
+  ButtonVariant,
+  IconPosition,
+} from "./Button";
 // Button components and types
-export { default as Button } from './Button';
-export type { ButtonProps, ButtonVariant, ButtonSize, IconPosition } from './Button';
-export { PrimaryButton, SecondaryButton, SuccessButton, IconButton } from './Button';
-export { LightsOutButton, LightsOutPrimaryButton, LightsOutSecondaryButton, LightsOutSuccessButton } from './Button';
+export {
+  default as Button,
+  IconButton,
+  LightsOutButton,
+  LightsOutPrimaryButton,
+  LightsOutSecondaryButton,
+  LightsOutSuccessButton,
+  PrimaryButton,
+  SecondaryButton,
+  SuccessButton,
+} from "./Button";
+export { GameLayout } from "./GameLayout";

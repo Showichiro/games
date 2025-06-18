@@ -68,7 +68,9 @@ export default function HistoryModal({
                 />
               </div>
             </div>
-            <div className="p-4 overflow-y-auto max-h-[calc(80vh-120px)]"> {/* Adjusted max-h to account for header/footer if any */}
+            <div className="p-4 overflow-y-auto max-h-[calc(80vh-120px)]">
+              {" "}
+              {/* Adjusted max-h to account for header/footer if any */}
               {moveHistory.length === 0 ? (
                 <div className="text-center text-subtext-color py-8">
                   <p>まだ操作履歴がありません</p>

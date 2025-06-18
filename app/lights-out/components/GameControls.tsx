@@ -1,10 +1,9 @@
 "use client";
 
 import {
+  LightsOutButton,
   LightsOutPrimaryButton,
   LightsOutSecondaryButton,
-  LightsOutButton,
-  Button, // Fallback if LightsOut presets don't match style
 } from "@/components/common";
 
 interface GameControlsProps {

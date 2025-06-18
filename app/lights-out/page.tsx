@@ -3,7 +3,7 @@
 import { motion } from "motion/react"; // motion is used for history items, not buttons here
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { BoardContainer, GameLayout, Button } from "@/components/common";
+import { BoardContainer, Button, GameLayout } from "@/components/common";
 import GameBoard from "./components/GameBoard";
 import GameCompleteModal from "./components/GameCompleteModal";
 import GameControls from "./components/GameControls";
