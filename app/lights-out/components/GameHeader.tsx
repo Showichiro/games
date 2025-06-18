@@ -1,6 +1,6 @@
 "use client";
 
-import { LightsOutButton } from "@/components/common";
+import { ButtonGroup, StatsRow } from "@/components/common"; // Updated imports
 import type { Difficulty, DifficultyConfig } from "../types";
 
 interface GameHeaderProps {
@@ -20,39 +20,39 @@ export default function GameHeader({
   onDifficultyChange,
   formatTime,
 }: GameHeaderProps) {
-  // To match original tap effect
+  const statItems = [
+    { label: "手数", value: moves },
+    { label: "時間", value: formatTime(elapsedTime) },
+  ];
+
+  const buttonGroupItems = (Object.keys(difficultyConfig) as Difficulty[]).map(
+    (d) => ({
+      id: d,
+      label: difficultyConfig[d].label,
+    }),
+  );
 
   return (
     <div className="text-center mb-6 lg:mb-8 relative">
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 lg:mb-6">
         ライツアウト
       </h1>
-      <div className="flex justify-center gap-6 lg:gap-8 text-neutral-300 mb-4 lg:mb-6 text-sm md:text-base lg:text-lg">
-        <div>手数: {moves}</div>
-        <div>時間: {formatTime(elapsedTime)}</div>
-      </div>
 
-      {/* Difficulty Selector */}
-      <div className="flex justify-center gap-2 lg:gap-3">
-        {(Object.keys(difficultyConfig) as Difficulty[]).map((d) => {
-          const isActive = difficulty === d;
-          return (
-            <LightsOutButton
-              key={d}
-              className={`px-3 py-1 lg:px-4 lg:py-2 rounded-lg text-sm lg:text-base font-medium transition-colors focus:ring-offset-0 focus:ring-2 focus:ring-opacity-50 ${
-                isActive
-                  ? "bg-brand-primary text-neutral-0 focus:ring-brand-300"
-                  : "bg-neutral-600 text-neutral-0 hover:bg-neutral-700 focus:ring-neutral-400"
-              }`}
-              onClick={() => onDifficultyChange(d)}
-              // The `variant` prop could be used if styles were aligned, e.g., variant={isActive ? 'primary' : 'dark'}
-              // But here specific class names are more direct for matching existing styles.
-            >
-              {difficultyConfig[d].label}
-            </LightsOutButton>
-          );
-        })}
-      </div>
+      <StatsRow
+        items={statItems}
+        className="justify-center gap-6 lg:gap-8 text-neutral-100 mb-4 lg:mb-6 text-sm md:text-base lg:text-lg"
+      />
+
+      <ButtonGroup
+        items={buttonGroupItems}
+        selectedId={difficulty}
+        onSelect={(selectedDifficulty) =>
+          onDifficultyChange(selectedDifficulty as Difficulty)
+        }
+        buttonClassName="px-3 py-1 lg:px-4 lg:py-2 rounded-lg text-sm lg:text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-opacity-50"
+        activeButtonClassName="bg-brand-primary text-neutral-0 focus:ring-brand-300"
+        inactiveButtonClassName="bg-neutral-600 text-neutral-0 hover:bg-neutral-700 focus:ring-neutral-400"
+      />
     </div>
   );
 }

@@ -524,7 +524,7 @@ export default function LightsOut() {
               </div>
             </div>
             <div className="space-y-2">
-              <Link href="/" passHref legacyBehavior>
+              <Link href="/" passHref className="block">
                 <Button
                   // as="a" removed, Button component doesn't render 'a', Link handles it. href is passed by Link.
                   variant="primary"
