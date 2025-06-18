@@ -21,10 +21,9 @@ export default function GameBoard({
   showCompletionAnimation,
 }: GameBoardProps) {
   return (
-    <div className="bg-neutral-700 p-4 md:p-6 lg:p-8 rounded-2xl shadow-2xl mb-6">
-      <motion.div
-        className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-4"
-        variants={{
+    <motion.div
+      className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-4"
+      variants={{
           hidden: {},
           visible: {
             transition: {
@@ -183,6 +182,5 @@ export default function GameBoard({
           }),
         )}
       </motion.div>
-    </div>
   );
 }

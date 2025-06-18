@@ -1,15 +1,14 @@
-import React from "react";
+import { ReactNode } from 'react';
 
 interface BoardContainerProps {
-  children: React.ReactNode;
+  children: ReactNode;
+  className?: string;
 }
 
-const BoardContainer: React.FC<BoardContainerProps> = ({ children }) => {
+export function BoardContainer({ children, className = '' }: BoardContainerProps) {
   return (
-    <div className="grid grid-cols-3 gap-4 p-4 bg-gray-100 rounded-lg shadow-md">
+    <div className={`bg-neutral-700 p-4 md:p-6 lg:p-8 rounded-2xl shadow-2xl mb-6 ${className}`}>
       {children}
     </div>
   );
-};
-
-export default BoardContainer;
+}
