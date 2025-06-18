@@ -41,7 +41,21 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       className,
       disabled,
-      ...props
+      href, // Explicitly destructure href
+      // Destructure all potentially conflicting drag event props
+      onDrag,
+      onDragEnd,
+      onDragEnter,
+      onDragExit,
+      onDragLeave,
+      onDragOver,
+      onDragStart,
+      onDrop,
+      // Destructure animation event props
+      onAnimationStart,
+      onAnimationEnd,
+      onAnimationIteration,
+      ...buttonHTMLAttributes // Collect remaining HTML attributes
     },
     ref,
   ) => {
@@ -106,7 +120,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={combinedClasses}
         disabled={disabled || isLoading}
         {...motionProps}
-        {...props}
+        {...buttonHTMLAttributes} // Spread buttonHTMLAttributes
       >
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center">
