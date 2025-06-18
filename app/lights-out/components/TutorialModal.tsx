@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import { Button, IconButton } from "@/components/common"; // Changed path alias
 import type { TutorialStep } from "../types";
 
 interface TutorialModalProps {
@@ -37,12 +38,14 @@ export default function TutorialModal({
             exit={{ scale: 0.8, opacity: 0 }}
             className="bg-neutral-0 rounded-2xl p-6 text-center max-w-md w-full relative"
           >
-            <button
-              className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 text-xl"
+            <IconButton
+              icon={<span className="text-xl">×</span>} // Ensure icon size is appropriate
+              variant="light" // Base variant
+              className="absolute top-3 right-3 bg-transparent hover:bg-neutral-100 text-neutral-400 hover:text-neutral-600 focus:ring-0" // Ghost-like custom styling
               onClick={onClose}
-            >
-              ×
-            </button>
+              aria-label="チュートリアルを閉じる"
+              size="sm" // Smaller size for a close button often looks better
+            />
 
             <div className="mb-6">
               <h2 className="text-xl font-bold text-default-font mb-3">
@@ -115,36 +118,44 @@ export default function TutorialModal({
             {/* Navigation buttons */}
             <div className="flex gap-3 justify-center">
               {tutorialStep > 0 && (
-                <button
-                  className="px-4 py-2 bg-neutral-300 text-neutral-700 rounded-lg font-semibold hover:bg-neutral-400 transition-colors"
+                <Button
+                  variant="secondary" // Using secondary as ghost is not available. Original: bg-neutral-300
+                  size="md"
                   onClick={onPrev}
+                  // className="bg-neutral-300 text-neutral-700 hover:bg-neutral-400" // Uncomment for original style
                 >
                   前へ
-                </button>
+                </Button>
               )}
 
               {tutorialStep < tutorialSteps.length - 1 ? (
-                <button
-                  className="px-4 py-2 bg-brand-primary text-neutral-0 rounded-lg font-semibold hover:bg-brand-700 transition-colors"
+                <Button
+                  variant="primary"
+                  size="md"
                   onClick={onNext}
+                  // className="bg-brand-primary hover:bg-brand-700" // Uncomment for original brand color
                 >
                   次へ
-                </button>
+                </Button>
               ) : (
-                <button
-                  className="px-4 py-2 bg-success-600 text-neutral-0 rounded-lg font-semibold hover:bg-success-700 transition-colors"
+                <Button
+                  variant="success"
+                  size="md"
                   onClick={onClose}
+                  // className="bg-success-600 hover:bg-success-700" // Uncomment for original success color
                 >
                   始める
-                </button>
+                </Button>
               )}
 
-              <button
-                className="px-4 py-2 bg-neutral-300 text-neutral-700 rounded-lg font-semibold hover:bg-neutral-400 transition-colors"
+              <Button
+                variant="secondary" // Using secondary for Skip button, similar to Prev button
+                size="md"
                 onClick={onClose}
+                // className="bg-neutral-300 text-neutral-700 hover:bg-neutral-400" // Uncomment for original style
               >
                 スキップ
-              </button>
+              </Button>
             </div>
           </motion.div>
         </motion.div>

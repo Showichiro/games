@@ -1,6 +1,10 @@
 "use client";
 
-import { motion } from "motion/react";
+import {
+  LightsOutButton,
+  LightsOutPrimaryButton,
+  LightsOutSecondaryButton,
+} from "@/components/common";
 
 interface GameControlsProps {
   onNewGame: () => void;
@@ -19,25 +23,46 @@ export default function GameControls({
 }: GameControlsProps) {
   return (
     <div className="flex gap-3 lg:gap-4 justify-center flex-wrap">
-      <motion.button
-        className="px-6 py-3 lg:px-8 lg:py-4 bg-brand-primary hover:bg-brand-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm lg:text-base"
-        whileTap={{ scale: 0.95 }}
+      {/*
+        Original "新規" classes: "px-6 py-3 lg:px-8 lg:py-4 bg-brand-primary hover:bg-brand-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm lg:text-base"
+        Button size="xl": 'px-6 py-3 text-base rounded-md'
+        Using LightsOutPrimaryButton (bg-blue-600) and overriding styles for closer match.
+        Or, use LightsOutButton with custom classes.
+      */}
+      <LightsOutPrimaryButton
+        size="xl" // Provides base padding and text size
+        className="lg:px-8 lg:py-4 text-sm lg:text-base bg-brand-primary hover:bg-brand-700 text-neutral-0" // Overrides for specific colors and responsive text/padding
         onClick={onNewGame}
       >
         新規
-      </motion.button>
-      <motion.button
-        className="px-6 py-3 lg:px-8 lg:py-4 bg-neutral-600 hover:bg-neutral-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm lg:text-base"
-        whileTap={{ scale: 0.95 }}
+      </LightsOutPrimaryButton>
+
+      {/*
+        Original "リセット" classes: "px-6 py-3 lg:px-8 lg:py-4 bg-neutral-600 hover:bg-neutral-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm lg:text-base"
+        Button size="xl": 'px-6 py-3 text-base rounded-md'
+        Using LightsOutSecondaryButton (bg-gray-200) and overriding.
+        Alternatively, Button variant="dark" (bg-gray-800) might be closer if LightsOut is not a hard requirement.
+        Or, LightsOutButton with custom classes.
+      */}
+      <LightsOutSecondaryButton
+        size="xl" // Provides base padding and text size
+        className="lg:px-8 lg:py-4 text-sm lg:text-base bg-neutral-600 hover:bg-neutral-700 text-neutral-0" // Overrides for specific colors and responsive text/padding
         onClick={onResetGame}
       >
         リセット
-      </motion.button>
-      {/* Hide hint and tutorial buttons on desktop (lg+) since they're in the sidebar */}
-      <motion.button
-        className="px-4 py-3 bg-success-600 hover:bg-success-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm relative lg:hidden"
-        whileTap={{ scale: 0.95 }}
+      </LightsOutSecondaryButton>
+
+      {/*
+        Original "💡" Hint classes: "px-4 py-3 bg-success-600 hover:bg-success-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm relative lg:hidden"
+        Button size="md": 'px-4 py-2 text-sm rounded-md'
+        Using LightsOutButton with variant="success" (bg-green-500). We'll add custom class for bg-success-600.
+      */}
+      <LightsOutButton
+        variant="success" // Base is green-500
+        size="md" // px-4 py-2, original py-3
+        className="px-4 py-3 bg-success-600 hover:bg-success-700 text-neutral-0 relative lg:hidden" // Custom padding, exact colors, and visibility
         onClick={onHint}
+        aria-label="Hint"
       >
         💡
         {hintsUsed > 0 && (
@@ -45,14 +70,21 @@ export default function GameControls({
             {hintsUsed}
           </span>
         )}
-      </motion.button>
-      <motion.button
-        className="px-4 py-3 bg-purple-600 hover:bg-purple-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm lg:hidden"
-        whileTap={{ scale: 0.95 }}
+      </LightsOutButton>
+
+      {/*
+        Original "？" Tutorial classes: "px-4 py-3 bg-purple-600 hover:bg-purple-700 text-neutral-0 rounded-lg font-semibold transition-colors text-sm lg:hidden"
+        Button size="md": 'px-4 py-2 text-sm rounded-md'
+        Using LightsOutButton and applying custom classes for purple color.
+      */}
+      <LightsOutButton
+        size="md" // px-4 py-2, original py-3
+        className="px-4 py-3 bg-purple-600 hover:bg-purple-700 text-neutral-0 relative lg:hidden" // Custom padding, exact colors, and visibility
         onClick={onShowTutorial}
+        aria-label="Tutorial"
       >
         ？
-      </motion.button>
+      </LightsOutButton>
     </div>
   );
 }
