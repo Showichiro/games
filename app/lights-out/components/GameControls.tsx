@@ -21,7 +21,6 @@ export default function GameControls({
   onHint,
   hintsUsed,
 }: GameControlsProps) {
-
   return (
     <div className="flex gap-3 lg:gap-4 justify-center flex-wrap">
       {/*

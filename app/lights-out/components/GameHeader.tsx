@@ -19,7 +19,8 @@ export default function GameHeader({
   difficultyConfig,
   onDifficultyChange,
   formatTime,
-}: GameHeaderProps) { // To match original tap effect
+}: GameHeaderProps) {
+  // To match original tap effect
 
   return (
     <div className="text-center mb-6 lg:mb-8 relative">

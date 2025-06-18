@@ -202,7 +202,21 @@ const lightsOutBaseClasses =
 const lightsOutHoverClasses = "hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.3)]"; // Example hover effect
 
 export const LightsOutButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, children, variant = "primary", size = "md", icon, iconPosition = "left", isLoading = false, fullWidth = false, disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      children,
+      variant = "primary",
+      size = "md",
+      icon,
+      iconPosition = "left",
+      isLoading = false,
+      fullWidth = false,
+      disabled,
+      ...props
+    },
+    ref,
+  ) => {
     const baseClasses =
       "font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150 ease-in-out";
 
