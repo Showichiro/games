@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Button from "@/components/common/Button";
 import type { Difficulty, Player } from "../types";
 
 interface GameStartModalProps {
@@ -156,17 +157,22 @@ export default function GameStartModal({
               </motion.div>
 
               {/* キャンセルボタン */}
-              <motion.button
-                className="w-full bg-gray-600 hover:bg-gray-500 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200"
+              <motion.div
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={onClose}
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
               >
-                キャンセル
-              </motion.button>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  fullWidth
+                  onClick={onClose}
+                >
+                  キャンセル
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         </motion.div>

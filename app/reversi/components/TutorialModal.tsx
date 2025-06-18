@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X, ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
 import { useState } from "react";
+import Button from "@/components/common/Button";
 
 interface TutorialModalProps {
   isOpen: boolean;
@@ -291,21 +292,16 @@ export default function TutorialModal({ isOpen, onClose }: TutorialModalProps) {
                   {currentStep + 1} / {tutorialSteps.length}
                 </span>
               </div>
-              <motion.button
-                className="p-2 rounded-lg transition-colors"
-                style={{
-                  backgroundColor: "var(--color-neutral-700)",
-                  color: "var(--color-neutral-300)",
-                }}
-                whileHover={{
-                  backgroundColor: "var(--color-neutral-600)",
-                  scale: 1.1,
-                }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleClose}
-              >
-                <X size={20} />
-              </motion.button>
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClose}
+                  icon={<X size={20} />}
+                  aria-label="閉じる"
+                  className="p-2"
+                />
+              </motion.div>
             </div>
 
             {/* Progress Bar */}
@@ -346,27 +342,20 @@ export default function TutorialModal({ isOpen, onClose }: TutorialModalProps) {
 
             {/* Navigation */}
             <div className="flex items-center justify-between">
-              <motion.button
-                className="px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2"
-                style={{
-                  backgroundColor:
-                    currentStep === 0
-                      ? "var(--color-neutral-700)"
-                      : "var(--color-neutral-600)",
-                  color:
-                    currentStep === 0
-                      ? "var(--color-neutral-500)"
-                      : "var(--color-white)",
-                  cursor: currentStep === 0 ? "not-allowed" : "pointer",
-                }}
+              <motion.div
                 whileHover={currentStep > 0 ? { scale: 1.05 } : {}}
                 whileTap={currentStep > 0 ? { scale: 0.95 } : {}}
-                onClick={prevStep}
-                disabled={currentStep === 0}
               >
-                <ChevronLeft size={16} />
-                前へ
-              </motion.button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={prevStep}
+                  disabled={currentStep === 0}
+                  icon={<ChevronLeft size={16} />}
+                >
+                  前へ
+                </Button>
+              </motion.div>
 
               <div className="flex gap-2">
                 {tutorialSteps.map((_, index) => (
@@ -387,36 +376,29 @@ export default function TutorialModal({ isOpen, onClose }: TutorialModalProps) {
               </div>
 
               {currentStep === tutorialSteps.length - 1 ? (
-                <motion.button
-                  className="px-6 py-2 rounded-lg font-medium transition-all text-white"
-                  style={{
-                    backgroundColor: "var(--color-green-600)",
-                  }}
-                  whileHover={{
-                    backgroundColor: "var(--color-green-700)",
-                    scale: 1.05,
-                  }}
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={handleClose}
                 >
-                  開始する！
-                </motion.button>
+                  <Button variant="success" size="lg" onClick={handleClose}>
+                    開始する！
+                  </Button>
+                </motion.div>
               ) : (
-                <motion.button
-                  className="px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 text-white"
-                  style={{
-                    backgroundColor: "var(--color-blue-600)",
-                  }}
-                  whileHover={{
-                    backgroundColor: "var(--color-blue-700)",
-                    scale: 1.05,
-                  }}
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={nextStep}
                 >
-                  次へ
-                  <ChevronRight size={16} />
-                </motion.button>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={nextStep}
+                    icon={<ChevronRight size={16} />}
+                    iconPosition="right"
+                  >
+                    次へ
+                  </Button>
+                </motion.div>
               )}
             </div>
           </motion.div>

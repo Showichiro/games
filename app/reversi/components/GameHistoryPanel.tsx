@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Button from "@/components/common/Button";
 import type { DetailedGameMove } from "../types";
 
 interface GameHistoryPanelProps {
@@ -42,17 +43,19 @@ export default function GameHistoryPanel({
   return (
     <div className="relative">
       {/* トグルボタン */}
-      <motion.button
-        className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 text-white shadow-lg"
-        style={{
-          backgroundColor: "var(--color-neutral-700)",
-        }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={onToggle}
-      >
-        📜 履歴 {isOpen ? "▼" : "▶"}
-      </motion.button>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button
+          variant="ghost"
+          size="md"
+          onClick={onToggle}
+          className="shadow-lg"
+          style={{
+            backgroundColor: "var(--color-neutral-700)",
+          }}
+        >
+          📜 履歴 {isOpen ? "▼" : "▶"}
+        </Button>
+      </motion.div>
 
       {/* 履歴パネル */}
       <AnimatePresence>
@@ -74,43 +77,37 @@ export default function GameHistoryPanel({
 
               {/* 操作ボタン */}
               <div className="flex gap-2">
-                <motion.button
-                  className="flex-1 px-3 py-1 rounded text-sm font-medium transition-all"
-                  style={{
-                    backgroundColor: canUndo
-                      ? "var(--color-interactive-focus)"
-                      : "var(--color-neutral-600)",
-                    color: canUndo
-                      ? "var(--color-white)"
-                      : "var(--color-neutral-400)",
-                    cursor: canUndo ? "pointer" : "not-allowed",
-                  }}
+                <motion.div
+                  className="flex-1"
                   whileHover={canUndo ? { scale: 1.05 } : {}}
                   whileTap={canUndo ? { scale: 0.95 } : {}}
-                  onClick={onUndo}
-                  disabled={!canUndo}
                 >
-                  ⏪ 戻る
-                </motion.button>
+                  <Button
+                    variant="info"
+                    size="sm"
+                    fullWidth
+                    onClick={onUndo}
+                    disabled={!canUndo}
+                  >
+                    ⏪ 戻る
+                  </Button>
+                </motion.div>
 
-                <motion.button
-                  className="flex-1 px-3 py-1 rounded text-sm font-medium transition-all"
-                  style={{
-                    backgroundColor: canRedo
-                      ? "var(--color-interactive-focus)"
-                      : "var(--color-neutral-600)",
-                    color: canRedo
-                      ? "var(--color-white)"
-                      : "var(--color-neutral-400)",
-                    cursor: canRedo ? "pointer" : "not-allowed",
-                  }}
+                <motion.div
+                  className="flex-1"
                   whileHover={canRedo ? { scale: 1.05 } : {}}
                   whileTap={canRedo ? { scale: 0.95 } : {}}
-                  onClick={onRedo}
-                  disabled={!canRedo}
                 >
-                  ⏩ 進む
-                </motion.button>
+                  <Button
+                    variant="info"
+                    size="sm"
+                    fullWidth
+                    onClick={onRedo}
+                    disabled={!canRedo}
+                  >
+                    ⏩ 進む
+                  </Button>
+                </motion.div>
               </div>
             </div>
 

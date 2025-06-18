@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { X, Settings, Volume2, VolumeX, Eye, EyeOff } from "lucide-react";
+import Button from "@/components/common/Button";
 import type { Difficulty } from "../types";
 
 interface SettingsModalProps {
@@ -85,21 +86,16 @@ export default function SettingsModal({
                 <Settings className="text-blue-400" size={24} />
                 <h2 className="text-2xl font-bold text-white">設定</h2>
               </div>
-              <motion.button
-                className="p-2 rounded-lg transition-colors"
-                style={{
-                  backgroundColor: "var(--color-neutral-700)",
-                  color: "var(--color-neutral-300)",
-                }}
-                whileHover={{
-                  backgroundColor: "var(--color-neutral-600)",
-                  scale: 1.1,
-                }}
-                whileTap={{ scale: 0.9 }}
-                onClick={onClose}
-              >
-                <X size={20} />
-              </motion.button>
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClose}
+                  icon={<X size={20} />}
+                  aria-label="閉じる"
+                  className="p-2"
+                />
+              </motion.div>
             </div>
 
             {/* Difficulty Settings */}
@@ -301,20 +297,11 @@ export default function SettingsModal({
             </div>
 
             {/* Close Button */}
-            <motion.button
-              className="w-full py-3 rounded-lg font-medium text-white transition-all"
-              style={{
-                backgroundColor: "var(--color-interactive-focus)",
-              }}
-              whileHover={{
-                backgroundColor: "var(--color-interactive-hover)",
-                scale: 1.02,
-              }}
-              whileTap={{ scale: 0.98 }}
-              onClick={onClose}
-            >
-              設定を保存
-            </motion.button>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button variant="primary" size="lg" fullWidth onClick={onClose}>
+                設定を保存
+              </Button>
+            </motion.div>
           </motion.div>
         </motion.div>
       )}

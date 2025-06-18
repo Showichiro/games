@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Button from "@/components/common/Button";
 
 interface GameControlsProps {
   onNewGame: () => void;
@@ -35,35 +36,21 @@ export default function GameControls({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <motion.button
-        className="px-6 py-3 rounded-lg font-medium transition-all duration-200 text-white shadow-lg"
-        style={{
-          backgroundColor: disabled
-            ? "var(--color-neutral-600)"
-            : "var(--color-interactive-focus)",
-          color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
-          cursor: disabled ? "not-allowed" : "pointer",
-        }}
-        onMouseEnter={(e) => {
-          if (!disabled) {
-            e.currentTarget.style.backgroundColor =
-              "var(--color-interactive-hover)";
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!disabled) {
-            e.currentTarget.style.backgroundColor =
-              "var(--color-interactive-focus)";
-          }
-        }}
+      <motion.div
         variants={buttonVariants}
         whileHover={!disabled ? "hover" : {}}
         whileTap={!disabled ? "tap" : {}}
-        onClick={onNewGame}
-        disabled={disabled}
       >
-        🎮 新しいゲーム
-      </motion.button>
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={onNewGame}
+          disabled={disabled}
+          className="shadow-lg"
+        >
+          🎮 新しいゲーム
+        </Button>
+      </motion.div>
 
       <motion.button
         className="px-6 py-3 rounded-lg font-medium transition-all duration-200 relative overflow-hidden text-white shadow-lg"
@@ -130,63 +117,49 @@ export default function GameControls({
       </motion.button>
 
       {onOpenSettings && (
-        <motion.button
-          className="px-6 py-3 rounded-lg font-medium transition-all duration-200 text-white shadow-lg"
-          style={{
-            backgroundColor: disabled
-              ? "var(--color-neutral-600)"
-              : "var(--color-purple-600)",
-            color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
-            cursor: disabled ? "not-allowed" : "pointer",
-          }}
-          onMouseEnter={(e) => {
-            if (!disabled) {
-              e.currentTarget.style.backgroundColor = "var(--color-purple-700)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!disabled) {
-              e.currentTarget.style.backgroundColor = "var(--color-purple-600)";
-            }
-          }}
+        <motion.div
           variants={buttonVariants}
           whileHover={!disabled ? "hover" : {}}
           whileTap={!disabled ? "tap" : {}}
-          onClick={onOpenSettings}
-          disabled={disabled}
         >
-          ⚙️ 設定
-        </motion.button>
+          <Button
+            variant="info"
+            size="lg"
+            onClick={onOpenSettings}
+            disabled={disabled}
+            className="shadow-lg"
+            style={{
+              backgroundColor: disabled
+                ? "var(--color-neutral-600)"
+                : "var(--color-purple-600)",
+            }}
+          >
+            ⚙️ 設定
+          </Button>
+        </motion.div>
       )}
 
       {onOpenTutorial && (
-        <motion.button
-          className="px-6 py-3 rounded-lg font-medium transition-all duration-200 text-white shadow-lg"
-          style={{
-            backgroundColor: disabled
-              ? "var(--color-neutral-600)"
-              : "var(--color-blue-600)",
-            color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
-            cursor: disabled ? "not-allowed" : "pointer",
-          }}
-          onMouseEnter={(e) => {
-            if (!disabled) {
-              e.currentTarget.style.backgroundColor = "var(--color-blue-700)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!disabled) {
-              e.currentTarget.style.backgroundColor = "var(--color-blue-600)";
-            }
-          }}
+        <motion.div
           variants={buttonVariants}
           whileHover={!disabled ? "hover" : {}}
           whileTap={!disabled ? "tap" : {}}
-          onClick={onOpenTutorial}
-          disabled={disabled}
         >
-          📖 チュートリアル
-        </motion.button>
+          <Button
+            variant="info"
+            size="lg"
+            onClick={onOpenTutorial}
+            disabled={disabled}
+            className="shadow-lg"
+            style={{
+              backgroundColor: disabled
+                ? "var(--color-neutral-600)"
+                : "var(--color-blue-600)",
+            }}
+          >
+            📖 チュートリアル
+          </Button>
+        </motion.div>
       )}
     </motion.div>
   );
