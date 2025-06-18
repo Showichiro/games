@@ -1,4 +1,4 @@
-import { MotionProps, motion } from "framer-motion";
+import { MotionProps, motion } from "motion/react";
 import React, { forwardRef, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
