@@ -7,6 +7,8 @@ interface GameControlsProps {
   onToggleHints: () => void;
   showHints: boolean;
   disabled?: boolean;
+  onOpenSettings?: () => void;
+  onOpenTutorial?: () => void;
 }
 
 export default function GameControls({
@@ -14,6 +16,8 @@ export default function GameControls({
   onToggleHints,
   showHints,
   disabled = false,
+  onOpenSettings,
+  onOpenTutorial,
 }: GameControlsProps) {
   const buttonVariants = {
     hover: {
@@ -124,6 +128,66 @@ export default function GameControls({
           />
         )}
       </motion.button>
+
+      {onOpenSettings && (
+        <motion.button
+          className="px-6 py-3 rounded-lg font-medium transition-all duration-200 text-white shadow-lg"
+          style={{
+            backgroundColor: disabled
+              ? "var(--color-neutral-600)"
+              : "var(--color-purple-600)",
+            color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
+            cursor: disabled ? "not-allowed" : "pointer",
+          }}
+          onMouseEnter={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = "var(--color-purple-700)";
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = "var(--color-purple-600)";
+            }
+          }}
+          variants={buttonVariants}
+          whileHover={!disabled ? "hover" : {}}
+          whileTap={!disabled ? "tap" : {}}
+          onClick={onOpenSettings}
+          disabled={disabled}
+        >
+          ⚙️ 設定
+        </motion.button>
+      )}
+
+      {onOpenTutorial && (
+        <motion.button
+          className="px-6 py-3 rounded-lg font-medium transition-all duration-200 text-white shadow-lg"
+          style={{
+            backgroundColor: disabled
+              ? "var(--color-neutral-600)"
+              : "var(--color-blue-600)",
+            color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
+            cursor: disabled ? "not-allowed" : "pointer",
+          }}
+          onMouseEnter={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = "var(--color-blue-700)";
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = "var(--color-blue-600)";
+            }
+          }}
+          variants={buttonVariants}
+          whileHover={!disabled ? "hover" : {}}
+          whileTap={!disabled ? "tap" : {}}
+          onClick={onOpenTutorial}
+          disabled={disabled}
+        >
+          📖 チュートリアル
+        </motion.button>
+      )}
     </motion.div>
   );
 }

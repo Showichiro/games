@@ -9,6 +9,9 @@ import GameControls from "./components/GameControls";
 import GameHeader from "./components/GameHeader";
 import GameHistoryPanel from "./components/GameHistoryPanel";
 import GameStartModal from "./components/GameStartModal";
+import SettingsModal from "./components/SettingsModal";
+import TutorialModal from "./components/TutorialModal";
+import CpuThinking from "./components/CpuThinking";
 import { useCpuPlayer } from "./hooks/useCpuPlayer";
 import { useGameLogic } from "./hooks/useGameLogic";
 import type { Difficulty, Player, PlayerConfig } from "./types";
@@ -19,6 +22,10 @@ export default function ReversiPage() {
   const [showGameCompleteModal, setShowGameCompleteModal] = useState(false);
   const [showGameStartModal, setShowGameStartModal] = useState(true);
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showTutorialModal, setShowTutorialModal] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [animationsEnabled, setAnimationsEnabled] = useState(true);
   const [playerConfig, setPlayerConfig] = useState<PlayerConfig>({
     humanPlayer: "black",
     cpuPlayer: "white",
@@ -152,12 +159,25 @@ export default function ReversiPage() {
             />
           </motion.div>
 
+          {/* CPU Thinking Indicator */}
+          <div className="flex justify-center mb-4">
+            <CpuThinking
+              isVisible={
+                gameState.isThinking &&
+                gameState.currentPlayer === playerConfig.cpuPlayer
+              }
+              difficulty={difficulty}
+            />
+          </div>
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <GameControls
               onNewGame={handleNewGame}
               onToggleHints={handleToggleHints}
               showHints={showHints}
               disabled={gameState.isThinking}
+              onOpenSettings={() => setShowSettingsModal(true)}
+              onOpenTutorial={() => setShowTutorialModal(true)}
             />
 
             <div className="lg:hidden">
@@ -259,6 +279,24 @@ export default function ReversiPage() {
             scores={gameState.scores}
             onNewGame={handleNewGame}
             onClose={handleCloseModal}
+          />
+
+          <SettingsModal
+            isOpen={showSettingsModal}
+            onClose={() => setShowSettingsModal(false)}
+            difficulty={difficulty}
+            onDifficultyChange={setDifficulty}
+            showHints={showHints}
+            onToggleHints={handleToggleHints}
+            soundEnabled={soundEnabled}
+            onToggleSound={() => setSoundEnabled(!soundEnabled)}
+            animationsEnabled={animationsEnabled}
+            onToggleAnimations={() => setAnimationsEnabled(!animationsEnabled)}
+          />
+
+          <TutorialModal
+            isOpen={showTutorialModal}
+            onClose={() => setShowTutorialModal(false)}
           />
         </div>
       </GameLayout>
