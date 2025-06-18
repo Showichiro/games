@@ -152,6 +152,11 @@ This project uses the Motion library (framer-motion) for animations:
 - Validate mobile responsiveness and accessibility
 - Check for unnecessary re-renders and optimize React components
 
+**Security and Privacy by Design:**
+- Conduct regular vulnerability scanning and address findings promptly.
+- Handle Personally Identifiable Information (PII) with strict confidentiality and compliance.
+- Implement robust measures to prevent common injection vulnerabilities (e.g., SQL injection, XSS, command injection).
+
 ### Review Checklist
 
 **Code Structure:**
