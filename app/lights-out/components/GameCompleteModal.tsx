@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal, Button } from "@/components/common"; // Updated import path for Modal
+import { Button, Modal } from "@/components/common"; // Updated import path for Modal
 
 interface GameCompleteModalProps {
   gameComplete: boolean;

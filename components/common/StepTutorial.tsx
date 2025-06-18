@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import { motion } from "motion/react";
-import Modal from "./Modal"; // Using the common Modal component
+import React from "react";
 import Button from "./Button";
+import Modal from "./Modal"; // Using the common Modal component
 
 export interface TutorialStep {
   // Added export

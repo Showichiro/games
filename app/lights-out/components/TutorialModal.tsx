@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
+import React from "react";
 import { StepTutorial } from "@/components/common";
 import type { TutorialStep as AppTutorialStepConfig } from "../types";
-import React from "react";
 
 interface TutorialModalProps {
   showTutorial: boolean;

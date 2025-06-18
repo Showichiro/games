@@ -1,6 +1,6 @@
 "use client";
 
-import { StatsRow, ButtonGroup } from "@/components/common"; // Updated imports
+import { ButtonGroup, StatsRow } from "@/components/common"; // Updated imports
 import type { Difficulty, DifficultyConfig } from "../types";
 
 interface GameHeaderProps {
