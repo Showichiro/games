@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { BoardContainer } from "@/components/common";
 import { BOARD_SIZE } from "../constants/gameConstants";
 import type { Board, Player, Position } from "../types";
 import GameCell from "./GameCell";
@@ -69,16 +70,13 @@ export default function GameBoard({
   };
 
   return (
-    <motion.div
-      className="inline-block p-4 rounded-lg shadow-2xl"
-      style={{ backgroundColor: "var(--color-reversi-board-bg)" }}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div
+    <BoardContainer className="inline-block">
+      <motion.div
         className="relative grid grid-cols-8 gap-1 sm:gap-2 p-1 sm:p-2 rounded w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[400px] xl:h-[400px] max-w-[85vw] max-h-[85vw]"
         style={{ backgroundColor: "var(--color-reversi-board-border)" }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
       >
         {Array.from({ length: BOARD_SIZE }, (_, row) =>
           Array.from({ length: BOARD_SIZE }, (_, col) => (
@@ -105,7 +103,7 @@ export default function GameBoard({
           capturedPositions={rippleData.captured}
           onComplete={() => setShowRipple(false)}
         />
-      </div>
-    </motion.div>
+      </motion.div>
+    </BoardContainer>
   );
 }
