@@ -180,6 +180,18 @@ This project uses the Motion library (framer-motion) for animations:
 - [ ] Client/server components are used appropriately
 - [ ] Bundle size impact is considered
 
+**Security:**
+- [ ] **Input Sanitization:** Verify that all user-supplied input (forms, URL parameters, headers, etc.) is properly sanitized/validated to prevent common injection attacks (e.g., XSS, SQLi).
+- [ ] **Authentication:** Ensure that authentication mechanisms are robust, securely implemented, and protect against common vulnerabilities (e.g., weak passwords, session hijacking, insecure password recovery).
+- [ ] **Authorization:** Confirm that proper authorization checks are in place for all sensitive actions and data access, preventing unauthorized access and Insecure Direct Object References (IDOR).
+- [ ] **Sensitive Data Handling:** Check that sensitive data (PII, credentials, API keys) is handled securely:
+    - [ ] Avoid logging sensitive information.
+    - [ ] Encrypt sensitive data at rest and in transit (HTTPS).
+    - [ ] Store secrets securely (e.g., using environment variables or a secrets manager, not hardcoded).
+- [ ] **OWASP Top 10 Awareness:** Review code with an awareness of common vulnerabilities (e.g., Broken Access Control, Cryptographic Failures, Injection, Insecure Design, Security Misconfiguration, Vulnerable and Outdated Components, Identification and Authentication Failures, Software and Data Integrity Failures, Security Logging and Monitoring Failures, Server-Side Request Forgery).
+- [ ] **Dependency Security:** Verify that third-party libraries and dependencies are up-to-date and free from known vulnerabilities.
+- [ ] **Secure Headers:** Ensure that appropriate security headers (e.g., Content Security Policy, X-Content-Type-Options, X-Frame-Options, Strict-Transport-Security) are configured.
+
 **Testing and Quality:**
 - [ ] All quality checks pass (`pnpm lint`, `pnpm format`, `pnpm build`)
 - [ ] Code is readable and well-documented
