@@ -17,7 +17,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({ children, sidebar }) => {
 
         {/* Sidebar */}
         {sidebar && (
-          <aside className="w-64 p-4 ml-4 bg-neutral-800 rounded-lg">
+          <aside className="hidden lg:block w-64 p-4 lg:ml-4 bg-neutral-800 rounded-lg">
             {sidebar}
           </aside>
         )}

@@ -459,7 +459,7 @@ export default function LightsOut() {
 
       <GameLayout
         sidebar={
-          <div className="hidden lg:block"> {/* This content goes into GameLayout's aside (w-64, bg-neutral-800) */}
+          <> {/* This content goes into GameLayout's aside (w-64, bg-neutral-800) */}
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-neutral-100">
                 操作履歴 ({moveHistory.length})
@@ -543,7 +543,7 @@ export default function LightsOut() {
                 ❓ ルール説明
               </button>
             </div>
-          </div>
+          </>
         }
       >
         {/* Children of GameLayout start here */}
