@@ -134,3 +134,4 @@ This project uses the Motion library (framer-motion) for animations:
 ## Development Workflow
 
 - 作業が完了したらlint/format/buildを確認して問題なければコミットするというルールを記録
+- コミット前にcheckコマンドを実行する旨記録
