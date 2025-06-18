@@ -47,6 +47,36 @@ The app uses Noto Sans JP with specific fallbacks for Japanese text support. The
 **Path Aliases:**
 - `@/*` maps to the root directory for imports
 
+### Common UI Components
+
+This project is starting to incorporate a system of common UI components, located in `components/common/`. The goal is to promote consistency, reusability, and maintainability across the UI.
+
+**`Button.tsx` (`components/common/Button.tsx`)**
+
+This is the standard button implementation for the project. It provides a range of predefined styles (variants), sizes, and features.
+
+**Usage Guidelines**:
+- **Variants**: Choose a variant that semantically matches the button's action:
+    - `primary`: For the most important call to action on a page.
+    - `secondary`: For less emphasized actions.
+    - `success`: For positive confirmation actions.
+    - `ghost`: For subtle actions, like "Cancel", "Close", or tertiary options. Often used where a filled button would be too distracting.
+    - `danger`: For actions with destructive consequences (e.g., delete, clear).
+    - `info`: For informational callouts or less critical actions.
+    - `light` / `dark`: For general use based on background contrast or desired emphasis.
+- **Custom Styling**:
+    - Prefer using the predefined `variant` and `size` props to maintain consistency.
+    - If minor adjustments are needed (e.g., specific margins, slight color deviation for a one-off case), use the `className` prop to pass Tailwind CSS utility classes.
+    - For significant, reusable style deviations, consider proposing a new variant or a specialized component (like `LightsOutButton`).
+- **Icon Buttons**:
+    - For buttons that only contain an icon, always use the `IconButton` specialized component. This ensures proper padding, accessibility (`aria-label`), and consistent styling for icon-only actions.
+    - Example: `<IconButton icon={<MyIcon />} aria-label="Perform action" onClick={handler} />`
+- **Loading State**: Utilize the `isLoading` prop for buttons that trigger asynchronous operations. This provides visual feedback to the user.
+- **Full Width**: Use `fullWidth` prop when a button needs to span the entire width of its container.
+
+**Migration from `lights-out`**:
+The buttons previously defined within the `lights-out` game components (`app/lights-out/components/`) have been migrated to use this common `Button.tsx` component. This change centralizes button styling and behavior, removing redundant CSS and component definitions from the feature-specific code. Future features should leverage this common `Button` component.
+
 ## Code Formatting
 
 This project uses Biome for code formatting and organization:

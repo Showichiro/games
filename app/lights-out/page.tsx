@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "motion/react"; // motion is used for history items, not buttons here
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { BoardContainer, GameLayout } from "@/components/common";
+import { BoardContainer, GameLayout, Button } from "@/components/common";
 import GameBoard from "./components/GameBoard";
 import GameCompleteModal from "./components/GameCompleteModal";
 import GameControls from "./components/GameControls";
@@ -467,12 +467,14 @@ export default function LightsOut() {
                 操作履歴 ({moveHistory.length})
               </h3>
               {moveHistory.length > 0 && (
-                <button
-                  className="text-error-400 hover:text-error-300 text-sm font-medium"
+                <Button
+                  variant="danger"
+                  size="sm"
+                  className="bg-transparent hover:bg-error-100 text-error-400 hover:text-error-600 font-medium focus:ring-offset-0 py-0 px-1" // Adjusted padding for more ghost-like
                   onClick={clearHistory}
                 >
                   クリア
-                </button>
+                </Button>
               )}
             </div>
             <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-neutral-700 scrollbar-thumb-neutral-500 pr-1">
@@ -508,12 +510,13 @@ export default function LightsOut() {
                             />
                           </div>
                         </div>
-                        <button
-                          className="px-2 py-1 text-xs bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded transition-colors flex-shrink-0 ml-2"
+                        <Button
+                          size="xs"
+                          className="px-2 py-1 bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded transition-colors focus:ring-brand-400 focus:ring-offset-0 flex-shrink-0 ml-2"
                           onClick={() => replayToMove(index)}
                         >
                           再生
-                        </button>
+                        </Button>
                       </motion.div>
                     ))}
                   </div>
@@ -521,29 +524,50 @@ export default function LightsOut() {
               </div>
             </div>
             <div className="space-y-2">
-              <Link href="/" className="block">
-                <button className="w-full px-4 py-2 bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded-lg font-semibold transition-colors">
-                  🏠 ホームに戻る
-                </button>
+              <Link href="/" passHref legacyBehavior>
+                <Button
+                  // as="a" removed, Button component doesn't render 'a', Link handles it. href is passed by Link.
+                  variant="primary"
+                  fullWidth
+                  icon="🏠"
+                  iconPosition="left"
+                  size="md" // Default size (px-4 py-2 font-semibold)
+                  // className="bg-brand-600 hover:bg-brand-500" // Uncomment to match original brand color
+                >
+                  ホームに戻る
+                </Button>
               </Link>
-              <button
-                className="w-full px-4 py-2 bg-success-600 hover:bg-success-500 text-neutral-0 rounded-lg font-semibold transition-colors relative"
-                onClick={showHint}
+              <Button
+                variant="success"
+                fullWidth
+                icon="💡"
+                iconPosition="left"
+                size="md"
                 disabled={gameComplete}
+                onClick={showHint}
+                className="relative justify-center" // justify-center for fullWidth icon+text alignment
+                // Original: bg-success-600 hover:bg-success-500. Variant is bg-green-500.
+                // className="relative justify-center bg-success-600 hover:bg-success-500" // If exact color needed
               >
-                💡 ヒント
+                ヒント
                 {hintsUsed > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-error-500 text-neutral-0 text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute top-0 right-1 bg-error-500 text-neutral-0 text-xs rounded-full w-5 h-5 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
                     {hintsUsed}
                   </span>
                 )}
-              </button>
-              <button
-                className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-500 text-neutral-0 rounded-lg font-semibold transition-colors"
+              </Button>
+              <Button
+                variant="info" // Original: bg-purple-600. Variant is bg-teal-500.
+                fullWidth
+                icon="❓"
+                iconPosition="left"
+                size="md"
                 onClick={showTutorialAgain}
+                className="justify-center" // justify-center for fullWidth icon+text alignment
+                // className="justify-center bg-purple-600 hover:bg-purple-500" // Uncomment for original purple color
               >
-                ❓ ルール説明
-              </button>
+                ルール説明
+              </Button>
             </div>
           </>
         }
