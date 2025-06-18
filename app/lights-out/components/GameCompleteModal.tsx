@@ -1,7 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
-import { Button } from "@/components/common"; // Changed path alias
+import { Modal, Button } from "@/components/common"; // Updated import path for Modal
 
 interface GameCompleteModalProps {
   gameComplete: boolean;
@@ -21,52 +20,43 @@ export default function GameCompleteModal({
   onNewGame,
 }: GameCompleteModalProps) {
   return (
-    <AnimatePresence>
-      {gameComplete && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-neutral-950/50 flex items-center justify-center p-4 z-50"
+    <Modal
+      isOpen={gameComplete}
+      onClose={onClose}
+      // The className from the old inner motion.div can be passed here if needed,
+      // for example, to control max-width, padding, text-alignment etc.
+      // className="bg-neutral-0 rounded-2xl p-6 text-center max-w-sm w-full"
+      // For this specific case, the Modal default styling might be sufficient,
+      // or some of these (like text-center, p-6) should be applied to an inner div.
+      // Let's apply relevant classes to the Modal, assuming its content div can take them.
+      // The Modal component applies `bg-neutral-0 rounded-2xl p-6 text-center max-w-sm w-full` by default
+      // so no specific className is needed here unless we want to override those.
+    >
+      <h2 className="text-2xl font-bold text-default-font mb-2">
+        🎉 クリア!
+      </h2>
+      <p className="text-subtext-color mb-4">
+        {moves}手で {formatTime(elapsedTime)} でクリアしました!
+      </p>
+      <div className="flex gap-3 justify-center">
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => {
+            onClose(); // It's good practice for the modal's own close button to also call the onClose prop
+            onNewGame();
+          }}
+        >
+          新しいゲーム
+        </Button>
+        <Button
+          variant="secondary"
+          size="md"
           onClick={onClose}
         >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            className="bg-neutral-0 rounded-2xl p-6 text-center max-w-sm w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-2xl font-bold text-default-font mb-2">
-              🎉 クリア!
-            </h2>
-            <p className="text-subtext-color mb-4">
-              {moves}手で {formatTime(elapsedTime)} でクリアしました!
-            </p>
-            <div className="flex gap-3 justify-center">
-              <Button
-                variant="primary"
-                size="md" // Default, matches px-4 py-2 font-semibold
-                onClick={() => {
-                  onClose();
-                  onNewGame();
-                }}
-                // className="bg-brand-primary hover:bg-brand-700" // Uncomment to force original brand color
-              >
-                新しいゲーム
-              </Button>
-              <Button
-                variant="secondary" // Using secondary as ghost is not available. Original: bg-neutral-300 text-neutral-700
-                size="md" // Default, matches px-4 py-2 font-semibold
-                onClick={onClose}
-                // className="bg-neutral-300 text-neutral-700 hover:bg-neutral-400" // Uncomment to force original style
-              >
-                閉じる
-              </Button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          閉じる
+        </Button>
+      </div>
+    </Modal>
   );
 }
