@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import { Button } from "~/components/common"; // Added Button
 
 interface GameCompleteModalProps {
   gameComplete: boolean;
@@ -43,21 +44,25 @@ export default function GameCompleteModal({
               {moves}手で {formatTime(elapsedTime)} でクリアしました!
             </p>
             <div className="flex gap-3 justify-center">
-              <button
-                className="px-4 py-2 bg-brand-primary hover:bg-brand-700 text-neutral-0 rounded-lg font-semibold hover:bg-brand-700 transition-colors"
+              <Button
+                variant="primary"
+                size="md" // Default, matches px-4 py-2 font-semibold
                 onClick={() => {
                   onClose();
                   onNewGame();
                 }}
+                // className="bg-brand-primary hover:bg-brand-700" // Uncomment to force original brand color
               >
                 新しいゲーム
-              </button>
-              <button
-                className="px-4 py-2 bg-neutral-300 text-neutral-700 rounded-lg font-semibold hover:bg-neutral-400 transition-colors"
+              </Button>
+              <Button
+                variant="secondary" // Using secondary as ghost is not available. Original: bg-neutral-300 text-neutral-700
+                size="md" // Default, matches px-4 py-2 font-semibold
                 onClick={onClose}
+                // className="bg-neutral-300 text-neutral-700 hover:bg-neutral-400" // Uncomment to force original style
               >
                 閉じる
-              </button>
+              </Button>
             </div>
           </motion.div>
         </motion.div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { LightsOutButton } from "~/components/common";
 import type { Difficulty, DifficultyConfig } from "../types";
 
 interface GameHeaderProps {
@@ -20,6 +20,8 @@ export default function GameHeader({
   onDifficultyChange,
   formatTime,
 }: GameHeaderProps) {
+  const tapMotionProps = { whileTap: { scale: 0.95 } }; // To match original tap effect
+
   return (
     <div className="text-center mb-6 lg:mb-8 relative">
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 lg:mb-6">
@@ -32,20 +34,28 @@ export default function GameHeader({
 
       {/* Difficulty Selector */}
       <div className="flex justify-center gap-2 lg:gap-3">
-        {(Object.keys(difficultyConfig) as Difficulty[]).map((diff) => (
-          <motion.button
-            key={diff}
-            className={`px-3 py-1 lg:px-4 lg:py-2 rounded-lg text-sm lg:text-base font-medium transition-colors ${
-              difficulty === diff
-                ? "bg-brand-primary text-neutral-0"
-                : "bg-neutral-600 text-neutral-0 hover:bg-neutral-700"
-            }`}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onDifficultyChange(diff)}
-          >
-            {difficultyConfig[diff].label}
-          </motion.button>
-        ))}
+        {(Object.keys(difficultyConfig) as Difficulty[]).map((d) => {
+          const isActive = difficulty === d;
+          return (
+            <LightsOutButton
+              key={d}
+              className={`px-3 py-1 lg:px-4 lg:py-2 rounded-lg text-sm lg:text-base font-medium transition-colors focus:ring-offset-0 focus:ring-2 focus:ring-opacity-50 ${
+                isActive
+                  ? "bg-brand-primary text-neutral-0 focus:ring-brand-300"
+                  : "bg-neutral-600 text-neutral-0 hover:bg-neutral-700 focus:ring-neutral-400"
+              }`}
+              // Pass motionProps to ensure the tap effect is consistent,
+              // LightsOutButton default hover will also apply.
+              // If only tap is desired, motionProps={{...tapMotionProps, whileHover: {}}}
+              motionProps={tapMotionProps}
+              onClick={() => onDifficultyChange(d)}
+              // The `variant` prop could be used if styles were aligned, e.g., variant={isActive ? 'primary' : 'dark'}
+              // But here specific class names are more direct for matching existing styles.
+            >
+              {difficultyConfig[d].label}
+            </LightsOutButton>
+          );
+        })}
       </div>
     </div>
   );

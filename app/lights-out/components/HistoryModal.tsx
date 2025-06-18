@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import { Button, IconButton } from "~/components/common"; // Added Button, IconButton
 import type { MoveRecord } from "../types";
 import MiniBoard from "./MiniBoard";
 
@@ -46,24 +47,28 @@ export default function HistoryModal({
               <h3 className="text-lg font-bold text-default-font">
                 操作履歴 ({moveHistory.length})
               </h3>
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 {moveHistory.length > 0 && (
-                  <button
-                    className="text-red-500 hover:text-red-700 text-sm font-medium"
+                  <Button
+                    variant="danger" // Base for semantic meaning
+                    size="sm" // text-sm, less padding
+                    className="bg-transparent hover:bg-red-100 text-red-500 hover:text-red-700 font-medium focus:ring-offset-0" // Ghost-like danger
                     onClick={onClearHistory}
                   >
                     クリア
-                  </button>
+                  </Button>
                 )}
-                <button
-                  className="text-neutral-400 hover:text-neutral-600 text-xl"
+                <IconButton
+                  icon={<span className="text-xl">×</span>}
+                  variant="light" // Base variant
+                  className="bg-transparent hover:bg-neutral-100 text-neutral-400 hover:text-neutral-600 focus:ring-0" // Ghost-like
                   onClick={onClose}
-                >
-                  ×
-                </button>
+                  aria-label="履歴モーダルを閉じる"
+                  size="sm" // Consistent with other close buttons
+                />
               </div>
             </div>
-            <div className="p-4 overflow-y-auto max-h-96">
+            <div className="p-4 overflow-y-auto max-h-[calc(80vh-120px)]"> {/* Adjusted max-h to account for header/footer if any */}
               {moveHistory.length === 0 ? (
                 <div className="text-center text-subtext-color py-8">
                   <p>まだ操作履歴がありません</p>
@@ -101,12 +106,14 @@ export default function HistoryModal({
                           </div>
                         </div>
                       </div>
-                      <button
-                        className="px-3 py-1 text-xs bg-brand-100 text-brand-700 rounded-full hover:bg-brand-200 transition-colors"
+                      <Button
+                        size="xs" // px-2.5 py-1.5 text-xs. Original: px-3 py-1 text-xs
+                        // No variant matches bg-brand-100, so use className entirely for this one
+                        className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full hover:bg-brand-200 transition-colors focus:ring-brand-300 focus:ring-offset-0"
                         onClick={() => onReplayToMove(index)}
                       >
                         再生
-                      </button>
+                      </Button>
                     </motion.div>
                   ))}
                 </div>
