@@ -1,11 +1,11 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 interface GameLayoutProps {
-  children: React.ReactNode;
-  sidebar?: React.ReactNode; // Optional sidebar prop
+  children: ReactNode;
+  sidebar?: ReactNode; // Optional sidebar prop
 }
 
-const GameLayout: React.FC<GameLayoutProps> = ({ children, sidebar }) => {
+export function GameLayout({ children, sidebar }: GameLayoutProps) {
   return (
     <div className="flex flex-col min-h-screen bg-neutral-900 text-white">
       {/* Header can be part of the children or added here if a common header is always needed */}
@@ -27,6 +27,4 @@ const GameLayout: React.FC<GameLayoutProps> = ({ children, sidebar }) => {
       {/* For now, assuming footer control is within the page using this layout */}
     </div>
   );
-};
-
-export default GameLayout;
+}

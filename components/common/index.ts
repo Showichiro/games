@@ -1,2 +1,2 @@
-export { default as GameLayout } from "./GameLayout";
-export { default as BoardContainer } from "./BoardContainer";
+export { GameLayout } from './GameLayout';
+export { BoardContainer } from './BoardContainer';
