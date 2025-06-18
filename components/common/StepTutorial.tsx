@@ -94,7 +94,7 @@ export default function StepTutorial({
               onClick={onPrev}
               className={navigationButtonClassName}
             >
-              Previous
+              戻る
             </Button>
           )}
 
@@ -105,7 +105,7 @@ export default function StepTutorial({
               onClick={onNext}
               className={navigationButtonClassName}
             >
-              Next
+              次へ
             </Button>
           ) : (
             <Button
@@ -114,7 +114,7 @@ export default function StepTutorial({
               onClick={onClose} // Or a specific onFinish callback
               className={navigationButtonClassName}
             >
-              Finish
+              始める
             </Button>
           )}
 
@@ -125,7 +125,7 @@ export default function StepTutorial({
             onClick={onClose}
             className={navigationButtonClassName}
           >
-            Skip
+            スキップ
           </Button>
         </div>
       </motion.div>
