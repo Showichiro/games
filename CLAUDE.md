@@ -93,6 +93,16 @@ This project uses Biome for code formatting and organization:
 
 The formatter enforces consistent code style across the project automatically.
 
+## Development Workflow
+
+**Pre-commit Quality Checks:**
+Before committing any changes, always run the following commands in order:
+1. `pnpm lint` - Check for linting errors
+2. `pnpm format` - Apply code formatting 
+3. `pnpm build` - Verify the build passes
+
+Only commit changes if all three commands complete successfully without errors. This ensures code quality and prevents CI/CD failures.
+
 ## Animation Library
 
 This project uses the Motion library (framer-motion) for animations:
@@ -120,3 +130,7 @@ This project uses the Motion library (framer-motion) for animations:
 - Respect user's reduced motion preferences
 - Provide appropriate animation durations (not too fast/slow)
 - Ensure animations don't interfere with functionality
+
+## Development Workflow
+
+- 作業が完了したらlint/format/buildを確認して問題なければコミットするというルールを記録
