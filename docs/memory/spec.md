@@ -67,4 +67,3 @@ A classic card matching game where players flip cards to find matching pairs. Ca
 - [ ] Sound effects integration
 - [ ] Hint system
 - [ ] Statistics tracking
-EOF < /dev/null
