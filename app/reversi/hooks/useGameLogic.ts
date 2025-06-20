@@ -93,10 +93,20 @@ export function useGameLogic({
       scores,
       lastMove: null,
       capturedPieces: [],
-      isThinking: false, // ゲーム開始時は常にfalseにして自動手番を防ぐ
+      isThinking: false, // 初期は false で設定
     });
     clearHistory(); // 履歴もクリア
-  }, [clearHistory]);
+
+    // CPUが先手の場合、少し遅延してからthinkingを開始
+    if (firstPlayer === playerConfig.cpuPlayer) {
+      setTimeout(() => {
+        setGameState((prev) => ({
+          ...prev,
+          isThinking: true,
+        }));
+      }, 500); // 500ms遅延
+    }
+  }, [clearHistory, playerConfig.cpuPlayer]);
 
   const switchPlayer = useCallback((currentPlayer: Player): Player => {
     return currentPlayer === "black" ? "white" : "black";
