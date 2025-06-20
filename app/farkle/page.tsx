@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { GameLayout } from "@/components/common";
 import GameBoard from "./components/GameBoard";
 import GameControls from "./components/GameControls";
+import GameIntroModal from "./components/GameIntroModal";
 import GameOverModal from "./components/GameOverModal";
 import ScoreCalculator from "./components/ScoreCalculator";
 import ScoreDisplay from "./components/ScoreDisplay";
@@ -14,6 +15,7 @@ export default function FarklePage() {
   const [isRolling, setIsRolling] = useState(false);
   const [showScoreGuide, setShowScoreGuide] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
+  const [showIntroModal, setShowIntroModal] = useState(true);
 
   const handleRoll = async () => {
     setIsRolling(true);
@@ -73,6 +75,11 @@ export default function FarklePage() {
           onNewGame={actions.newGame}
           onContinueWithHotDice={actions.continueWithHotDice}
           currentTurnScore={computed.currentTurnScore}
+        />
+
+        <GameIntroModal
+          isOpen={showIntroModal}
+          onClose={() => setShowIntroModal(false)}
         />
 
         <GameOverModal
