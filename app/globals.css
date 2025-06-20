@@ -68,18 +68,18 @@
   --color-game-hint: var(--color-brand-400);
 
   /* リバーシゲーム専用カラー */
-  --color-reversi-board-bg: var(--color-success-800);
-  --color-reversi-board-border: var(--color-success-900);
-  --color-reversi-cell-bg: var(--color-success-600);
-  --color-reversi-cell-border: var(--color-success-700);
-  --color-reversi-cell-hover: var(--color-success-500);
+  --color-reversi-board-bg: var(--color-brand-800);
+  --color-reversi-board-border: var(--color-brand-900);
+  --color-reversi-cell-bg: var(--color-brand-600);
+  --color-reversi-cell-border: var(--color-brand-700);
+  --color-reversi-cell-hover: var(--color-brand-500);
   --color-reversi-piece-black: var(--color-neutral-950);
   --color-reversi-piece-white: var(--color-neutral-0);
-  --color-reversi-piece-border: var(--color-neutral-400);
-  --color-reversi-hint: var(--color-warning-400);
-  --color-reversi-hint-hover: var(--color-warning-300);
-  --color-reversi-last-move: var(--color-warning-400);
-  --color-reversi-capture-effect: var(--color-warning-400);
+  --color-reversi-piece-border: var(--color-brand-300);
+  --color-reversi-hint: var(--color-brand-400);
+  --color-reversi-hint-hover: var(--color-brand-300);
+  --color-reversi-last-move: var(--color-brand-400);
+  --color-reversi-capture-effect: var(--color-brand-400);
   --color-reversi-victory: var(--color-success-500);
   --color-reversi-defeat: var(--color-error-500);
 
