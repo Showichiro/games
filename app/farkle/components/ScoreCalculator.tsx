@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { DiceValue } from "../types/farkle";
 import { getAvailableCombinations } from "../utils/scoreCalculator";
 

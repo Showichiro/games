@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GameLayout } from "@/components/common";
 import GameBoard from "./components/GameBoard";
 import GameControls from "./components/GameControls";
