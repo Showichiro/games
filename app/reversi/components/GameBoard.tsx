@@ -72,7 +72,7 @@ export default function GameBoard({
   return (
     <BoardContainer className="inline-block">
       <motion.div
-        className="relative grid grid-cols-8 gap-1 sm:gap-2 p-1 sm:p-2 rounded w-[90vw] h-[90vw] sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[400px] xl:h-[400px] max-w-[90vw] max-h-[90vw] sm:max-w-none sm:max-h-none"
+        className="relative grid grid-cols-8 gap-1 sm:gap-2 p-1 sm:p-2 rounded w-[85vw] h-[90vw] sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[400px] xl:h-[400px] max-w-[85vw] max-h-[90vw] sm:max-w-none sm:max-h-none"
         style={{ backgroundColor: "var(--color-reversi-board-border)" }}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
