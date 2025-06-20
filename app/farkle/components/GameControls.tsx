@@ -16,6 +16,7 @@ interface GameControlsProps {
   onBank: () => void;
   onNewGame: () => void;
   onContinueWithHotDice: () => void;
+  onShowRules: () => void;
   currentTurnScore: number;
 }
 
@@ -32,6 +33,7 @@ export default function GameControls({
   onBank,
   onNewGame,
   onContinueWithHotDice,
+  onShowRules,
   currentTurnScore,
 }: GameControlsProps) {
   if (isGameOver) {
@@ -139,14 +141,25 @@ export default function GameControls({
         </div>
       )}
 
-      <Button
-        variant="secondary"
-        fullWidth
-        onClick={onNewGame}
-        className="py-3"
-      >
-        New Game
-      </Button>
+      <div className="grid grid-cols-2 gap-3">
+        <Button
+          variant="secondary"
+          fullWidth
+          onClick={onNewGame}
+          className="py-3"
+        >
+          New Game
+        </Button>
+
+        <Button
+          variant="ghost"
+          fullWidth
+          onClick={onShowRules}
+          className="py-3"
+        >
+          ルール
+        </Button>
+      </div>
     </motion.div>
   );
 }

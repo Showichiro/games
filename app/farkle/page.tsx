@@ -6,6 +6,7 @@ import GameBoard from "./components/GameBoard";
 import GameControls from "./components/GameControls";
 import GameIntroModal from "./components/GameIntroModal";
 import GameOverModal from "./components/GameOverModal";
+import GameRulesModal from "./components/GameRulesModal";
 import ScoreCalculator from "./components/ScoreCalculator";
 import ScoreDisplay from "./components/ScoreDisplay";
 import { useFarkleGame } from "./hooks/useFarkleGame";
@@ -16,6 +17,7 @@ export default function FarklePage() {
   const [showScoreGuide, setShowScoreGuide] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [showIntroModal, setShowIntroModal] = useState(true);
+  const [showRulesModal, setShowRulesModal] = useState(false);
 
   const handleRoll = async () => {
     setIsRolling(true);
@@ -74,12 +76,18 @@ export default function FarklePage() {
           onBank={actions.bankScore}
           onNewGame={actions.newGame}
           onContinueWithHotDice={actions.continueWithHotDice}
+          onShowRules={() => setShowRulesModal(true)}
           currentTurnScore={computed.currentTurnScore}
         />
 
         <GameIntroModal
           isOpen={showIntroModal}
           onClose={() => setShowIntroModal(false)}
+        />
+
+        <GameRulesModal
+          isOpen={showRulesModal}
+          onClose={() => setShowRulesModal(false)}
         />
 
         <GameOverModal

@@ -3,45 +3,12 @@
 import { useState } from "react";
 import { Button, Modal } from "@/components/common";
 
-interface GameIntroModalProps {
+interface GameRulesModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const introPages = [
-  {
-    title: "ファークルへようこそ！",
-    content: (
-      <div className="space-y-4 text-neutral-700">
-        <section>
-          <h3 className="text-lg font-semibold mb-2 text-neutral-800">
-            ゲームの目的
-          </h3>
-          <p className="text-sm leading-relaxed">
-            6個のサイコロを振って、10,000点を目指すゲームです。
-            得点の組み合わせを作って、リスクとリターンを考えながら高得点を狙いましょう！
-          </p>
-        </section>
-
-        <section>
-          <h3 className="text-lg font-semibold mb-2 text-neutral-800">
-            基本的な遊び方
-          </h3>
-          <ol className="text-sm space-y-2 list-decimal list-inside">
-            <li>サイコロを振って、得点となる組み合わせを見つけます</li>
-            <li>得点となるサイコロを選択して確保します</li>
-            <li>
-              「バンク」で得点を確定するか、「ロール」で更に得点を狙います
-            </li>
-            <li>
-              ファークル（得点なし）になると、そのターンの得点は0になります
-            </li>
-            <li>最初のゲームでは500点以上でバンクできます</li>
-          </ol>
-        </section>
-      </div>
-    ),
-  },
+const rulesPages = [
   {
     title: "得点の組み合わせ",
     content: (
@@ -94,9 +61,6 @@ const introPages = [
     content: (
       <div className="space-y-4 text-neutral-700">
         <section>
-          <h3 className="text-lg font-semibold mb-2 text-neutral-800">
-            重要なルール
-          </h3>
           <div className="text-sm space-y-3">
             <div>
               <strong className="text-neutral-800">ホットダイス</strong>
@@ -118,6 +82,41 @@ const introPages = [
                 最初のゲームでは500点以上獲得してからバンクできます。
               </p>
             </div>
+            <div>
+              <strong className="text-neutral-800">勝利条件</strong>
+              <p className="mt-1">10,000点に到達すると勝利です！</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    ),
+  },
+  {
+    title: "基本的な遊び方",
+    content: (
+      <div className="space-y-4 text-neutral-700">
+        <section>
+          <ol className="text-sm space-y-2 list-decimal list-inside">
+            <li>サイコロを振って、得点となる組み合わせを見つけます</li>
+            <li>得点となるサイコロを選択して確保します</li>
+            <li>
+              「バンク」で得点を確定するか、「ロール」で更に得点を狙います
+            </li>
+            <li>
+              ファークル（得点なし）になると、そのターンの得点は0になります
+            </li>
+            <li>リスクとリターンを考えながら高得点を狙いましょう</li>
+          </ol>
+        </section>
+
+        <section className="mt-4">
+          <h3 className="text-lg font-semibold mb-2 text-neutral-800">
+            戦略のコツ
+          </h3>
+          <div className="text-sm space-y-1">
+            <div>• 確実な得点を取るか、リスクを取って高得点を狙うかを判断</div>
+            <div>• ホットダイスの機会を逃さずに活用</div>
+            <div>• ファークルのリスクを常に意識</div>
           </div>
         </section>
       </div>
@@ -125,17 +124,15 @@ const introPages = [
   },
 ];
 
-export default function GameIntroModal({
+export default function GameRulesModal({
   isOpen,
   onClose,
-}: GameIntroModalProps) {
+}: GameRulesModalProps) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleNext = () => {
-    if (currentPage < introPages.length - 1) {
+    if (currentPage < rulesPages.length - 1) {
       setCurrentPage(currentPage + 1);
-    } else {
-      onClose();
     }
   };
 
@@ -155,14 +152,14 @@ export default function GameIntroModal({
       <div className="text-left">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-neutral-900">
-            {introPages[currentPage].title}
+            {rulesPages[currentPage].title}
           </h2>
           <div className="text-sm text-neutral-500">
-            {currentPage + 1} / {introPages.length}
+            {currentPage + 1} / {rulesPages.length}
           </div>
         </div>
 
-        <div className="min-h-80">{introPages[currentPage].content}</div>
+        <div className="min-h-80">{rulesPages[currentPage].content}</div>
 
         <div className="mt-6 flex justify-between items-center">
           <Button
@@ -175,7 +172,7 @@ export default function GameIntroModal({
           </Button>
 
           <div className="flex space-x-1">
-            {introPages.map((_, index) => (
+            {rulesPages.map((_, index) => (
               <div
                 key={index}
                 className={`w-2 h-2 rounded-full transition-colors ${
@@ -185,8 +182,14 @@ export default function GameIntroModal({
             ))}
           </div>
 
-          <Button variant="primary" onClick={handleNext} className="px-4">
-            {currentPage === introPages.length - 1 ? "ゲーム開始" : "次へ"}
+          <Button
+            variant="ghost"
+            onClick={
+              currentPage === rulesPages.length - 1 ? handleClose : handleNext
+            }
+            className="px-4"
+          >
+            {currentPage === rulesPages.length - 1 ? "閉じる" : "次へ"}
           </Button>
         </div>
       </div>
