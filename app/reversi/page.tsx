@@ -126,7 +126,7 @@ export default function ReversiPage() {
       style={{ background: "var(--gradient-game-bg)" }}
     >
       <GameLayout sidebar={sidebar}>
-        <div className="max-w-4xl mx-auto p-2 sm:p-4">
+        <div className="max-w-4xl mx-auto p-1 sm:p-4">
           <motion.div
             className="text-center"
             initial={{ opacity: 0, y: -20 }}
@@ -143,7 +143,7 @@ export default function ReversiPage() {
           </motion.div>
 
           <motion.div
-            className="flex justify-center mb-6 overflow-hidden"
+            className="flex justify-center mb-2 sm:mb-6 overflow-hidden"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -165,7 +165,7 @@ export default function ReversiPage() {
           </motion.div>
 
           {/* CPU Thinking Indicator */}
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-2 sm:mb-4">
             <CpuThinking
               isVisible={
                 gameState.isThinking &&
