@@ -1,7 +1,7 @@
 "use client";
 
-import { useReducer, useCallback } from "react";
-import { GameState, GameAction, Player, DiceValue } from "../types/farkle";
+import { useCallback, useReducer } from "react";
+import { DiceValue, GameAction, GameState, Player } from "../types/farkle";
 import { getSelectedScore, isFarkle } from "../utils/scoreCalculator";
 
 const initialPlayer: Player = {

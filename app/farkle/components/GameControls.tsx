@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/common";
 import { motion } from "motion/react";
+import { Button } from "@/components/common";
 
 interface GameControlsProps {
   canRoll: boolean;

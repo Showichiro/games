@@ -1,11 +1,11 @@
 "use client";
 
-import { GameLayout } from "@/components/common";
-import { useFarkleGame } from "./hooks/useFarkleGame";
-import GameBoard from "./components/GameBoard";
-import ScoreDisplay from "./components/ScoreDisplay";
-import GameControls from "./components/GameControls";
 import { useState } from "react";
+import { GameLayout } from "@/components/common";
+import GameBoard from "./components/GameBoard";
+import GameControls from "./components/GameControls";
+import ScoreDisplay from "./components/ScoreDisplay";
+import { useFarkleGame } from "./hooks/useFarkleGame";
 
 export default function FarklePage() {
   const { gameState, actions, computed } = useFarkleGame();
