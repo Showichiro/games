@@ -2,7 +2,11 @@
 
 import { useCallback, useReducer } from "react";
 import { DiceValue, GameAction, GameState, Player } from "../types/farkle";
-import { getSelectedScore, isFarkle } from "../utils/scoreCalculator";
+import {
+  getSelectedScore,
+  isFarkle,
+  isHotDice,
+} from "../utils/scoreCalculator";
 
 const initialPlayer: Player = {
   id: 1,
@@ -79,10 +83,19 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case "BANK_SCORE": {
       const selectedScore = getSelectedScore(state.dice, state.selectedDice);
-      const newTotalScore =
-        state.players[state.currentPlayer].totalScore +
-        state.turnScore +
-        selectedScore;
+      const totalTurnScore = state.turnScore + selectedScore;
+      const currentPlayer = state.players[state.currentPlayer];
+
+      // Check minimum score requirement for first scoring
+      const isFirstScore = currentPlayer.totalScore === 0;
+      const minimumScore = 500;
+
+      if (isFirstScore && totalTurnScore < minimumScore) {
+        // Cannot bank - minimum score not met
+        return state;
+      }
+
+      const newTotalScore = currentPlayer.totalScore + totalTurnScore;
 
       // Update player score
       const updatedPlayers = [...state.players];
@@ -109,6 +122,16 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         turnScore: 0,
         selectedDice: [false, false, false, false, false, false],
         rollsInTurn: 0,
+      };
+    }
+
+    case "CONTINUE_WITH_HOT_DICE": {
+      const selectedScore = getSelectedScore(state.dice, state.selectedDice);
+      return {
+        ...state,
+        turnScore: state.turnScore + selectedScore,
+        selectedDice: [false, false, false, false, false, false],
+        gamePhase: "rolling",
       };
     }
 
@@ -143,16 +166,26 @@ export function useFarkleGame() {
     dispatch({ type: "NEW_GAME" });
   }, []);
 
+  const continueWithHotDice = useCallback(() => {
+    dispatch({ type: "CONTINUE_WITH_HOT_DICE" });
+  }, []);
+
   const currentTurnScore = getSelectedScore(
     gameState.dice,
     gameState.selectedDice,
   );
-  const canBank = currentTurnScore > 0;
+  const totalTurnScore = gameState.turnScore + currentTurnScore;
+  const isFirstScore =
+    gameState.players[gameState.currentPlayer].totalScore === 0;
+  const minimumScore = 500;
+  const meetsMinimumScore = !isFirstScore || totalTurnScore >= minimumScore;
+  const canBank = currentTurnScore > 0 && meetsMinimumScore;
   const canRoll = gameState.gamePhase === "rolling";
   const isFarkled =
     isFarkle(gameState.dice) &&
     gameState.gamePhase === "rolling" &&
     gameState.rollsInTurn > 0;
+  const hasHotDice = isHotDice(gameState.dice, gameState.selectedDice);
 
   return {
     gameState,
@@ -161,12 +194,18 @@ export function useFarkleGame() {
       selectDice,
       bankScore,
       newGame,
+      continueWithHotDice,
     },
     computed: {
       currentTurnScore,
+      totalTurnScore,
       canBank,
       canRoll,
       isFarkled,
+      hasHotDice,
+      isFirstScore,
+      meetsMinimumScore,
+      minimumScore,
       currentPlayer: gameState.players[gameState.currentPlayer],
     },
   };

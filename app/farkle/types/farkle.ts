@@ -48,6 +48,7 @@ export type GameAction =
   | { type: "ROLL_DICE" }
   | { type: "SELECT_DICE"; payload: { index: number } }
   | { type: "BANK_SCORE" }
+  | { type: "CONTINUE_WITH_HOT_DICE" }
   | { type: "NEW_GAME" }
   | { type: "NEXT_PLAYER" }
   | { type: "GAME_OVER" };

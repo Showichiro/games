@@ -160,3 +160,16 @@ export function canContinue(
   const selectedScore = getSelectedScore(dice, selectedDice);
   return hasUnselected && selectedScore > 0;
 }
+
+export function isHotDice(dice: DiceValue[], selectedDice: boolean[]): boolean {
+  // Hot dice occurs when all 6 dice are used in scoring combinations
+  if (dice.length !== 6) return false;
+
+  // Check if all dice are selected
+  const allSelected = selectedDice.every((selected) => selected);
+  if (!allSelected) return false;
+
+  // Check if selected dice form valid scoring combinations
+  const selectedScore = getSelectedScore(dice, selectedDice);
+  return selectedScore > 0;
+}
