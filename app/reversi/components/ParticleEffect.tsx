@@ -31,7 +31,7 @@ export default function ParticleEffect({
   const [particles, setParticles] = useState<Particle[]>([]);
 
   const createParticles = useCallback(
-    (particleType: string) => {
+    (particleType: string, pos: { x: number; y: number }) => {
       const newParticles: Particle[] = [];
       const particleCount = getParticleCount(particleType);
 
@@ -42,8 +42,8 @@ export default function ParticleEffect({
 
         newParticles.push({
           id: `particle-${i}-${Date.now()}`,
-          x: position.x,
-          y: position.y,
+          x: pos.x,
+          y: pos.y,
           vx: Math.cos(angle) * velocity,
           vy: Math.sin(angle) * velocity,
           life: life,
@@ -55,7 +55,7 @@ export default function ParticleEffect({
 
       return newParticles;
     },
-    [position.x, position.y],
+    [],
   );
 
   const getParticleCount = (particleType: string): number => {
@@ -144,10 +144,12 @@ export default function ParticleEffect({
   useEffect(() => {
     if (!trigger) return;
 
-    const newParticles = createParticles(type);
+    const newParticles = createParticles(type, position);
     setParticles(newParticles);
 
-    const interval = setInterval(() => {
+    let animationFrameId: number;
+
+    const animate = () => {
       setParticles((currentParticles) => {
         const updatedParticles = currentParticles
           .map((particle) => ({
@@ -160,16 +162,23 @@ export default function ParticleEffect({
           .filter((particle) => particle.life > 0);
 
         if (updatedParticles.length === 0) {
-          clearInterval(interval);
           onComplete?.();
+          return updatedParticles;
         }
 
+        animationFrameId = requestAnimationFrame(animate);
         return updatedParticles;
       });
-    }, 16); // ~60fps
+    };
 
-    return () => clearInterval(interval);
-  }, [trigger, type, position.x, position.y, onComplete, createParticles]);
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [trigger, type, position, onComplete, createParticles]);
 
   if (particles.length === 0) return null;
 
