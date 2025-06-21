@@ -2,15 +2,11 @@
   "mcpServers": {
     "typescript": {
       "command": "npx",
-      "args": [
-        "typescript-mcp"
-      ]
+      "args": ["typescript-mcp"]
     },
     "playwright": {
       "command": "npx",
-      "args": [
-        "@playwright/mcp@latest"
-      ]
+      "args": ["@playwright/mcp@latest"]
     }
   }
 }
