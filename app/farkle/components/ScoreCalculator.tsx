@@ -9,6 +9,7 @@ interface ScoreCalculatorProps {
   selectedDice: boolean[];
   isVisible: boolean;
   onToggle: () => void;
+  rollsInTurn: number;
 }
 
 export default function ScoreCalculator({
@@ -16,6 +17,7 @@ export default function ScoreCalculator({
   selectedDice,
   isVisible,
   onToggle,
+  rollsInTurn,
 }: ScoreCalculatorProps) {
   const availableCombinations = getAvailableCombinations(dice);
   const selectedDiceValues = dice.filter((_, index) => selectedDice[index]);
@@ -86,59 +88,61 @@ export default function ScoreCalculator({
             )}
 
             {/* Available Combinations */}
-            <div>
-              <h4 className="text-white font-semibold mb-3">
-                Available Combinations ({dice.join(", ")})
-              </h4>
-              {availableCombinations.length > 0 ? (
-                <div className="space-y-2">
-                  {availableCombinations.map((combo, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex justify-between items-center p-2 bg-neutral-700 rounded text-sm"
-                    >
-                      <div>
-                        <span className="text-neutral-200 font-medium">
-                          {combo.name}
+            {rollsInTurn > 0 && (
+              <div>
+                <h4 className="text-white font-semibold mb-3">
+                  Available Combinations ({dice.join(", ")})
+                </h4>
+                {availableCombinations.length > 0 ? (
+                  <div className="space-y-2">
+                    {availableCombinations.map((combo, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex justify-between items-center p-2 bg-neutral-700 rounded text-sm"
+                      >
+                        <div>
+                          <span className="text-neutral-200 font-medium">
+                            {combo.name}
+                          </span>
+                          <span className="text-neutral-400 ml-2">
+                            ({combo.description})
+                          </span>
+                        </div>
+                        <span className="text-yellow-400 font-bold">
+                          {combo.score} pts
                         </span>
-                        <span className="text-neutral-400 ml-2">
-                          ({combo.description})
+                      </motion.div>
+                    ))}
+                    <div className="border-t border-neutral-600 pt-2 mt-3">
+                      <div className="flex justify-between font-bold">
+                        <span className="text-white">Maximum Possible:</span>
+                        <span className="text-green-400">
+                          {availableCombinations.reduce(
+                            (sum, combo) => sum + combo.score,
+                            0,
+                          )}{" "}
+                          pts
                         </span>
                       </div>
-                      <span className="text-yellow-400 font-bold">
-                        {combo.score} pts
-                      </span>
-                    </motion.div>
-                  ))}
-                  <div className="border-t border-neutral-600 pt-2 mt-3">
-                    <div className="flex justify-between font-bold">
-                      <span className="text-white">Maximum Possible:</span>
-                      <span className="text-green-400">
-                        {availableCombinations.reduce(
-                          (sum, combo) => sum + combo.score,
-                          0,
-                        )}{" "}
-                        pts
-                      </span>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-center p-4"
-                >
-                  <p className="text-red-400 font-bold text-lg">FARKLE!</p>
-                  <p className="text-neutral-400 text-sm">
-                    No scoring combinations available
-                  </p>
-                </motion.div>
-              )}
-            </div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center p-4"
+                  >
+                    <p className="text-red-400 font-bold text-lg">FARKLE!</p>
+                    <p className="text-neutral-400 text-sm">
+                      No scoring combinations available
+                    </p>
+                  </motion.div>
+                )}
+              </div>
+            )}
 
             {/* Scoring Rules Quick Reference */}
             <details className="mt-4">

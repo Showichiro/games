@@ -46,27 +46,74 @@ function rollDice(): DiceValue[] {
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "ROLL_DICE": {
-      const newDice = rollDice();
+      // If this is a continuation roll (some dice are selected), preserve selected dice
+      if (
+        state.gamePhase === "selecting" &&
+        state.selectedDice.some((selected) => selected)
+      ) {
+        // Add current selected score to turn score
+        const selectedScore = getSelectedScore(state.dice, state.selectedDice);
+        const newTurnScore = state.turnScore + selectedScore;
 
-      // Check for Farkle
-      if (isFarkle(newDice)) {
+        // Roll only unselected dice
+        const newDice = [...state.dice];
+        const newSelectedDice = [...state.selectedDice];
+
+        // Roll new values for unselected dice
+        state.selectedDice.forEach((selected, index) => {
+          if (!selected) {
+            newDice[index] = (Math.floor(Math.random() * 6) + 1) as DiceValue;
+            newSelectedDice[index] = false;
+          }
+        });
+
+        // Check for Farkle on the newly rolled dice
+        const unselectedDice = newDice.filter(
+          (_, index) => !state.selectedDice[index],
+        );
+        if (isFarkle(unselectedDice)) {
+          return {
+            ...state,
+            dice: newDice,
+            selectedDice: [false, false, false, false, false, false],
+            gamePhase: "rolling",
+            turnScore: 0,
+            rollsInTurn: state.rollsInTurn + 1,
+          };
+        }
+
+        return {
+          ...state,
+          dice: newDice,
+          selectedDice: newSelectedDice,
+          gamePhase: "selecting",
+          turnScore: newTurnScore,
+          rollsInTurn: state.rollsInTurn + 1,
+        };
+      } else {
+        // Initial roll or full re-roll
+        const newDice = rollDice();
+
+        // Check for Farkle
+        if (isFarkle(newDice)) {
+          return {
+            ...state,
+            dice: newDice,
+            selectedDice: [false, false, false, false, false, false],
+            gamePhase: "rolling",
+            turnScore: 0,
+            rollsInTurn: state.rollsInTurn + 1,
+          };
+        }
+
         return {
           ...state,
           dice: newDice,
           selectedDice: [false, false, false, false, false, false],
-          gamePhase: "rolling",
-          turnScore: 0,
+          gamePhase: "selecting",
           rollsInTurn: state.rollsInTurn + 1,
         };
       }
-
-      return {
-        ...state,
-        dice: newDice,
-        selectedDice: [false, false, false, false, false, false],
-        gamePhase: "selecting",
-        rollsInTurn: state.rollsInTurn + 1,
-      };
     }
 
     case "SELECT_DICE": {
@@ -180,7 +227,10 @@ export function useFarkleGame() {
   const minimumScore = 500;
   const meetsMinimumScore = !isFirstScore || totalTurnScore >= minimumScore;
   const canBank = currentTurnScore > 0 && meetsMinimumScore;
-  const canRoll = gameState.gamePhase === "rolling";
+  const canRoll =
+    gameState.gamePhase === "rolling" ||
+    (gameState.gamePhase === "selecting" &&
+      gameState.selectedDice.some((selected) => selected));
   const isFarkled =
     isFarkle(gameState.dice) &&
     gameState.gamePhase === "rolling" &&

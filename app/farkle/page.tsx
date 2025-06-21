@@ -61,6 +61,7 @@ export default function FarklePage() {
           selectedDice={gameState.selectedDice}
           isVisible={showScoreGuide}
           onToggle={() => setShowScoreGuide(!showScoreGuide)}
+          rollsInTurn={gameState.rollsInTurn}
         />
 
         <GameControls
