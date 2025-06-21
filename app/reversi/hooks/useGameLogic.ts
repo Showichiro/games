@@ -33,7 +33,7 @@ export function useGameLogic({
     (
       board: Board,
       currentPlayer: Player,
-      scores: { black: number; white: number } /* , moveIndex: number */,
+      scores: { black: number; white: number },
     ) => {
       const validMoves = getValidMoves(board, currentPlayer);
       const gameHasEnded = isGameOver(board);

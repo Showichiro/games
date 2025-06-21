@@ -15,7 +15,6 @@ interface UseGameHistoryProps {
     board: Board,
     currentPlayer: Player,
     scores: { black: number; white: number },
-    moveIndex: number,
   ) => void;
 }
 
@@ -79,7 +78,6 @@ export function useGameHistory({ onRestoreGameState }: UseGameHistoryProps) {
           targetMove.boardState,
           targetMove.player === "black" ? "white" : "black", // 次のプレイヤー
           targetMove.scores,
-          newCurrentIndex,
         );
       } else {
         // 最初の状態に戻る
@@ -87,7 +85,6 @@ export function useGameHistory({ onRestoreGameState }: UseGameHistoryProps) {
           createEmptyBoard(),
           "black", // 最初は黒から
           { black: 2, white: 2 },
-          -1,
         );
       }
 
@@ -114,7 +111,6 @@ export function useGameHistory({ onRestoreGameState }: UseGameHistoryProps) {
         targetMove.boardState,
         targetMove.player === "black" ? "white" : "black", // 次のプレイヤー
         targetMove.scores,
-        newCurrentIndex,
       );
 
       return {
@@ -137,16 +133,13 @@ export function useGameHistory({ onRestoreGameState }: UseGameHistoryProps) {
             targetMove.boardState,
             targetMove.player === "black" ? "white" : "black", // 次のプレイヤー
             targetMove.scores,
-            moveIndex,
           );
         } else {
           // 最初の状態に戻る
-          onRestoreGameState(
-            createEmptyBoard(),
-            "black",
-            { black: 2, white: 2 },
-            -1,
-          );
+          onRestoreGameState(createEmptyBoard(), "black", {
+            black: 2,
+            white: 2,
+          });
         }
 
         return {
