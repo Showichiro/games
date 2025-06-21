@@ -72,7 +72,6 @@ export default function CpuThinking({
       >
         <Brain
           size={24}
-          className={`text-${config.color}-400`}
           style={{ color: `var(--color-${config.color}-400)` }}
         />
 
