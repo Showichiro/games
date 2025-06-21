@@ -3,7 +3,12 @@
 import { motion } from "motion/react"; // motion is used for history items, not buttons here
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { BoardContainer, Button, GameLayout } from "@/components/common";
+import {
+  BoardContainer,
+  Button,
+  ButtonGroup,
+  GameLayout,
+} from "@/components/common";
 import GameBoard from "./components/GameBoard";
 import GameCompleteModal from "./components/GameCompleteModal";
 import GameControls from "./components/GameControls";
@@ -455,84 +460,116 @@ export default function LightsOut() {
         onOpenHistory={openHistoryModal}
         onShowTutorial={showTutorialAgain}
         onDifficultyChange={handleDifficultyChange}
+        onShowHint={showHint}
+        hintsUsed={hintsUsed}
+        gameComplete={gameComplete}
       />
 
       <GameLayout
         sidebar={
-          <>
-            {" "}
-            {/* This content goes into GameLayout's aside (w-64, bg-neutral-800) */}
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-neutral-100">
-                操作履歴 ({moveHistory.length})
+          <div className="h-full flex flex-col">
+            {/* Game Settings Section */}
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-neutral-100 mb-3">
+                ⚙️ ゲーム設定
               </h3>
-              {moveHistory.length > 0 && (
-                <Button
-                  variant="danger"
-                  size="sm"
-                  className="bg-transparent hover:bg-error-100 text-error-400 hover:text-error-600 font-medium focus:ring-offset-0 py-0 px-1" // Adjusted padding for more ghost-like
-                  onClick={clearHistory}
-                >
-                  クリア
-                </Button>
-              )}
-            </div>
-            <div className="max-h-80 overflow-y-auto mb-6 scrollbar-thin scrollbar-track-neutral-700 scrollbar-thumb-neutral-500 pr-1">
-              {" "}
-              {/* Adjusted scrollbar track for solid bg */}
-              <div className="min-h-[12rem]">
-                {moveHistory.length === 0 ? (
-                  <div className="text-neutral-400 text-center py-8">
-                    <p>まだ操作履歴がありません</p>
-                    <p className="text-sm mt-2">
-                      ゲームを開始すると、ここに履歴が表示されます
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-2 pr-2">
-                    {moveHistory.map((record, index) => (
-                      <motion.div
-                        key={record.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.03 }}
-                        className="flex items-center justify-between p-2 bg-neutral-700 rounded-lg hover:bg-neutral-600 transition-colors text-sm min-w-0" // Solid bg for items
-                      >
-                        <div className="flex items-center gap-2 min-w-0 flex-1">
-                          <div className="w-5 h-5 bg-brand-500 text-neutral-0 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
-                            {record.moveNumber}
-                          </div>
-                          <div className="flex-shrink-0">
-                            <MiniBoard
-                              board={record.boardState}
-                              size="xs"
-                              showMove={{ row: record.row, col: record.col }}
-                            />
-                          </div>
-                        </div>
-                        <Button
-                          size="xs"
-                          className="px-2 py-1 bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded transition-colors focus:ring-brand-400 focus:ring-offset-0 flex-shrink-0 ml-2"
-                          onClick={() => replayToMove(index)}
-                        >
-                          再生
-                        </Button>
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
+              <div className="space-y-3">
+                <div>
+                  <p className="text-sm text-neutral-300 mb-2">難易度</p>
+                  <ButtonGroup
+                    items={(Object.keys(DIFFICULTY_CONFIG) as Difficulty[]).map(
+                      (d) => ({
+                        id: d,
+                        label: DIFFICULTY_CONFIG[d].label,
+                      }),
+                    )}
+                    selectedId={difficulty}
+                    onSelect={(selectedDifficulty) =>
+                      handleDifficultyChange(selectedDifficulty as Difficulty)
+                    }
+                    buttonClassName="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                    activeButtonClassName="bg-brand-primary text-neutral-0 focus:ring-brand-300"
+                    inactiveButtonClassName="bg-neutral-600 text-neutral-0 hover:bg-neutral-700 focus:ring-neutral-400"
+                  />
+                </div>
               </div>
             </div>
+
+            {/* Operation History Section */}
+            <div className="flex-1 min-h-0 mb-6">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-lg font-bold text-neutral-100">
+                  📊 操作履歴 ({moveHistory.length})
+                </h3>
+                {moveHistory.length > 0 && (
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    className="bg-transparent hover:bg-error-100 text-error-400 hover:text-error-600 font-medium focus:ring-offset-0 py-0 px-1"
+                    onClick={clearHistory}
+                  >
+                    クリア
+                  </Button>
+                )}
+              </div>
+              <div className="max-h-80 overflow-y-auto scrollbar-thin scrollbar-track-neutral-700 scrollbar-thumb-neutral-500 pr-1">
+                <div className="min-h-[12rem]">
+                  {moveHistory.length === 0 ? (
+                    <div className="text-neutral-400 text-center py-8">
+                      <p>まだ操作履歴がありません</p>
+                      <p className="text-sm mt-2">
+                        ゲームを開始すると、ここに履歴が表示されます
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2 pr-2">
+                      {moveHistory.map((record, index) => (
+                        <motion.div
+                          key={record.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.03 }}
+                          className="flex items-center justify-between p-2 bg-neutral-700 rounded-lg hover:bg-neutral-600 transition-colors text-sm min-w-0"
+                        >
+                          <div className="flex items-center gap-2 min-w-0 flex-1">
+                            <div className="w-5 h-5 bg-brand-500 text-neutral-0 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+                              {record.moveNumber}
+                            </div>
+                            <div className="flex-shrink-0">
+                              <MiniBoard
+                                board={record.boardState}
+                                size="xs"
+                                showMove={{ row: record.row, col: record.col }}
+                              />
+                            </div>
+                          </div>
+                          <Button
+                            size="xs"
+                            className="px-2 py-1 bg-brand-600 hover:bg-brand-500 text-neutral-0 rounded transition-colors focus:ring-brand-400 focus:ring-offset-0 flex-shrink-0 ml-2"
+                            onClick={() => replayToMove(index)}
+                          >
+                            再生
+                          </Button>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Game Actions Section */}
             <div className="space-y-2">
+              <h3 className="text-sm font-semibold text-neutral-200 mb-2">
+                🎮 アクション
+              </h3>
               <Link href="/" passHref className="block">
                 <Button
-                  // as="a" removed, Button component doesn't render 'a', Link handles it. href is passed by Link.
                   variant="primary"
                   fullWidth
                   icon="🏠"
                   iconPosition="left"
-                  size="md" // Default size (px-4 py-2 font-semibold)
-                  // className="bg-brand-600 hover:bg-brand-500" // Uncomment to match original brand color
+                  size="md"
                 >
                   ホームに戻る
                 </Button>
@@ -545,9 +582,7 @@ export default function LightsOut() {
                 size="md"
                 disabled={gameComplete}
                 onClick={showHint}
-                className="relative justify-center" // justify-center for fullWidth icon+text alignment
-                // Original: bg-success-600 hover:bg-success-500. Variant is bg-green-500.
-                // className="relative justify-center bg-success-600 hover:bg-success-500" // If exact color needed
+                className="relative justify-center"
               >
                 ヒント
                 {hintsUsed > 0 && (
@@ -557,28 +592,24 @@ export default function LightsOut() {
                 )}
               </Button>
               <Button
-                variant="info" // Original: bg-purple-600. Variant is bg-teal-500.
+                variant="info"
                 fullWidth
                 icon="❓"
                 iconPosition="left"
                 size="md"
                 onClick={showTutorialAgain}
-                className="justify-center" // justify-center for fullWidth icon+text alignment
-                // className="justify-center bg-purple-600 hover:bg-purple-500" // Uncomment for original purple color
+                className="justify-center"
               >
                 ルール説明
               </Button>
             </div>
-          </>
+          </div>
         }
       >
         {/* Children of GameLayout start here */}
         <GameHeader
           moves={moves}
           elapsedTime={elapsedTime}
-          difficulty={difficulty}
-          difficultyConfig={DIFFICULTY_CONFIG}
-          onDifficultyChange={handleDifficultyChange}
           formatTime={formatTime}
         />
 
@@ -600,13 +631,7 @@ export default function LightsOut() {
             />
           </BoardContainer>
           <div className="mt-4 lg:mt-6">
-            <GameControls
-              onNewGame={newGame}
-              onResetGame={resetGame}
-              onShowTutorial={showTutorialAgain}
-              onHint={showHint}
-              hintsUsed={hintsUsed}
-            />
+            <GameControls onNewGame={newGame} onResetGame={resetGame} />
           </div>
         </motion.div>
         {/* Children of GameLayout end here */}
