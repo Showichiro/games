@@ -67,7 +67,7 @@ This report documents the UI testing results for the Farkle game, identifying bu
 
 **From Tutorial (Correct):**
 - 1 = 100 points
-- 5 = 50 points  
+- 5 = 50 points
 - Three 1s = 1,000 points
 - Three 2s = 200 points
 - Three 3s = 300 points
@@ -88,7 +88,7 @@ This report documents the UI testing results for the Farkle game, identifying bu
 1. **Add escape key support** for modal closing
 2. **Improve bank button feedback** - Show why button is disabled
 3. **Add visual feedback** for minimum score requirements
-4. **Consider adding** dice rolling animation for better game feel
+4. **Consider adding dice rolling animation** for better game feel
 
 ### Testing Recommendations
 1. **Create automated tests** for scoring calculations
