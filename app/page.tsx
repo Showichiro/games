@@ -51,7 +51,7 @@ export default function Home() {
               className="group"
             >
               <Link href="/lights-out">
-                <div className="bg-neutral-0/10 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/20 hover:border-neutral-0/40 transition-all duration-300 cursor-pointer">
+                <div className="bg-neutral-0/10 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/20 hover:border-neutral-0/40 transition-all duration-300 cursor-pointer h-full flex flex-col">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                     💡
                   </div>
@@ -72,7 +72,7 @@ export default function Home() {
                       戦略
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-auto">
                     <span className="text-yellow-400 font-semibold">
                       🎮 今すぐプレイ
                     </span>
@@ -95,7 +95,7 @@ export default function Home() {
               className="group"
             >
               <Link href="/farkle">
-                <div className="bg-neutral-0/10 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/20 hover:border-neutral-0/40 transition-all duration-300 cursor-pointer">
+                <div className="bg-neutral-0/10 backdrop-blur-sm rounded-2xl p-6 border border-neutral-0/20 hover:border-neutral-0/40 transition-all duration-300 cursor-pointer h-full flex flex-col">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                     🎲
                   </div>
@@ -103,7 +103,7 @@ export default function Home() {
                     ファークル
                   </h3>
                   <p className="text-neutral-300 mb-4 leading-relaxed">
-                    6つのサイコロで高得点を狙うリスクとリターンのダイスゲーム。運と戦略のバランスが鍵となる。
+                    6つのサイコロで10,000点を目指すリスクとリターンのダイスゲーム。得点の組み合わせを作り、運と戦略のバランスが鍵となる。
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="px-3 py-1 bg-orange-500/20 text-orange-300 rounded-full text-sm">
@@ -116,7 +116,7 @@ export default function Home() {
                       戦略
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-auto">
                     <span className="text-yellow-400 font-semibold">
                       🎮 今すぐプレイ
                     </span>
