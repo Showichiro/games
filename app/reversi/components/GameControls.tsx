@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Button from "@/components/common/Button";
+import HintToggleButton from "./HintToggleButton";
 
 interface GameControlsProps {
   onNewGame: () => void;
@@ -52,69 +53,12 @@ export default function GameControls({
         </Button>
       </motion.div>
 
-      <motion.button
-        className="px-6 py-3 rounded-lg font-medium transition-all duration-200 relative overflow-hidden text-white shadow-lg"
-        style={{
-          backgroundColor: disabled
-            ? "var(--color-neutral-600)"
-            : showHints
-              ? "var(--color-warning-600)"
-              : "var(--color-neutral-600)",
-          color: disabled ? "var(--color-neutral-400)" : "var(--color-white)",
-          cursor: disabled ? "not-allowed" : "pointer",
-        }}
-        onMouseEnter={(e) => {
-          if (!disabled) {
-            const bgColor = showHints
-              ? "var(--color-warning-700)"
-              : "var(--color-neutral-700)";
-            e.currentTarget.style.backgroundColor = bgColor;
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!disabled) {
-            const bgColor = showHints
-              ? "var(--color-warning-600)"
-              : "var(--color-neutral-600)";
-            e.currentTarget.style.backgroundColor = bgColor;
-          }
-        }}
-        variants={buttonVariants}
-        whileHover={!disabled ? "hover" : {}}
-        whileTap={!disabled ? "tap" : {}}
-        onClick={onToggleHints}
+      <HintToggleButton
+        onToggle={onToggleHints}
+        showHints={showHints}
         disabled={disabled}
-        animate={
-          showHints && !disabled
-            ? {
-                boxShadow: [
-                  "0 0 0 0 var(--color-warning-400)",
-                  "0 0 0 10px transparent",
-                  "0 0 0 0 var(--color-warning-400)",
-                ],
-              }
-            : {}
-        }
-        transition={{
-          duration: 2,
-          repeat: showHints && !disabled ? Infinity : 0,
-          ease: "easeInOut",
-        }}
-      >
-        {showHints ? "💡 ヒントON" : "💡 ヒントOFF"}
-        {showHints && !disabled && (
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-            initial={{ x: "-100%" }}
-            animate={{ x: "100%" }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        )}
-      </motion.button>
+        buttonVariants={buttonVariants}
+      />
 
       {onOpenSettings && (
         <motion.div
