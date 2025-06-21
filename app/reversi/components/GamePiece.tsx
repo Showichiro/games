@@ -27,20 +27,28 @@ export default function GamePiece({
   const [currentDisplayPlayer, setCurrentDisplayPlayer] = useState(player);
 
   useEffect(() => {
+    let timeoutId1: NodeJS.Timeout;
+    let timeoutId2: NodeJS.Timeout;
+
     if (isFlipping && flipFromPlayer && flipFromPlayer !== player) {
       setIsFlipAnimating(true);
       setCurrentDisplayPlayer(flipFromPlayer);
 
       // Mid-flip change the display player
-      setTimeout(() => {
+      timeoutId1 = setTimeout(() => {
         setCurrentDisplayPlayer(player);
       }, 200);
 
-      setTimeout(() => {
+      timeoutId2 = setTimeout(() => {
         setIsFlipAnimating(false);
         onFlipComplete?.();
       }, 400);
     }
+
+    return () => {
+      clearTimeout(timeoutId1);
+      clearTimeout(timeoutId2);
+    };
   }, [isFlipping, flipFromPlayer, player, onFlipComplete]);
 
   const pieceVariants = {
